@@ -1,0 +1,55 @@
+/*
+ * Accident Map
+ */
+
+#accidentMap svg {
+    background: #EEE;
+}
+
+#accidentMap svg path.boundary {
+    fill: #AAA;
+}
+
+#accidentMap svg path.road {
+    fill: #DDD;
+}
+
+#accidentMap svg circle.accident {
+    fill: rgba(232, 61, 34, 0.2);
+}
+
+/*
+ * Year / Week Chart
+ */
+
+#yearChart svg,
+#weekChart svg {
+
+}
+
+#yearChart svg .axis path,
+#yearChart svg .axis line,
+#weekChart svg .axis path,
+#weekChart svg .axis line {
+    stroke-width: 1px;
+    stroke: #333;
+    fill: none;
+}
+
+#yearChart svg .axis text,
+#weekChart svg .axis text {
+    font-size: 13px;
+    fill: #333;
+}
+
+#yearChart svg path.area,
+#weekChart svg path.area {
+    fill: rgba(232, 61, 34, 0.2);
+}
+
+#yearChart svg path.line,
+#weekChart svg path.line {
+    stroke-width: 1;
+    stroke: rgba(232, 61, 34, 1.0);
+    fill: none;
+}
