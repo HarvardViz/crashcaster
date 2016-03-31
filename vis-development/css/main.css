@@ -1,15 +1,23 @@
 /*
- * Accident Map
+ * Choropleth / Accident Map
  */
 
+#accidentChoroplethMap svg,
 #accidentMap svg {
     background: #EEE;
+}
+
+#accidentChoroplethMap svg path.neighborhood {
+    stroke-width: 1px;
+    stroke: #999;
+    fill: rgb(232, 61, 34);
 }
 
 #accidentMap svg path.boundary {
     fill: #AAA;
 }
 
+#accidentChoroplethMap svg path.road,
 #accidentMap svg path.road {
     fill: #DDD;
 }

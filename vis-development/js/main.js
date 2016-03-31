@@ -1,4 +1,5 @@
 var visualizations = {
+    accidentChoroplethMap: null,
     accidentMap: null,
     yearChart: null,
     weekChart: null
@@ -12,12 +13,13 @@ function loadData() {
 
     queue()
         .defer(d3.json, 'data/cambridgegis_data/Boundary/City_Boundary/BOUNDARY_CityBoundary.geojson')
+        .defer(d3.json, 'data/cambridgegis_data/Boundary/CDD_Neighborhoods/BOUNDARY_CDDNeighborhoods.geojson')
         .defer(d3.json, 'data/cambridgegis_data/Basemap/Roads/BASEMAP_Roads.geojson')
         .defer(d3.csv, 'data/ACCIDENT_2014.csv')
         .await(processData);
 }
 
-function processData(err, boundary, roads, accidents) {
+function processData(err, boundary, neighborhoods, roads, accidents) {
 
     if (err) { throw err; }
 
@@ -32,6 +34,7 @@ function processData(err, boundary, roads, accidents) {
         };
     });
 
+    visualizations.accidentChoroplethMap = new AccidentChoroplethMap('#accidentChoroplethMap', neighborhoods, roads, accidents);
     visualizations.accidentMap = new AccidentMap('#accidentMap', boundary, roads, accidents);
     visualizations.yearChart = new YearChart('#yearChart', accidents);
     visualizations.weekChart = new WeekChart('#weekChart', accidents);
