@@ -25,34 +25,6 @@ AccidentChoroplethMap = function AccidentChoroplethMap(elementId, neighborhoods,
         accidents: accidents
     };
 
-    //TODO: relate accidents and neighborhoods
-    var _numAccidents = {};
-    var _maxAccidents = 0;
-    neighborhoods.features.forEach(function(d) {
-        var id = d.properties[ 'N_HOOD' ];
-        _numAccidents[ id ] = 0;
-    });
-    var parser = new OpenLayers.Format.GeoJSON();
-    var vectors = parser.read(neighborhoods);
-    accidents.forEach(function(d) {
-        var point = new OpenLayers.Geometry.Point(d.coordinates[ 0 ], d.coordinates[ 1 ]);
-        for (var i = 0; i < vectors.length; i++) {
-            if (vectors[ i ].geometry.intersects(point)) {
-                var id = vectors[ i ].attributes[ 'N_HOOD' ];
-                if (++_numAccidents[ id ] > _maxAccidents) {
-                    _maxAccidents = _numAccidents[ id ];
-                }
-                return;
-            }
-        }
-        console.log('accident not in neighborhood');
-    });
-    this.accidentLevels = {};
-    for (var id of Object.keys(_numAccidents)) {
-        this.accidentLevels[ id ] = _numAccidents[ id ] / _maxAccidents;
-    }
-    console.log(this.accidentLevels);
-
     // Setup chart.
     this.svg = d3.select(elementId).append('svg')
         .attr('width', width)
@@ -61,6 +33,7 @@ AccidentChoroplethMap = function AccidentChoroplethMap(elementId, neighborhoods,
     this.chart = this.svg.append('g');
 
     this.init();
+    this.update(this.data.accidents);
 };
 AccidentChoroplethMap.prototype = {
     /**
@@ -69,16 +42,12 @@ AccidentChoroplethMap.prototype = {
     init: function() {
 
         // Draw the neighborhoods of the map.
-        var neighborhoods = this.chart.selectAll('path.neighborhoods')
+        this.svg_neighborhoods = this.chart.selectAll('path.neighborhoods')
             .data(this.data.neighborhoods.features);
-        neighborhoods.enter().append('path')
+        this.svg_neighborhoods.enter().append('path')
             .attr('class', 'neighborhood')
-            .attr('d', path)
-            .attr('fill-opacity', function(d) {
-                var id = d.properties[ 'N_HOOD' ];
-                return this.accidentLevels[ id ];
-            }.bind(this));
-        neighborhoods.exit().remove();
+            .attr('d', path);
+        this.svg_neighborhoods.exit().remove();
 
         // Draw the roads on the map.
         var roads = this.chart.selectAll('path.road')
@@ -87,6 +56,36 @@ AccidentChoroplethMap.prototype = {
             .attr('class', 'road')
             .attr('d', path);
         roads.exit().remove();
+    },
+    /**
+     * Updates the map. This should be called any time data for the map is updated.
+     * @param {Object[]} accidents - The dataset of accidents to display on the map.
+     */
+    update: function(accidents) {
+
+        // Compute the choropleth data.
+        var _numAccidents = {};
+        var _maxAccidents = 0;
+        this.data.neighborhoods.features.forEach(function(d) {
+            _numAccidents[ d.properties[ 'N_HOOD' ] ] = 0;
+        });
+        accidents.forEach(function(d) {
+            if (d.neighborhood !== null) {
+                if (++_numAccidents[ d.neighborhood ] > _maxAccidents) {
+                    _maxAccidents = _numAccidents[ d.neighborhood ];
+                }
+            }
+        });
+        var accidentLevels = {};
+        for (var id of Object.keys(_numAccidents)) {
+            accidentLevels[ id ] = _numAccidents[ id ] / _maxAccidents;
+        }
+
+        // Adjust neighborhood opacities based on accident levels.
+        this.svg_neighborhoods
+            .attr('fill-opacity', function(d) {
+                return accidentLevels[ d.properties[ 'N_HOOD' ] ];
+            }.bind(this));
     }
 };
 

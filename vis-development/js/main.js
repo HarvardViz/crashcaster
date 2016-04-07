@@ -5,33 +5,35 @@ var visualizations = {
     weekChart: null
 }
 
-var accidentDateFormatter = d3.time.format('%m/%d/%Y %H:%M:%S %p');
-
 loadData();
 
 function loadData() {
 
     queue()
-        .defer(d3.json, 'data/cambridgegis_data/Boundary/City_Boundary/BOUNDARY_CityBoundary.geojson')
-        .defer(d3.json, 'data/cambridgegis_data/Boundary/CDD_Neighborhoods/BOUNDARY_CDDNeighborhoods.geojson')
-        .defer(d3.json, 'data/cambridgegis_data/Basemap/Roads/BASEMAP_Roads.geojson')
-        .defer(d3.csv, 'data/ACCIDENT_2014.csv')
+        .defer(d3.json, 'data/BOUNDARY_CityBoundary.geojson')
+        .defer(d3.json, 'data/BOUNDARY_Neighborhoods.geojson')
+        .defer(d3.json, 'data/BASEMAP_Roads.geojson')
+        .defer(d3.json, 'data/cambridge_accidents_2010-2014.json')
+        .defer(d3.json, 'data/cambridge_weather_2010-2014.json')
+        .defer(d3.json, 'data/cambridge_citations_2010-2014.json')
         .await(processData);
 }
 
-function processData(err, boundary, neighborhoods, roads, accidents) {
+function processData(err, boundary, neighborhoods, roads, accidents, weather, citations) {
 
     if (err) { throw err; }
 
-    accidents = accidents.map(function(d) {
-        return {
-            coordinates: [ parseFloat(d[ 'Longitude' ]), parseFloat(d[ 'Latitude' ]) ],
-            location: d[ 'LOCATION' ],
-            object1: d[ 'Object 1' ],
-            object2: d[ 'Object 2' ],
-            date: accidentDateFormatter.parse(d[ 'Date Time' ]),
-            day: d[ 'Day of Week' ]
-        };
+    // Convert date information.
+    accidents.forEach(function(d) {
+        d.date = new Date(d.date);
+    });
+    weather.forEach(function(d) {
+        d.date = new Date(d.date);
+        d.sunrise = new Date(d.sunrise);
+        d.sunset = new Date(d.sunset);
+    });
+    citations.forEach(function(d) {
+        d.date = new Date(d.date);
     });
 
     visualizations.accidentChoroplethMap = new AccidentChoroplethMap('#accidentChoroplethMap', neighborhoods, roads, accidents);
