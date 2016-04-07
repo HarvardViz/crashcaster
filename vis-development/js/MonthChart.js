@@ -1,4 +1,4 @@
-var YearChart;
+var MonthChart;
 
 (function() {
 
@@ -10,7 +10,7 @@ var height = 100 - margin.top - margin.bottom;
 var dateHashFormatter = d3.time.format('%Y_%m_%d');
 var xDateFormatter = d3.time.format('%b');
 
-YearChart = function YearChart(elementId, accidents) {
+MonthChart = function MonthChart(elementId, accidents) {
 
     this.startDate = new Date(2014, 0, 1);
     this.endDate = new Date(2015, 0, -1);
@@ -74,7 +74,7 @@ YearChart = function YearChart(elementId, accidents) {
     this.init();
     this.update();
 }
-YearChart.prototype = {
+MonthChart.prototype = {
     /**
      * Initializes the chart. This is called only once, when the chart is created.
      */

@@ -36,8 +36,9 @@ function processData(err, boundary, neighborhoods, roads, accidents, weather, ci
         d.date = new Date(d.date);
     });
 
+    // Create visualizations.
     visualizations.accidentChoroplethMap = new AccidentChoroplethMap('#accidentChoroplethMap', neighborhoods, roads, accidents);
     visualizations.accidentMap = new AccidentMap('#accidentMap', boundary, roads, accidents);
-    visualizations.yearChart = new YearChart('#yearChart', accidents);
-    visualizations.weekChart = new WeekChart('#weekChart', accidents);
+    visualizations.monthChart = new MonthChart('#monthChart', accidents);
+    visualizations.dayChart = new DayChart('#dayChart', accidents);
 }

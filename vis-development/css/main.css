@@ -14,50 +14,56 @@
 }
 
 #accidentMap svg path.boundary {
-    fill: #AAA;
+    fill: #CCC;
 }
 
 #accidentChoroplethMap svg path.road,
 #accidentMap svg path.road {
-    fill: #DDD;
+    fill: #EEE;
 }
 
 #accidentMap svg circle.accident {
-    fill: rgba(232, 61, 34, 0.2);
+    fill: #4682B4;
+    fill-opacity: 0.2;
 }
 
 /*
- * Year / Week Chart
+ * Year / Month / Day Chart
  */
 
-#yearChart svg,
-#weekChart svg {
+#monthChart svg,
+#dayChart svg {
 
 }
 
-#yearChart svg .axis path,
-#yearChart svg .axis line,
-#weekChart svg .axis path,
-#weekChart svg .axis line {
+#monthChart svg .axis path,
+#monthChart svg .axis line,
+#dayChart svg .axis path,
+#dayChart svg .axis line {
     stroke-width: 1px;
     stroke: #333;
     fill: none;
 }
 
-#yearChart svg .axis text,
-#weekChart svg .axis text {
+#monthChart svg .axis text,
+#dayChart svg .axis text {
     font-size: 13px;
     fill: #333;
 }
 
-#yearChart svg path.area,
-#weekChart svg path.area {
-    fill: rgba(232, 61, 34, 0.2);
+#monthChart svg path.area,
+#dayChart svg path.area {
+    fill: #4682B4;
 }
 
-#yearChart svg path.line,
-#weekChart svg path.line {
+#monthChart svg path.line,
+#dayChart svg path.line {
     stroke-width: 1;
-    stroke: rgba(232, 61, 34, 1.0);
+    stroke: none;// #4682B4;
     fill: none;
+}
+
+#monthChart svg .brush .extent,
+#dayChart svg .brush .extent {
+    fill: #E8F0F6;
 }

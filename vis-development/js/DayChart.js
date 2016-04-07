@@ -1,4 +1,4 @@
-var WeekChart;
+var DayChart;
 
 (function() {
 
@@ -10,7 +10,7 @@ var height = 100 - margin.top - margin.bottom;
 var dateHashFormatter = d3.time.format('%A_%H');
 var xDateFormatter = d3.time.format('%a');
 
-WeekChart = function WeekChart(elementId, accidents) {
+DayChart = function DayChart(elementId, accidents) {
 
     this.startDate = new Date();
     this.startDate.setDate(this.startDate.getDate() - this.startDate.getDay());
@@ -75,10 +75,31 @@ WeekChart = function WeekChart(elementId, accidents) {
         .y(function(d) { return this.y(d.accidentCount); }.bind(this))
         .interpolate('step-after');
 
+    //https://github.com/square/crossfilter/blob/gh-pages/index.html
+// reference for brush clipping (two charts over each other)
+//TODO: ordinal brushing ??
+    // Setup brush.
+    this.brush = d3.svg.brush()
+        .x(this.x)
+        .on('brush', function() {
+            var extent = this.brush.extent();
+            //TODO:
+            console.log(extent);
+        }.bind(this))
+        .on('brushend', function() {
+            //TODO: ?
+        }.bind(this));
+
+    this.chart.append('g')
+        .attr('class', 'brush')
+        .call(this.brush)
+        .selectAll('rect')
+            .attr('height', height);
+
     this.init();
     this.update();
 }
-WeekChart.prototype = {
+DayChart.prototype = {
     /**
      * Initializes the chart. This is called only once, when the chart is created.
      */
