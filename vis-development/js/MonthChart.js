@@ -29,7 +29,7 @@ MonthChart = function MonthChart(elementId, accidents) {
     });
 
     // Setup chart.
-    this.svg = d3.select(elementId).append('svg')
+    this.svg = d3.select('#' + elementId).append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
         .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
@@ -70,6 +70,56 @@ MonthChart = function MonthChart(elementId, accidents) {
         .x(function(d) { return this.x(d.date); }.bind(this))
         .y(function(d) { return this.y(d.accidentCount); }.bind(this))
         .interpolate('step-after');
+
+    // Setup brush.
+    this.brush = d3.svg.brush()
+        .x(this.x)
+        .on('brush', function() {
+            var extent0 = vis.brush.extent();
+            var extent1;
+            // If dragging, preserve the width of the extent.
+            if (d3.event.mode === 'move') {
+                var d0 = d3.time.month.round(extent0[ 0 ]);
+                var d1 = d3.time.month.offset(d0, Math.round((extent0[ 1 ] - extent0[ 0 ]) / 86400000));
+                extent1 = [ d0, d1 ];
+            }
+            // If resizing, round both dates.
+            else {
+                extent1 = extent0.map(d3.time.month.round);
+            }
+            // Apply the new extent to the brush and clip path.
+            d3.select(this)
+                .call(vis.brush.extent(extent1));
+            d3.select('#' + vis.elementId + '-brush-clip rect')
+                .attr('x', vis.x(extent1[ 0 ]))
+                .attr('width', vis.x(extent1[ 1 ]) - vis.x(extent1[ 0 ]));
+        })
+        .on('brushend', function() {
+            if (vis.brush.empty()) {
+                // Reset the clip path.
+                d3.select('#' + vis.elementId + '-brush-clip rect')
+                    .attr('x', 0)
+                    .attr('width', width);
+            }
+            var extent = vis.brush.extent();
+            var dayRange = [
+                extent[ 0 ].getDay(),
+                extent[ 1 ].getDay() - 1
+            ];
+            //TODO: comment
+            $.event.trigger({
+                type: 'accidentMap:filter:update:dayRange',
+                dayRange: dayRange
+            });
+        });
+
+    this.chart.append('g')
+        .attr('class', 'brush')
+        .call(this.brush)
+        .selectAll('rect')
+            .attr('height', height);
+
+    //TODO
 
     this.init();
     this.update();

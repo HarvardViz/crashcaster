@@ -26,7 +26,7 @@ AccidentChoroplethMap = function AccidentChoroplethMap(elementId, neighborhoods,
     };
 
     // Setup chart.
-    this.svg = d3.select(elementId).append('svg')
+    this.svg = d3.select('#' + elementId).append('svg')
         .attr('width', width)
         .attr('height', height)
         .attr('viewBox', '0 0 ' + width + ' ' + height);

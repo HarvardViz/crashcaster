@@ -3,7 +3,7 @@ var visualizations = {
     accidentMap: null,
     yearChart: null,
     weekChart: null
-}
+};
 
 loadData();
 
@@ -36,9 +36,23 @@ function processData(err, boundary, neighborhoods, roads, accidents, weather, ci
         d.date = new Date(d.date);
     });
 
+    // Initialize cross filtering for accidents.
+//    accidents = crossfilter(accidents);
+    //TODO accidents.accidentType =
+    //TODO accidents.weatherEvent =
+//    accidents.hour  = accidents.dimension(function(d) { return d.date.getHours();    });
+//    accidents.day   = accidents.dimension(function(d) { return d.date.getDay();      });
+//    accidents.month = accidents.dimension(function(d) { return d.date.getMonth();    });
+//    accidents.year  = accidents.dimension(function(d) { return d.date.getFullYear(); });
+
+    // accidents.hour.filterRange(extent); on brush move
+    // accidents.hour.filterAll(); on brush reset (all)
+    // accidents.groupAll(); to get all filtered accidents
+    // accidents.hour.groupAll(); to get all filtered accidents (ignoring dimension's filter)
+
     // Create visualizations.
-    visualizations.accidentChoroplethMap = new AccidentChoroplethMap('#accidentChoroplethMap', neighborhoods, roads, accidents);
-    visualizations.accidentMap = new AccidentMap('#accidentMap', boundary, roads, accidents);
-    visualizations.monthChart = new MonthChart('#monthChart', accidents);
-    visualizations.dayChart = new DayChart('#dayChart', accidents);
+    //visualizations.accidentChoroplethMap = new AccidentChoroplethMap('accidentChoroplethMap', neighborhoods, roads, accidents);
+    //visualizations.accidentMap = new AccidentMap('accidentMap', boundary, roads, accidents);
+    //visualizations.monthChart = new MonthChart('monthChart', accidents);
+    visualizations.dayChart = new DayChart('dayChart', accidents);
 }
