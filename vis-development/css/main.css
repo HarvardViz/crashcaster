@@ -51,19 +51,32 @@
     fill: #333;
 }
 
-#monthChart svg path.area,
-#dayChart svg path.area {
-    fill: #4682B4;
+#monthChart svg .background path.area,
+#dayChart svg .background path.area {
+    fill: #D8D8D8;
 }
 
-#monthChart svg path.line,
-#dayChart svg path.line {
+#monthChart svg .foreground path.area,
+#dayChart svg .foreground path.area {
+    fill: #A3C1DA;
+}
+
+#monthChart svg .background path.line,
+#dayChart svg .background path.line {
     stroke-width: 1;
-    stroke: none;// #4682B4;
+    stroke: #B2B2B2;
+    fill: none;
+}
+
+#monthChart svg .foreground path.line,
+#dayChart svg .foreground path.line {
+    stroke-width: 1;
+    stroke: #4682B4;
     fill: none;
 }
 
 #monthChart svg .brush .extent,
 #dayChart svg .brush .extent {
-    fill: #E8F0F6;
+    fill: #4682B4;
+    fill-opacity: 0.1;
 }

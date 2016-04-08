@@ -12,6 +12,8 @@ var xDateFormatter = d3.time.format('%a');
 
 DayChart = function DayChart(elementId, accidents) {
 
+    var vis = this;
+
     this.startDate = new Date();
     this.startDate.setDate(this.startDate.getDate() - this.startDate.getDay());
     this.startDate.setHours(0, 0, 0, 0);
@@ -41,6 +43,22 @@ DayChart = function DayChart(elementId, accidents) {
     this.chart = this.svg.append('g')
         .attr('transform',  'translate(' + margin.left + ',' + margin.top + ')');
 
+    // Create groups for
+    this.brushClip = this.chart.append('clipPath')
+            .attr('id', 'brush-clip')
+        .append('rect')
+            .attr('width', width)
+            .attr('height', height);
+
+    this.bg_chart = this.chart.append('g')
+        .attr('class', 'background');
+
+    this.fg_chart = this.chart.append('g')
+        .attr('class', 'foreground')
+        .attr('clip-path', 'url(#brush-clip)');
+
+//TODO: make group for both charts (disabled and active)
+
     // Setup scales.
     this.x = d3.time.scale()
         .domain([ this.startDate, this.endDate ])
@@ -65,30 +83,56 @@ DayChart = function DayChart(elementId, accidents) {
 
     // SVG generators.
     this.area = d3.svg.area()
-        .x(function(d) { return this.x(d.date); }.bind(this))
+        .x(function(d) { return vis.x(d.date); })
         .y0(height)
-        .y1(function(d) { return this.y(d.accidentCount); }.bind(this))
+        .y1(function(d) { return vis.y(d.accidentCount); })
         .interpolate('step-after');
 
     this.line = d3.svg.line()
-        .x(function(d) { return this.x(d.date); }.bind(this))
-        .y(function(d) { return this.y(d.accidentCount); }.bind(this))
+        .x(function(d) { return vis.x(d.date); })
+        .y(function(d) { return vis.y(d.accidentCount); })
         .interpolate('step-after');
 
     //https://github.com/square/crossfilter/blob/gh-pages/index.html
 // reference for brush clipping (two charts over each other)
-//TODO: ordinal brushing ??
+
     // Setup brush.
     this.brush = d3.svg.brush()
         .x(this.x)
         .on('brush', function() {
-            var extent = this.brush.extent();
-            //TODO:
-            console.log(extent);
-        }.bind(this))
+            var extent0 = vis.brush.extent();
+            var extent1;
+            // If dragging, preserve the width of the extent.
+            if (d3.event.mode === 'move') {
+                var d0 = d3.time.hour.round(extent0[ 0 ]);
+                var d1 = d3.time.hour.offset(d0, Math.round((extent0[ 1 ] - extent0[ 0 ]) / 3600000));
+                extent1 = [ d0, d1 ];
+            }
+            // If resizing, round both dates.
+            else {
+                extent1 = extent0.map(d3.time.hour.round);
+                // If empty after rounding, use floor and ceiling instead.
+                //if (extent1[ 0 ] >= extent1[ 1 ]) {
+                    //extent1[ 0 ] = d3.time.hour.floor(extent0[ 0 ]);
+                    //extent1[ 1 ] = d3.time.hour.ceil(extent0[ 1 ]);
+                    //vis.brush.clear();
+                //}
+            }
+            // Apply the new extent to the brush and clip path.
+            d3.select(this)
+                .call(vis.brush.extent(extent1));
+            d3.select('#brush-clip rect')
+                .attr('x', vis.x(extent1[ 0 ]))
+                .attr('width', vis.x(extent1[ 1 ]) - vis.x(extent1[ 0 ]));
+        })
         .on('brushend', function() {
-            //TODO: ?
-        }.bind(this));
+            if (vis.brush.empty()) {
+                // Reset the clip path.
+                d3.select('#brush-clip rect')
+                    .attr('x', 0)
+                    .attr('width', width);
+            }
+        });
 
     this.chart.append('g')
         .attr('class', 'brush')
@@ -96,48 +140,61 @@ DayChart = function DayChart(elementId, accidents) {
         .selectAll('rect')
             .attr('height', height);
 
-    this.init();
+    // Draw foreground and back area and line charts.
+//TODO: combine these, they should do the same thing
+    this.bg_area_path = this.bg_chart.append('path')
+        .attr('class', 'area');
+
+    this.bg_line_path = this.bg_chart.append('path')
+        .attr('class', 'line');
+
+    this.fg_area_path = this.fg_chart.append('path')
+        .attr('class', 'area');
+
+    this.fg_line_path = this.fg_chart.append('path')
+        .attr('class', 'line');
+
+    // Draw axes and axis labels.
+    this.xAxis_g = this.chart.append('g')
+        .attr('class', 'axis x-axis')
+        .attr('transform', 'translate(0, ' + height + ')')
+        .call(this.xAxis);
+    // Center the month labels.
+    var ticks = this.xAxis.scale().ticks(this.xAxis.ticks()[ 0 ]);
+    var tickSize = this.x(ticks[ 1 ]) - this.x(ticks[ 0 ]);
+    this.xAxis_g.selectAll('.tick text')
+        .style('text-anchor', 'middle')
+        .attr('x', tickSize / 2);
+
+    this.yAxis_g = this.chart.append('g')
+        .attr('class', 'axis y-axis')
+        .attr('transform', 'translate(0, 0)')
+        .call(this.yAxis);
+
     this.update();
 }
 DayChart.prototype = {
     /**
-     * Initializes the chart. This is called only once, when the chart is created.
-     */
-    init: function() {
-
-        this.area_path = this.chart.append('path')
-            .attr('class', 'area');
-
-        this.line_path = this.chart.append('path')
-            .attr('class', 'line');
-
-        this.xAxis_g = this.chart.append('g')
-            .attr('class', 'axis x-axis')
-            .attr('transform', 'translate(0, ' + height + ')')
-            .call(this.xAxis);
-        // Center the month labels.
-        var ticks = this.xAxis.scale().ticks(this.xAxis.ticks()[ 0 ]);
-        var tickSize = this.x(ticks[ 1 ]) - this.x(ticks[ 0 ]);
-        this.xAxis_g.selectAll('.tick text')
-            .style('text-anchor', 'middle')
-            .attr('x', tickSize / 2);
-
-        this.yAxis_g = this.chart.append('g')
-            .attr('class', 'axis y-axis')
-            .attr('transform', 'translate(0, 0)')
-            .call(this.yAxis);
-    },
-    /**
      * Updates the chart. This should be called any time data for the chart is updated.
      */
     update: function() {
-
-        this.area_path
+//TODO: combine these, they should do the same thing
+        this.bg_area_path
             .datum(this.data)
             //TODO:transition
             .attr('d', this.area);
 
-        this.line_path
+        this.bg_line_path
+            .datum(this.data)
+            //TODO:transition
+            .attr('d', this.line);
+
+        this.fg_area_path
+            .datum(this.data)
+            //TODO:transition
+            .attr('d', this.area);
+
+        this.fg_line_path
             .datum(this.data)
             //TODO:transition
             .attr('d', this.line);
