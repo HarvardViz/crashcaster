@@ -1,0 +1,91 @@
+/* Sections
+ * --------------------------------------- */
+
+[id*="section"] {
+    background-size: cover;
+}
+
+.section {
+    text-align: center;
+}
+
+.slide {
+    background-size: cover;
+}
+
+#section0 {
+    background-image: url(../img/bg-rain.jpg);
+}
+
+#section1 {
+    background: -webkit-gradient(linear, top left, bottom left, from(#fefefe), to(#e0e0e0));
+    background: -webkit-linear-gradient(#fefefe, #e0e0e0);
+    background: linear-gradient(#fefefe, #e0e0e0);
+    /*
+    background-image: url(../img/bg1.jpg);
+    */
+}
+
+#section2 {
+    background: -webkit-gradient(linear, top left, bottom left, from(#1b71a1), to(#1a3f63));
+    background: -webkit-linear-gradient(#1b71a1, #1a3f63);
+    background: linear-gradient(#1b71a1, #1a3f63);
+    /*
+    background-image: url(../img/bg2.jpg);
+    */
+}
+
+#section3 {
+    background: -webkit-gradient(linear, top left, bottom left, from(#1b71a1), to(#1a3f63));
+    background: -webkit-linear-gradient(#1b71a1, #1a3f63);
+    background: linear-gradient(#1b71a1, #1a3f63);
+    /*
+    background-image: url(../img/bg3.jpg);
+    */
+}
+
+#section4 {
+    background: -webkit-gradient(linear, top left, bottom left, from(#fefefe), to(#e0e0e0));
+    background: -webkit-linear-gradient(#fefefe, #e0e0e0);
+    background: linear-gradient(#fefefe, #e0e0e0);
+    /*
+   background-image: url(../img/bg3.jpg);
+   */
+}
+
+.section .bg-content {
+    background-color: rgba(255, 255, 255, 0.5);
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    padding: 20px;
+    color: #333;
+}
+
+/* Adding background for the slides
+ * --------------------------------------- */
+#slide0 {
+    background: -webkit-gradient(linear, top left, bottom left, from(#13e6f5), to(#127c8a));
+    background: -webkit-linear-gradient(#13e6f5, #127c8a);
+    background: linear-gradient(#13e6f5, #127c8a);
+}
+
+#slide1 {
+    background: -webkit-gradient(linear, top left, bottom left, from(#b4feff), to(#91dbdc));
+    background: -webkit-linear-gradient(#b4feff, #91dbdc);
+    background: linear-gradient(#b4feff, #91dbdc);
+}
+
+#slide2 {
+    background: -webkit-gradient(linear, top left, bottom left, from(#eeffdb), to(#ddeeca));
+    background: -webkit-linear-gradient(#eeffdb, #ddeeca);
+    background: linear-gradient(#eeffdb, #ddeeca);
+}
+
+#slide3 {
+    background: -webkit-gradient(linear, top left, bottom left, from(#ff7600), to(#d66600));
+    background: -webkit-linear-gradient(#ff7600, #d66600);
+    background: linear-gradient(#ff7600, #d66600);
+}
+
+
