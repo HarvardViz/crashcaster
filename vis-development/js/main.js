@@ -24,7 +24,8 @@ function processData(err, boundary, neighborhoods, roads, accidents, weather, ci
     if (err) { throw err; }
 
     // Convert date information.
-    accidents.forEach(function(d) {
+    accidents.forEach(function(d, i) {
+        d.id = i;
         d.date = new Date(d.date);
     });
     weather.forEach(function(d) {
@@ -37,22 +38,31 @@ function processData(err, boundary, neighborhoods, roads, accidents, weather, ci
     });
 
     // Initialize cross filtering for accidents.
-//    accidents = crossfilter(accidents);
-    //TODO accidents.accidentType =
-    //TODO accidents.weatherEvent =
-//    accidents.hour  = accidents.dimension(function(d) { return d.date.getHours();    });
-//    accidents.day   = accidents.dimension(function(d) { return d.date.getDay();      });
-//    accidents.month = accidents.dimension(function(d) { return d.date.getMonth();    });
-//    accidents.year  = accidents.dimension(function(d) { return d.date.getFullYear(); });
-
-    // accidents.hour.filterRange(extent); on brush move
-    // accidents.hour.filterAll(); on brush reset (all)
-    // accidents.groupAll(); to get all filtered accidents
-    // accidents.hour.groupAll(); to get all filtered accidents (ignoring dimension's filter)
+    accidents = crossfilter(accidents);
+    accidents.all    = accidents.dimension(function(d, i) { return i; });
+    accidents.year   = accidents.dimension(function(d) { return new Date(d.date.getFullYear(), d.date.getMonth(), 0); });
+    accidents.years  = accidents.year.group();
+    accidents.month  = accidents.dimension(function(d) { return new Date(2014, d.date.getMonth(), d.date.getDate()); });
+    accidents.months = accidents.month.group();
+    accidents.day    = accidents.dimension(function(d) { return new Date(2014, 0, 5 + d.date.getDay(), d.date.getHours()); });
+    accidents.days   = accidents.day.group();
+    accidents.hour   = accidents.dimension(function(d) { return new Date(2014, 0, 1, d.date.getHours()); });
+    accidents.hours  = accidents.hour.group();
 
     // Create visualizations.
     //visualizations.accidentChoroplethMap = new AccidentChoroplethMap('accidentChoroplethMap', neighborhoods, roads, accidents);
-    //visualizations.accidentMap = new AccidentMap('accidentMap', boundary, roads, accidents);
-    //visualizations.monthChart = new MonthChart('monthChart', accidents);
+    visualizations.accidentMap = new AccidentMap('accidentMap', boundary, roads, accidents);
+    visualizations.yearChart = new YearChart('yearChart', accidents);
+    visualizations.monthChart = new MonthChart('monthChart', accidents);
     visualizations.dayChart = new DayChart('dayChart', accidents);
+    visualizations.hourChart = new HourChart('hourChart', accidents);
+
+    // Update each visualization when the crossfilter is updated.
+    $(document).on('accidents:crossfilter:update', function() {
+        visualizations.accidentMap.update();
+        visualizations.yearChart.update();
+        visualizations.monthChart.update();
+        visualizations.dayChart.update();
+        visualizations.hourChart.update();
+    });
 }

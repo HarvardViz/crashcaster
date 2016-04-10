@@ -28,55 +28,73 @@
 }
 
 /*
- * Year / Month / Day Chart
+ * Year / Month / Day / Hour Chart
  */
 
+#yearChart svg,
 #monthChart svg,
-#dayChart svg {
+#dayChart svg,
+#hourChart svg {
 
 }
 
+#yearChart svg .axis path,
+#yearChart svg .axis line,
 #monthChart svg .axis path,
 #monthChart svg .axis line,
 #dayChart svg .axis path,
-#dayChart svg .axis line {
+#dayChart svg .axis line,
+#hourChart svg .axis path,
+#hourChart svg .axis line {
     stroke-width: 1px;
     stroke: #333;
     fill: none;
 }
 
+#yearChart svg .axis text,
 #monthChart svg .axis text,
-#dayChart svg .axis text {
+#dayChart svg .axis text,
+#hourChart svg .axis text, {
     font-size: 13px;
     fill: #333;
 }
 
-#monthChart svg .background path.area,
-#dayChart svg .background path.area {
+#yearChart svg .bg path.area,
+#monthChart svg .bg path.area,
+#dayChart svg .bg path.area,
+#hourChart svg .bg path.area {
     fill: #D8D8D8;
 }
 
-#monthChart svg .foreground path.area,
-#dayChart svg .foreground path.area {
+#yearChart svg .fg path.area,
+#monthChart svg .fg path.area,
+#dayChart svg .fg path.area,
+#hourChart svg .fg path.area {
     fill: #A3C1DA;
 }
 
-#monthChart svg .background path.line,
-#dayChart svg .background path.line {
+#yearChart svg .bg path.line,
+#monthChart svg .bg path.line,
+#dayChart svg .bg path.line,
+#hourChart svg .bg path.line {
     stroke-width: 1;
     stroke: #B2B2B2;
     fill: none;
 }
 
-#monthChart svg .foreground path.line,
-#dayChart svg .foreground path.line {
+#yearChart svg .fg path.line,
+#monthChart svg .fg path.line,
+#dayChart svg .fg path.line,
+#hourChart svg .fg path.line {
     stroke-width: 1;
     stroke: #4682B4;
     fill: none;
 }
 
+#yearChart svg .brush .extent,
 #monthChart svg .brush .extent,
-#dayChart svg .brush .extent {
+#dayChart svg .brush .extent,
+#hourChart svg .brush .extent {
     fill: #4682B4;
     fill-opacity: 0.1;
 }

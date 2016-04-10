@@ -18,12 +18,11 @@ var path = d3.geo.path()
 
 AccidentMap = function AccidentMap(elementId, boundary, roads, accidents) {
 
-    // Process data.
-    this.data = {
-        boundary: boundary,
-        roads: roads,
-        accidents: accidents
-    };
+    var vis = this;
+
+    this.boundary = boundary;
+    this.roads = roads;
+    this.accidents = accidents;
 
     // Setup chart.
     this.svg = d3.select('#' + elementId).append('svg')
@@ -32,40 +31,34 @@ AccidentMap = function AccidentMap(elementId, boundary, roads, accidents) {
         .attr('viewBox', '0 0 ' + width + ' ' + height);
     this.chart = this.svg.append('g');
 
-    this.init();
-    this.update(this.data.accidents);
+    // Draw the boundary of the map.
+    var boundary = this.chart.selectAll('path.boundary')
+        .data(this.boundary.features);
+    boundary.enter().append('path')
+        .attr('class', 'boundary')
+        .attr('d', path);
+
+    // Draw the roads on the map.
+    var roads = this.chart.selectAll('path.road')
+        .data(this.roads.features);
+    roads.enter().append('path')
+        .attr('class', 'road')
+        .attr('d', path);
+
+    this.update();
 }
 AccidentMap.prototype = {
-    /**
-     * Initializes the map. This is called only once, when the map is created.
-     */
-    init: function() {
 
-        // Draw the boundary of the map.
-        var boundary = this.chart.selectAll('path.boundary')
-            .data(this.data.boundary.features);
-        boundary.enter().append('path')
-            .attr('class', 'boundary')
-            .attr('d', path);
-        boundary.exit().remove();
-
-        // Draw the roads on the map.
-        var roads = this.chart.selectAll('path.road')
-            .data(this.data.roads.features);
-        roads.enter().append('path')
-            .attr('class', 'road')
-            .attr('d', path);
-        roads.exit().remove();
-    },
     /**
      * Updates the map. This should be called any time data for the map is updated.
-     * @param {Object[]} accidents - The dataset of accidents to display on the map.
      */
-    update: function(accidents) {
+    update: function() {
+
+        var data = this.accidents.all.top(Infinity);
 
         // Draw the accident data points on the map.
         var points = this.chart.selectAll('circle.accident')
-            .data(accidents);//TODO: index by id
+            .data(data, function(d) { return d.id; });
         points.enter().append('circle')//TODO: transition in
             .attr('class', 'accident')
             .attr('cx', function(d) { return projection(d.coordinates)[ 0 ]; })

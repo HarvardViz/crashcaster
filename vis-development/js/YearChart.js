@@ -1,4 +1,4 @@
-var MonthChart;
+var YearChart;
 
 (function() {
 
@@ -7,16 +7,16 @@ var margin = { top: 10, right: 0, bottom: 25, left: 30 };
 var width = 750 - margin.left - margin.right;
 var height = 100 - margin.top - margin.bottom;
 
-var xDateFormatter = d3.time.format('%b');
+var xDateFormatter = d3.time.format('%Y');
 
-MonthChart = function MonthChart(elementId, accidents) {
+YearChart = function YearChart(elementId, accidents) {
 
     var vis = this;
 
     this.elementId = elementId;
     this.accidents = accidents;
 
-    this.startDate = new Date(2014, 0, 1);
+    this.startDate = new Date(2010, 0, 1);
     this.endDate = new Date(2015, 0, 0, 0, 0, -1);
 
     // Setup chart.
@@ -34,14 +34,14 @@ MonthChart = function MonthChart(elementId, accidents) {
         .range([ 0, width ]);
 
     this.y = d3.scale.linear()
-        .domain([ 0, d3.max(this.accidents.months.all(), function(d) { return d.value; }) ])
+        .domain([ 0, d3.max(this.accidents.years.all(), function(d) { return d.value; }) ])
         .range([ height, 0 ]);
 
     // Setup axes.
     this.xAxis = d3.svg.axis()
         .scale(this.x)
         .orient('bottom')
-        .ticks(d3.time.months)
+        .ticks(d3.time.years)
         .innerTickSize(-height)
         .tickFormat(xDateFormatter);
 
@@ -82,13 +82,13 @@ MonthChart = function MonthChart(elementId, accidents) {
             var extent1;
             // If dragging, preserve the width of the extent.
             if (d3.event.mode === 'move') {
-                var d0 = d3.time.month.round(extent0[ 0 ]);
-                var d1 = d3.time.month.offset(d0, Math.round((extent0[ 1 ] - extent0[ 0 ]) / 2592000000));
+                var d0 = d3.time.year.round(extent0[ 0 ]);
+                var d1 = d3.time.year.offset(d0, Math.round((extent0[ 1 ] - extent0[ 0 ]) / 31536000000));
                 extent1 = [ d0, d1 ];
             }
             // If resizing, round both dates.
             else {
-                extent1 = extent0.map(d3.time.month.round);
+                extent1 = extent0.map(d3.time.year.round);
             }
             // Apply the new extent to the brush and clip path.
             d3.select(this)
@@ -97,7 +97,7 @@ MonthChart = function MonthChart(elementId, accidents) {
                 .attr('x', vis.x(extent1[ 0 ]))
                 .attr('width', vis.x(extent1[ 1 ]) - vis.x(extent1[ 0 ]));
             // Apply the new extent to the crossfilter.
-            vis.accidents.month.filterRange(extent1);
+            vis.accidents.year.filterRange(extent1);
             // Issue an event informing all visualizations that the crossfilter has been updated.
             $.event.trigger({ type: 'accidents:crossfilter:update' });
         })
@@ -108,7 +108,7 @@ MonthChart = function MonthChart(elementId, accidents) {
                     .attr('x', 0)
                     .attr('width', width);
                 // Reset the crossfilter.
-                vis.accidents.month.filterAll();
+                vis.accidents.year.filterAll();
             }
             // Issue an event informing all visualizations that the crossfilter has been updated.
             $.event.trigger({ type: 'accidents:crossfilter:update' });
@@ -145,7 +145,7 @@ MonthChart = function MonthChart(elementId, accidents) {
 
     this.update();
 }
-MonthChart.prototype = {
+YearChart.prototype = {
 
     /**
      * Updates the chart. This should be called any time data for the chart is updated.
@@ -153,7 +153,7 @@ MonthChart.prototype = {
     update: function() {
 
         // Get the data from the crossfilter group.
-        var data = this.accidents.months.all();
+        var data = this.accidents.years.all();
 
         // Draw the background and foreground charts.
         for (var name of [ 'bg', 'fg']) {

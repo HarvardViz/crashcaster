@@ -3,11 +3,10 @@ var DayChart;
 (function() {
 
 // Chart size.
-var margin = { top: 10, right: 0, bottom: 25, left: 25 };
+var margin = { top: 10, right: 0, bottom: 25, left: 30 };
 var width = 750 - margin.left - margin.right;
 var height = 100 - margin.top - margin.bottom;
 
-var dateHashFormatter = d3.time.format('%A_%H');
 var xDateFormatter = d3.time.format('%a');
 
 DayChart = function DayChart(elementId, accidents) {
@@ -17,14 +16,9 @@ DayChart = function DayChart(elementId, accidents) {
     this.elementId = elementId;
     this.accidents = accidents;
 
-    this.startDate = new Date();
-    this.startDate.setDate(this.startDate.getDate() - this.startDate.getDay());
-    this.startDate.setHours(0, 0, 0, 0);
-    this.endDate = new Date();
-    this.endDate.setDate(this.startDate.getDate() + 6);
-    this.endDate.setHours(23, 59, 59, 999);
-//console.log(this.accidents.day.group().all());
-//console.log(this.accidents.day.group().all());
+    this.startDate = new Date(2014, 0, 5);
+    this.endDate = new Date(2014, 0, 12, 0, 0, 0, -1);
+
     // Setup chart.
     this.svg = d3.select('#' + this.elementId).append('svg')
         .attr('width', width + margin.left + margin.right)
@@ -34,27 +28,13 @@ DayChart = function DayChart(elementId, accidents) {
     this.chart = this.svg.append('g')
         .attr('transform',  'translate(' + margin.left + ',' + margin.top + ')');
 
-    // Create groups for
-    this.brushClip = this.chart.append('clipPath')
-            .attr('id', this.elementId + '-brush-clip')
-        .append('rect')
-            .attr('width', width)
-            .attr('height', height);
-
-    this.bg_chart = this.chart.append('g')
-        .attr('class', 'background');
-
-    this.fg_chart = this.chart.append('g')
-        .attr('class', 'foreground')
-        .attr('clip-path', 'url(#' + this.elementId + '-brush-clip)');
-
     // Setup scales.
     this.x = d3.time.scale()
         .domain([ this.startDate, this.endDate ])
         .range([ 0, width ]);
 
     this.y = d3.scale.linear()
-        .domain([ 0, d3.max(this.data, function(d) { return d.accidentCount; }) ])
+        .domain([ 0, d3.max(this.accidents.days.all(), function(d) { return d.value; }) ])
         .range([ height, 0 ]);
 
     // Setup axes.
@@ -68,19 +48,31 @@ DayChart = function DayChart(elementId, accidents) {
     this.yAxis = d3.svg.axis()
         .scale(this.y)
         .orient('left')
-        .ticks(4);
+        .ticks(5);
 
     // SVG generators.
     this.area = d3.svg.area()
-        .x(function(d) { return vis.x(d.date); })
+        .x(function(d) { return vis.x(d.key); })
         .y0(height)
-        .y1(function(d) { return vis.y(d.accidentCount); })
+        .y1(function(d) { return vis.y(d.value); })
         .interpolate('step-after');
 
     this.line = d3.svg.line()
-        .x(function(d) { return vis.x(d.date); })
-        .y(function(d) { return vis.y(d.accidentCount); })
+        .x(function(d) { return vis.x(d.key); })
+        .y(function(d) { return vis.y(d.value); })
         .interpolate('step-after');
+
+    // Create the foreground and background chart groups / paths.
+    for (var name of [ 'bg', 'fg' ]) {
+        this[ name + '_chart' ] = this.chart.append('g')
+            .attr('class', name);
+        this[ name + '_area_path' ] = this[ name + '_chart' ].append('path')
+            .attr('class', 'area');
+        this[ name + '_line_path' ] = this[ name + '_chart' ].append('path')
+            .attr('class', 'line');
+    }
+    this.fg_chart
+        .attr('clip-path', 'url(#' + this.elementId + '-brush-clip)');
 
     // Setup brush.
     this.brush = d3.svg.brush()
@@ -97,12 +89,6 @@ DayChart = function DayChart(elementId, accidents) {
             // If resizing, round both dates.
             else {
                 extent1 = extent0.map(d3.time.day.round);
-                // If empty after rounding, use floor and ceiling instead.
-                //if (extent1[ 0 ] >= extent1[ 1 ]) {
-                    //extent1[ 0 ] = d3.time.day.floor(extent0[ 0 ]);
-                    //extent1[ 1 ] = d3.time.day.ceil(extent0[ 1 ]);
-                    //vis.brush.clear();
-                //}
             }
             // Apply the new extent to the brush and clip path.
             d3.select(this)
@@ -110,6 +96,10 @@ DayChart = function DayChart(elementId, accidents) {
             d3.select('#' + vis.elementId + '-brush-clip rect')
                 .attr('x', vis.x(extent1[ 0 ]))
                 .attr('width', vis.x(extent1[ 1 ]) - vis.x(extent1[ 0 ]));
+            // Apply the new extent to the crossfilter.
+            vis.accidents.day.filterRange(extent1);
+            // Issue an event informing all visualizations that the crossfilter has been updated.
+            $.event.trigger({ type: 'accidents:crossfilter:update' });
         })
         .on('brushend', function() {
             if (vis.brush.empty()) {
@@ -117,17 +107,11 @@ DayChart = function DayChart(elementId, accidents) {
                 d3.select('#' + vis.elementId + '-brush-clip rect')
                     .attr('x', 0)
                     .attr('width', width);
+                // Reset the crossfilter.
+                vis.accidents.day.filterAll();
             }
-            var extent = vis.brush.extent();
-            var dayRange = [
-                extent[ 0 ].getDay(),
-                extent[ 1 ].getDay() - 1
-            ];
-            //TODO: comment
-            $.event.trigger({
-                type: 'accidentMap:filter:update:dayRange',
-                dayRange: dayRange
-            });
+            // Issue an event informing all visualizations that the crossfilter has been updated.
+            $.event.trigger({ type: 'accidents:crossfilter:update' });
         });
 
     this.chart.append('g')
@@ -136,26 +120,18 @@ DayChart = function DayChart(elementId, accidents) {
         .selectAll('rect')
             .attr('height', height);
 
-    // Draw foreground and back area and line charts.
-//TODO: combine these, they should do the same thing
-    this.bg_area_path = this.bg_chart.append('path')
-        .attr('class', 'area');
-
-    this.bg_line_path = this.bg_chart.append('path')
-        .attr('class', 'line');
-
-    this.fg_area_path = this.fg_chart.append('path')
-        .attr('class', 'area');
-
-    this.fg_line_path = this.fg_chart.append('path')
-        .attr('class', 'line');
+    this.brushClip = this.chart.append('clipPath')
+            .attr('id', this.elementId + '-brush-clip')
+        .append('rect')
+            .attr('width', width)
+            .attr('height', height);
 
     // Draw axes and axis labels.
     this.xAxis_g = this.chart.append('g')
         .attr('class', 'axis x-axis')
         .attr('transform', 'translate(0, ' + height + ')')
         .call(this.xAxis);
-    // Center the month labels.
+    // Center the day labels.
     var ticks = this.xAxis.scale().ticks(this.xAxis.ticks()[ 0 ]);
     var tickSize = this.x(ticks[ 1 ]) - this.x(ticks[ 0 ]);
     this.xAxis_g.selectAll('.tick text')
@@ -170,44 +146,30 @@ DayChart = function DayChart(elementId, accidents) {
     this.update();
 }
 DayChart.prototype = {
+
     /**
      * Updates the chart. This should be called any time data for the chart is updated.
      */
     update: function() {
-//TODO: take advantage of crossfilter.js grouping features
-        // Get the data and format it for this chart (group by day).
-        var daysHash = {};
-        console.log(this.accidents.day.groupAll());
-        this.accidents.day.groupAll().forEach(function(d) {
-            var key = dateHashFormatter(d.date);
-            daysHash[ key ] = (daysHash[ key ] || 0) + 1;
-        });
-        var data = d3.time.hours(this.startDate, this.endDate).map(function(d) {
-            return {
-                date: d,
-                accidentCount: daysHash[ dateHashFormatter(d) ] || 0
-            };
-        });
-//TODO: combine these, they should do the same thing
-        this.bg_area_path
-            .datum(data)
-            //TODO:transition
-            .attr('d', this.area);
 
-        this.bg_line_path
-            .datum(data)
-            //TODO:transition
-            .attr('d', this.line);
+        // Get the data from the crossfilter group.
+        var data = this.accidents.days.all();
 
-        this.fg_area_path
-            .datum(data)
-            //TODO:transition
-            .attr('d', this.area);
-
-        this.fg_line_path
-            .datum(data)
-            //TODO:transition
-            .attr('d', this.line);
+        // Draw the background and foreground charts.
+        for (var name of [ 'bg', 'fg']) {
+            this[ name + '_area_path' ]
+                .datum(data)
+                .transition()
+                .delay(50)
+                .duration(300)
+                .attr('d', this.area);
+            this[ name + '_line_path' ]
+                .datum(data)
+                .transition()
+                .delay(50)
+                .duration(300)
+                .attr('d', this.line);
+        }
     }
 }
 
