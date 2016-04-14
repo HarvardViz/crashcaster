@@ -67,13 +67,18 @@ function wrangleData(){
     console.log("wrangleData() - accidentData");
     console.log(accidentData);
     
+    
+    /* SOMETHING IS WRONG HERE ------  accidentDataNested receives no data when run on GitHub*/
+    
     // create nested array with totals of accidents by streetName
     var accidentDataNested = d3.nest()
         .key(function(d) { return d.streetName; })  // main key
         .key(function(d) { return d.crossStreet; }) // secondary key
         //.rollup(function(d) { return d.length; })
         .entries(accidentData);
-
+	
+    /*  ------------------------------ */
+    
 
     console.log("wrangleData() - accidentDataNested");
     console.log(accidentDataNested);
@@ -99,19 +104,14 @@ function wrangleData(){
     });
     
     
-    console.log("wrangleData() - accidentDataNested");
-    console.log(accidentDataNested);
-    
 
     // sort array by streets with the most intersections
     accidentDataNested.sort(function(a, b) {
         return b.numIntersections - a.numIntersections;
     });
 
-    console.log("wrangleData() - accidentDataNested");
-    console.log(accidentDataNested);
 
-	// filter out small roads and accidents that did not occur at intersections
+    // filter out small roads and accidents that did not occur at intersections
     filteredData = accidentDataNested.filter(function(d) {
         return ((d.numIntersections >=10) && (d.key != "null"));
     });
