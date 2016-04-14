@@ -57,7 +57,6 @@ function loadData() {
             console.log(accidentData);
 
             wrangleData();
-            updateVis();
         }
     });
   }
