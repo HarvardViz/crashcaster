@@ -53,7 +53,7 @@ function loadData() {
                 d.date = parseDate(d.date);         // extract date from string
             });
 
-		    console.log("loadData() - accidentData");
+	    console.log("loadData() - accidentData");
             console.log(accidentData);
 
             wrangleData();
@@ -66,6 +66,10 @@ function wrangleData(){
 
     var intersectionData = {};
 
+
+    console.log("wrangleData() - accidentData");
+    console.log(accidentData);
+    
     // create nested array with totals of accidents by streetName
     accidentDataNested = d3.nest()
         .key(function(d) { return d.streetName; })  // main key
