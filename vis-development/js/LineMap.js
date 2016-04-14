@@ -71,7 +71,7 @@ function wrangleData(){
     console.log(accidentData);
     
     // create nested array with totals of accidents by streetName
-    accidentDataNested = d3.nest()
+    var accidentDataNested = d3.nest()
         .key(function(d) { return d.streetName; })  // main key
         .key(function(d) { return d.crossStreet; }) // secondary key
         //.rollup(function(d) { return d.length; })
