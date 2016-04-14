@@ -1,0 +1,23 @@
+source,target,value
+Bad Weather,Thunderstorm,18.00980392
+Bad Weather,Snow,7.2702761
+Bad Weather,Rain,3.648351648
+Auto,Good Weather,1.402898551
+Bicycle,Good Weather,0.44057971
+Fixed Object,Good Weather,0.177777778
+Motorcycle/Moped,Good Weather,0.033816425
+Parked Vehicle,Good Weather,1.005797101
+Pedestrian,Good Weather,0.214492754
+Bad Weather,Fog,15.12623153
+Auto,Bad Weather,21.81730983
+Bicycle,Bad Weather,3.982463853
+Fixed Object,Bad Weather,2.69895127
+Motorcycle/Moped,Bad Weather,1.235463268
+Parked Vehicle,Bad Weather,12.27366945
+Pedestrian,Bad Weather,2.04680552
+Accidents,Auto,23.22020838
+Accidents,Bicycle,4.423043563
+Accidents,Fixed Object,2.876729048
+Accidents,Motorcycle/Moped,1.269279693
+Accidents,Parked Vehicle,13.27946656
+Accidents,Pedestrian,2.261298273

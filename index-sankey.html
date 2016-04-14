@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Accidents Root Cause - Sankey Diagram</title>
+
+<head>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style1.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+
+
+</head>
+
+<body>
+<p id="title"> Number of accidents per day normalized by Weather</p>
+
+<div>
+
+    <button onclick="filte_me()" id="Clear" type="button" class="btn btn-danger">Clear <i class="fa fa-filter fa-1x" aria-hidden="true"></i></button>
+    <button onclick="filte_me()" id="Auto" type="button" class="btn btn-default"><i class="fa fa-car fa-1x" aria-hidden="true"></i>&nbsp;Auto</button>
+    <button onclick="filte_me()" id="Bicycle" type="button" class="btn btn-default"><i class="fa fa-bicycle fa-1x" aria-hidden="true"></i>&nbsp;Bicycle</button>
+    <button onclick="filte_me()" id="Fixed" type="button" class="btn btn-default"><i class="fa fa-tree fa-1x" aria-hidden="true"></i>&nbsp;Fixed Object</button>
+    <button onclick="filte_me()" id="Motorcycle" type="button" class="btn btn-default"><i class="fa fa-motorcycle fa-1x" aria-hidden="true"></i>&nbsp;Motorcycle</button>
+    <button onclick="filte_me()" id="Parked" type="button" class="btn btn-default"><i class="fa fa-map-signs fa-1x" aria-hidden="true"></i>&nbsp;Parked Vehicle</button>
+    <button onclick="filte_me()" id="Pedestrian" type="button" class="btn btn-default"><i class="fa fa-blind fa-1x" aria-hidden="true"></i>&nbsp;Pedestrian</button>
+
+
+
+</div>
+
+
+<p id="chart">
+
+
+    <script src="js/d3.v3.min.js"></script>
+    <script src="js/sankey.js"></script>
+    <script src="js/sankey_customize.js"></script>
+
+
+
+
+</body>
+</html>
