@@ -78,6 +78,10 @@ function wrangleData(){
         .entries(accidentData);
 
 
+    console.log("wrangleData() - accidentDataNested");
+    console.log(accidentDataNested);
+    
+    
     // add total number of intersections to each street entry
     /* add distance to reference coordinates for each intersection
            for calculating order of intersections on street
@@ -96,6 +100,11 @@ function wrangleData(){
             return b.distance - a.distance;
         })
     });
+    
+    
+    console.log("wrangleData() - accidentDataNested");
+    console.log(accidentDataNested);
+    
 
     // sort array by streets with the most intersections
     accidentDataNested.sort(function(a, b) {
