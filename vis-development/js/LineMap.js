@@ -64,9 +64,6 @@ function loadData() {
 
 function wrangleData(){
 
-    var intersectionData = {};
-
-
     console.log("wrangleData() - accidentData");
     console.log(accidentData);
     
