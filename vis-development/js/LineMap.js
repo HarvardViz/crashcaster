@@ -1,4 +1,20 @@
 
+
+/*	TO DOs
+	-- ---
+	
+	Use actual distances for line positioning
+	Add color legend - update with levels for current selected street
+	Add text: Name of road.  total accidents, etc.  
+	Add line directional info:  NW - SE.  
+	Find a fix for ordering issue for windy roads.
+	
+
+
+*/
+
+
+
 var accidentData = [];
 var filteredData = [];
 var streetFilter = "Massachusetts Ave";
@@ -79,6 +95,12 @@ function loadData() {
   }
 
 
+  
+ /*	---
+	Vis functions
+	---
+*/
+
 function wrangleData(){
 
     // create nested array with totals of accidents by streetName
@@ -89,19 +111,17 @@ function wrangleData(){
         .entries(accidentData);
 
 
-    // add total number of intersections to each street entry
-    /* add distance to reference coordinates for each intersection
-           for calculating order of intersections on street
-     */
+    // add summary data to each street entry
     accidentDataNested.forEach(function(d) {
-        d.numIntersections = d.values.length;
-
+		d.numIntersections = d.values.length;
 		d.totalDistance = 0;
 		d.totalAccidents = 0;
+
 		var lastCoordinates = [];
-		
+
+		// for each cross street, calculate intersection values
         d.values.forEach(function(v, i) {
-            if ((d.key == "null") || (v.key == "null"))
+            if ((d.key == "null") || (v.key == "null"))	 // if no cross street (accidents on single road)
                 v.distance = null;
             else {
                 v.coordinates = v.values[0].coordinates;
@@ -128,9 +148,6 @@ function wrangleData(){
     accidentDataNested.sort(function(a, b) {
         return b.totalAccidents - a.totalAccidents;
     });
-
-    console.log("wrangleData() - accidentDataNested");
-    console.log(accidentDataNested);
 
 	
 	// filter out small roads and accidents that did not occur at intersections
@@ -170,15 +187,14 @@ function filterData() {
     console.log("filterData() - streetFilter");
 	console.log(streetFilter);
 	
-	
     var tempArray = [];
 	
-
+	// filter out selected road data
 	tempArray = filteredData.filter(function(d) {
 		return d.key == streetFilter;
 	});
 
-	filteredObject = tempArray[0];
+	filteredObject = tempArray[0];  //  Array.filter returns an array.  Save it into an object
 
 	// filter out accidents that did not occur at intersections
     filteredObject.values = filteredObject.values.filter(function(d){
@@ -195,7 +211,7 @@ function filterData() {
     filteredObject.numIntersections = filteredObject.values.length;
 	
 	
-    console.log("filterData() - filteredObject (after more filters)");
+    console.log("filterData() - filteredObject");
     console.log(filteredObject);
 	
 	updateVis();
@@ -211,6 +227,7 @@ function updateVis() {
     var linemap = svg.selectAll("circle")
         .data(filteredObject.values);
 
+		
     // define scales
 
 	/*
@@ -226,7 +243,7 @@ function updateVis() {
 		.range([0, width])
 		.domain([0, filteredObject.numIntersections]);
 		
-	// Scale - circle radius
+	// Scale - circle radius   --- discontinued ---
 	var r = d3.scale.linear()
 		.range([2, 9])
 	//	.domain([0, d3.max(filteredObject.values, function(d) { return d.values.length; }) ]);
@@ -236,12 +253,9 @@ function updateVis() {
 	var c = d3.scale.linear()
 		.range(["#fee0d2", "#a50f15"])
 		.domain([0, d3.max(filteredObject.values, function(d) { return d.values.length; }) ]);
-				
-		
+		//.domain([0, 47]);	// highest accident total = 47.  Mass Ave-Vassar 	
 	
-//	r.domain([0, d3.max(filteredObject.values, function(d) { return d.values.length; }) ]);
-	r.domain([0, 25]);
-	
+
 	// invoke tooltips
 	svg.call(tip);
 	
@@ -257,7 +271,7 @@ function updateVis() {
         .attr("stroke", "gray");
 	
 	
-    // Enter
+    // Enter - add circle elements
     linemap.enter()
         .append("circle")
         .attr("class", "circle")
@@ -265,27 +279,8 @@ function updateVis() {
 		.on("mouseover", tip.show)
 		.on("mouseout", tip.hide);
 
-/*
-	// Update
-	linemap				
-		.style("fill", "red")
-        .attr("cy", 0)
-        .attr("cx", 0);		
-				
-				
-	// Update
-	linemap			
-		.transition().duration(300)
-        .attr("cx", function(d, i) { return x(i); })
-        .attr("r", function(d, i) { 
-			//console.log("length: " + d.values.length); 
-			return r(d.values.length);
-		});
-		
-*/
 
-
-	// Update
+	// Update circle colors and defaults
 	linemap				
 		.style("fill", function(d) { return c(d.values.length); })
         .attr("cy", 0)
@@ -293,10 +288,10 @@ function updateVis() {
         .attr("r", 7);			
 				
 				
-	// Update
+	// Position circles along ling
 	linemap			
 		.transition().duration(300)
-        .attr("cx", function(d, i) { return x(i); });
+        .attr("cx", function(d, i) { return 10 + x(i); });
 		
 
     // Exit
@@ -309,6 +304,12 @@ function updateVis() {
 
 
 
+
+
+/*	---
+	support functions
+	---
+*/
 
 
 
@@ -325,6 +326,7 @@ function calculateDistance(point1, point2) {
 
     return d;
 }
+
 
 
 function showStreetView(coords) {
