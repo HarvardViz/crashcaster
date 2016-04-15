@@ -34,6 +34,15 @@ var streetImage = d3.selectAll("#streetview")
 			.attr("width", 600)
 			.attr("height", 200);
 	
+//  html streetview image
+var streetImage2 = d3.selectAll("#streetview")
+	.append("svg")
+		.attr("width", 600)
+		.attr("height", 200)
+		.append("image")
+			.attr("width", 600)
+			.attr("height", 200);
+	
 
 	
 /* Initialize tooltip */
@@ -327,7 +336,7 @@ function showStreetView(coords) {
 		width: 600,
 		height: 200,
 		heading: 0,
-		fov: 90,
+		fov: 180,
 		pitch: -10
 	};
 	
@@ -340,10 +349,22 @@ function showStreetView(coords) {
 	"&pitch=" + parameters.pitch + 
 	"&key=" + api; 
 		
+	var url2 = "https://maps.googleapis.com/maps/api/streetview?size=600x200&location=" + 
+	coords[1] + "," + coords[0] + 
+	"&fov=" + parameters.fov +
+	"&heading=" + parameters.heading+180 + 
+	"&pitch=" + parameters.pitch + 
+	"&key=" + api; 
+	
+	
 	// populate streetview image
     streetImage
         .attr("xlink:href", url);
 
+	// populate streetview image
+    streetImage2
+        .attr("xlink:href", url2);
+		
 	console.log(url);
 		
 }
