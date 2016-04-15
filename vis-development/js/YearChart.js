@@ -34,7 +34,6 @@ YearChart = function YearChart(elementId, accidents) {
         .range([ 0, width ]);
 
     this.y = d3.scale.linear()
-        .domain([ 0, d3.max(this.accidents.years.all(), function(d) { return d.value; }) ])
         .range([ height, 0 ]);
 
     // Setup axes.
@@ -140,8 +139,7 @@ YearChart = function YearChart(elementId, accidents) {
 
     this.yAxis_g = this.chart.append('g')
         .attr('class', 'axis y-axis')
-        .attr('transform', 'translate(0, 0)')
-        .call(this.yAxis);
+        .attr('transform', 'translate(0, 0)');
 
     this.update();
 }
@@ -154,6 +152,15 @@ YearChart.prototype = {
 
         // Get the data from the crossfilter group.
         var data = this.accidents.years.all();
+
+        // Set the y domain and update the y axis.
+        this.y
+            .domain([ 0, d3.max(data, function(d) { return d.value; }) ]);
+        this.yAxis_g
+            .transition()
+            .delay(50)
+            .duration(300)
+            .call(this.yAxis);
 
         // Draw the background and foreground charts.
         for (var name of [ 'bg', 'fg']) {
