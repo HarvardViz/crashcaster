@@ -10,7 +10,7 @@ WeatherFilter = function WeatherFilter(elementId, accidents) {
     this.accidents = accidents;
 
     // All unique weather events.
-    var weatherEvents = [ 'Fog', 'Rain', 'Thunderstorm', 'Snow', 'Hail' ];
+    var weatherEvents = [ 'Fog', 'Rain', 'Thunderstorm', 'Snow', 'Hail', 'None' ];
 
     // Initialize all accident types as selected.
     var _selected = {};
@@ -31,7 +31,7 @@ WeatherFilter = function WeatherFilter(elementId, accidents) {
             _selected[ this.name ] = this.checked;
             fil.accidents.weather.filter(function(d) {
                 for (var event of Object.keys(_selected)) {
-                    if (_selected[ event ] && d.indexOf(event) !== -1) {
+                    if (_selected[ event ] && (event === 'None' ? d === '' : d.indexOf(event) !== -1)) {
                         return true;
                     }
                 }
