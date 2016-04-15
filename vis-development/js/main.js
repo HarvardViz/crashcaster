@@ -1,8 +1,14 @@
+var filters = {
+    accidentTypeFilter: null
+}
+
 var visualizations = {
     accidentChoroplethMap: null,
     accidentMap: null,
     yearChart: null,
-    weekChart: null
+    monthChart: null,
+    dayChart: null,
+    hourChart: null
 };
 
 loadData();
@@ -39,17 +45,21 @@ function processData(err, boundary, neighborhoods, roads, accidents, weather, ci
 
     // Initialize cross filtering for accidents.
     accidents = crossfilter(accidents);
-    accidents.all    = accidents.dimension(function(d, i) { return i; });
-    accidents.year   = accidents.dimension(function(d) { return new Date(d.date.getFullYear(), d.date.getMonth(), 0); });
-    accidents.years  = accidents.year.group();
-    accidents.month  = accidents.dimension(function(d) { return new Date(2014, d.date.getMonth(), d.date.getDate()); });
-    accidents.months = accidents.month.group();
-    accidents.day    = accidents.dimension(function(d) { return new Date(2014, 0, 5 + d.date.getDay(), d.date.getHours()); });
-    accidents.days   = accidents.day.group();
-    accidents.hour   = accidents.dimension(function(d) { return new Date(2014, 0, 1, d.date.getHours()); });
-    accidents.hours  = accidents.hour.group();
+    accidents.all           = accidents.dimension(function(d, i) { return i; });
+    accidents.accidentType  = accidents.dimension(function(d) { return d.accidentType; });
+    accidents.accidentTypes = accidents.accidentType.group();
+    //accidents.weather      = accidents.dimension(function(d) { /*TODO*/ });
+    accidents.year          = accidents.dimension(function(d) { return new Date(d.date.getFullYear(), d.date.getMonth(), 0); });
+    accidents.years         = accidents.year.group();
+    accidents.month         = accidents.dimension(function(d) { return new Date(2014, d.date.getMonth(), d.date.getDate()); });
+    accidents.months        = accidents.month.group();
+    accidents.day           = accidents.dimension(function(d) { return new Date(2014, 0, 5 + d.date.getDay(), d.date.getHours()); });
+    accidents.days          = accidents.day.group();
+    accidents.hour          = accidents.dimension(function(d) { return new Date(2014, 0, 1, d.date.getHours()); });
+    accidents.hours         = accidents.hour.group();
 
     // Create visualizations.
+    filters.accidentTypeFilter = new AccidentTypeFilter('accidentTypeFilter', accidents);
     //visualizations.accidentChoroplethMap = new AccidentChoroplethMap('accidentChoroplethMap', neighborhoods, roads, accidents);
     visualizations.accidentMap = new AccidentMap('accidentMap', boundary, roads, accidents);
     visualizations.yearChart = new YearChart('yearChart', accidents);
