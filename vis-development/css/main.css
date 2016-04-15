@@ -122,11 +122,12 @@
     fill: none;
 }
 
-#yearChart svg .axis text,
-#monthChart svg .axis text,
-#dayChart svg .axis text,
-#hourChart svg .axis text, {
-    font-size: 13px;
+#yearChart svg .y-axis text,
+#monthChart svg .y-axis text,
+#dayChart svg .y-axis text,
+#hourChart svg .y-axis text,
+#hourChart svg .x-axis text {
+    font-size: 12px;
     fill: #333;
 }
 

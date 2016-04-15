@@ -7,7 +7,7 @@ var margin = { top: 10, right: 0, bottom: 25, left: 30 };
 var width = 750 - margin.left - margin.right;
 var height = 100 - margin.top - margin.bottom;
 
-var xDateFormatter = d3.time.format('%H');
+var xDateFormatter = d3.time.format('%-I%p');
 
 HourChart = function HourChart(elementId, accidents) {
 
@@ -42,7 +42,7 @@ HourChart = function HourChart(elementId, accidents) {
         .orient('bottom')
         .ticks(d3.time.hours)
         .innerTickSize(-height)
-        .tickFormat(xDateFormatter);
+        .tickFormat(function(d) { return xDateFormatter(d).replace('AM', 'am').replace('PM', 'pm'); });
 
     this.yAxis = d3.svg.axis()
         .scale(this.y)
