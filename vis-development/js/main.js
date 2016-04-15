@@ -73,7 +73,7 @@ function processData(err, boundary, neighborhoods, roads, accidents, weather, ci
     // Create visualizations.
     filters.accidentTypeFilter = new AccidentTypeFilter('accidentTypeFilter', accidents);
     filters.weatherFilter = new WeatherFilter('weatherFilter', accidents);
-    visualizations.accidentMap = new AccidentMap('accidentMap', boundary, roads, accidents);
+    visualizations.accidentMap = new AccidentMap('accidentMap', boundary, roads, neighborhoods, accidents);
     visualizations.yearChart = new YearChart('yearChart', accidents);
     visualizations.monthChart = new MonthChart('monthChart', accidents);
     visualizations.dayChart = new DayChart('dayChart', accidents);

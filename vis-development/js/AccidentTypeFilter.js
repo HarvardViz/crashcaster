@@ -29,7 +29,6 @@ AccidentTypeFilter = function AccidentTypeFilter(elementId, accidents) {
         .attr('checked', 'checked')
         .on('change', function() {
             _selected[ this.name ] = this.checked;
-            console.log(_selected);
             fil.accidents.accidentType.filter(function(d) {
                 return _selected[ d ];
             });

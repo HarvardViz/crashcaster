@@ -1,3 +1,9 @@
+#container {
+    width: 750px;
+    padding: 0 20px;
+    margin: 50px auto;
+}
+
 .clearfix {
     display: block;
     clear: both;
@@ -38,13 +44,13 @@
 /*
  * Map Toggle
  */
-#mapToggle {
+.mapToggle {
     clear: both;
     margin: 10px 0;
 }
 
-#dataPointButton,
-#choroplethButton {
+.mapToggle .accidentsToggle,
+.mapToggle .neighborhoodsToggle {
     float: left;
     color: #373A3C;
     background: #FFF;
@@ -53,40 +59,36 @@
     cursor: pointer;
 }
 
-#dataPointButton.selected,
-#choroplethButton.selected {
+.mapToggle .accidentsToggle.selected,
+.mapToggle .neighborhoodsToggle.selected {
     background: #E6E6E6;
 }
 
-#dataPointButton {
+.mapToggle .accidentsToggle {
     border-radius: 3px 0 0 3px;
 }
 
-#choroplethButton {
+.mapToggle .neighborhoodsToggle {
     border-radius: 0 3px 3px 0;
     border-left: none;
 }
 
 /*
- * Accident / Choropleth Map
+ * Accident Map
  */
 
-#accidentChoroplethMap svg,
 #accidentMap svg {
     background: #EEE;
 }
 
-#accidentChoroplethMap svg path.neighborhood {
-    stroke-width: 1px;
-    stroke: #999;
-    fill: rgb(232, 61, 34);
+#accidentMap svg path.neighborhood {
+    fill: #4682B4;
 }
 
 #accidentMap svg path.boundary {
     fill: #CCC;
 }
 
-#accidentChoroplethMap svg path.road,
 #accidentMap svg path.road {
     fill: #EEE;
 }

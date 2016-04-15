@@ -6,21 +6,18 @@
     <link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
-    <div id="test"></div>
+    <div id="container">
+        <div id="accidentTypeFilter"></div>
+        <div id="weatherFilter"></div>
 
-    <div id="accidentTypeFilter"></div>
-    <div id="weatherFilter"></div>
-    <div class="clearfix"></div>
-    <div id="mapToggle">
-        <div id="dataPointButton" class="selected">Accidents</div>
-        <div id="choroplethButton">Neighborhoods</div>
         <div class="clearfix"></div>
+
+        <div id="accidentMap"></div>
+        <div id="yearChart"></div>
+        <div id="monthChart"></div>
+        <div id="dayChart"></div>
+        <div id="hourChart"></div>
     </div>
-    <div id="accidentMap"></div>
-    <div id="yearChart"></div>
-    <div id="monthChart"></div>
-    <div id="dayChart"></div>
-    <div id="hourChart"></div>
 
     <script src="js/lib/jquery.js"></script>
     <script src="js/lib/d3.js"></script>
