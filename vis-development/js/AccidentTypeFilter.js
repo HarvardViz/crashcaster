@@ -39,9 +39,5 @@ AccidentTypeFilter = function AccidentTypeFilter(elementId, accidents) {
         .attr('for', function(d) { return d.key; })
         .text(function(d) { return d.key; });
 };
-AccidentTypeFilter.prototype = {
-
-    //TODO
-};
 
 }());

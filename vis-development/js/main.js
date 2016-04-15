@@ -1,9 +1,9 @@
 var filters = {
-    accidentTypeFilter: null
-}
+    accidentTypeFilter: null,
+    weatherFilter: null
+};
 
 var visualizations = {
-    accidentChoroplethMap: null,
     accidentMap: null,
     yearChart: null,
     monthChart: null,
@@ -34,10 +34,13 @@ function processData(err, boundary, neighborhoods, roads, accidents, weather, ci
         d.id = i;
         d.date = new Date(d.date);
     });
+    // Create a weather lookup, by date.
+    var _weatherLookup = {};
     weather.forEach(function(d) {
         d.date = new Date(d.date);
         d.sunrise = new Date(d.sunrise);
         d.sunset = new Date(d.sunset);
+        _weatherLookup[ d3.time.format("%Y-%m-%d")(d.date) ] = d;
     });
     citations.forEach(function(d) {
         d.date = new Date(d.date);
@@ -48,7 +51,16 @@ function processData(err, boundary, neighborhoods, roads, accidents, weather, ci
     accidents.all           = accidents.dimension(function(d, i) { return i; });
     accidents.accidentType  = accidents.dimension(function(d) { return d.accidentType; });
     accidents.accidentTypes = accidents.accidentType.group();
-    //accidents.weather      = accidents.dimension(function(d) { /*TODO*/ });
+    accidents.weather       = accidents.dimension(function(d) {
+        var weatherData = _weatherLookup[ d3.time.format("%Y-%m-%d")(d.date) ];
+        var result = [];
+        if (weatherData.events.fog) { result.push('Fog'); }
+        if (weatherData.events.rain) { result.push('Rain'); }
+        if (weatherData.events.thunderstorm) { result.push('Thunderstorm'); }
+        if (weatherData.events.snow) { result.push('Snow'); }
+        if (weatherData.events.hail) { result.push('Hail'); }
+        return result.join('-');
+    });
     accidents.year          = accidents.dimension(function(d) { return new Date(d.date.getFullYear(), d.date.getMonth(), 0); });
     accidents.years         = accidents.year.group();
     accidents.month         = accidents.dimension(function(d) { return new Date(2014, d.date.getMonth(), d.date.getDate()); });
@@ -60,7 +72,7 @@ function processData(err, boundary, neighborhoods, roads, accidents, weather, ci
 
     // Create visualizations.
     filters.accidentTypeFilter = new AccidentTypeFilter('accidentTypeFilter', accidents);
-    //visualizations.accidentChoroplethMap = new AccidentChoroplethMap('accidentChoroplethMap', neighborhoods, roads, accidents);
+    filters.weatherFilter = new WeatherFilter('weatherFilter', accidents);
     visualizations.accidentMap = new AccidentMap('accidentMap', boundary, roads, accidents);
     visualizations.yearChart = new YearChart('yearChart', accidents);
     visualizations.monthChart = new MonthChart('monthChart', accidents);

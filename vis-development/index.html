@@ -9,15 +9,13 @@
     <div id="test"></div>
 
     <div id="accidentTypeFilter"></div>
-    <!--<div id="weather-filter">
-        <strong>Weather</strong>
-        <span><input type="checkbox" filter-name="fog" /> Fog</span>
-        <span><input type="checkbox" filter-name="rain" /> Rain</span>
-        <span><input type="checkbox" filter-name="thunderstorm" /> Thunderstorm</span>
-        <span><input type="checkbox" filter-name="snow" /> Snow</span>
-        <span><input type="checkbox" filter-name="hail" /> Hail</span>
-    </div>-->
-    <!--<div id="accidentChoroplethMap"></div>-->
+    <div id="weatherFilter"></div>
+    <div class="clearfix"></div>
+    <div id="mapToggle">
+        <div id="dataPointButton" class="selected">Accidents</div>
+        <div id="choroplethButton">Neighborhoods</div>
+        <div class="clearfix"></div>
+    </div>
     <div id="accidentMap"></div>
     <div id="yearChart"></div>
     <div id="monthChart"></div>
@@ -30,7 +28,7 @@
     <script src="js/lib/queue.js"></script>
 
     <script src="js/AccidentTypeFilter.js"></script>
-    <!--<script src="js/AccidentChoroplethMap.js"></script>-->
+    <script src="js/WeatherFilter.js"></script>
     <script src="js/AccidentMap.js"></script>
     <script src="js/YearChart.js"></script>
     <script src="js/MonthChart.js"></script>

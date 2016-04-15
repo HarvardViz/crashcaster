@@ -1,5 +1,74 @@
+.clearfix {
+    display: block;
+    clear: both;
+}
+
 /*
- * Choropleth / Accident Map
+ * Checkbox Filters
+ */
+
+#accidentTypeFilter,
+#weatherFilter {
+    clear: both;
+}
+
+#accidentTypeFilter ul,
+#weatherFilter ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    clear: both;
+}
+
+#accidentTypeFilter ul li,
+#weatherFilter ul li {
+    float: left;
+}
+
+#accidentTypeFilter ul li input[type='checkbox'],
+#weatherFilter ul li input[type='checkbox'] {
+    margin-right: 4px;
+}
+
+#accidentTypeFilter ul li label,
+#weatherFilter ul li label {
+    
+}
+
+/*
+ * Map Toggle
+ */
+#mapToggle {
+    clear: both;
+    margin: 10px 0;
+}
+
+#dataPointButton,
+#choroplethButton {
+    float: left;
+    color: #373A3C;
+    background: #FFF;
+    padding: 3px 6px;
+    border: 1px solid #CCC;
+    cursor: pointer;
+}
+
+#dataPointButton.selected,
+#choroplethButton.selected {
+    background: #E6E6E6;
+}
+
+#dataPointButton {
+    border-radius: 3px 0 0 3px;
+}
+
+#choroplethButton {
+    border-radius: 0 3px 3px 0;
+    border-left: none;
+}
+
+/*
+ * Accident / Choropleth Map
  */
 
 #accidentChoroplethMap svg,
