@@ -78,7 +78,8 @@ var streetImage = d3.selectAll("#streetview")
 		.append("image")
 			.attr("width", 600)
 			.attr("height", 200);
-	
+
+
 //  html streetview image
 var streetImage2 = d3.selectAll("#streetview")
 	.append("svg")
@@ -253,7 +254,7 @@ function wrangleData(){
 	console.log("wrangleData() - streetNodes");
 	console.log(streetNodes);
 
-
+	/*
 	// populate HTML listbox
     list.selectAll("option")
         .data(filteredAccidentData)
@@ -262,9 +263,12 @@ function wrangleData(){
         .attr("value", function(d) {return d.key;})
         .text(function(d) {
             return d.key; });
-
+	*/
 
     filterData();
+
+	updateLineMap();
+	updateForceGraph();
 }
 
 
@@ -302,9 +306,6 @@ function filterData() {
 	
     console.log("filterData() - filteredObject");
     console.log(filteredObject);
-	
-	updateLineMap();
-	updateForceGraph();
 
 }
 
@@ -365,7 +366,10 @@ function updateLineMap() {
     linemap.enter()
         .append("circle")
         .attr("class", "linemap-circle")
-		.on("click", function(d) { showStreetView(d.coordinates); })
+		.on("click", function(d) {
+			$("#streetview-title").text("Street views of the intersection of " + streetFilter + " and " + d.key)
+			showStreetView(d.coordinates);
+		})
 		.on("mouseover", linemapTip.show)
 		.on("mouseout", linemapTip.hide);
 
@@ -382,7 +386,7 @@ function updateLineMap() {
         .attr("cx", function(d, i) { return 10 + x(i); });
 
 	// update chart title
-	title.text(streetFilter + " Intersections (Rollover circles for more detail. Click for street views)");
+	title.text(streetFilter + "'s main intersections (Rollover circles for more detail. Click for street views)");
 
 	// Exit
     linemap.exit().remove();
@@ -394,6 +398,8 @@ function updateLineMap() {
 
 
 function updateForceGraph() {
+
+	$("#forcegraph-title").text("Cambridge's main road connections - select a circle node below to update the linemap above");
 
 	// Scale - circle color - based on # accidents
 	var c = d3.scale.linear()
@@ -438,10 +444,23 @@ function updateForceGraph() {
 		.attr("r", function(d) { return r(d.numIntersections); })
 		.style("fill", function(d){ return c(d.totalAccidents); })
 		.on("dblclick", dblclick)
-		.on("mouseover", forceTip.show)
-		.on("mouseout", forceTip.hide);
-		
-		
+		.on("mouseover",function(d){
+			forceTip.show(d);
+			d3.select(this)
+				.style("stroke","black")
+				.style("stroke-width", "3px");
+		})
+		.on("mouseout",function(d){
+			forceTip.hide(d);
+			d3.select(this)
+				.style("stroke-width", "0px");
+		});
+
+
+function mouseover(){
+	forceTip.show();
+
+}
 		
 	// define ticks
 	function tick() {
@@ -488,20 +507,20 @@ function getUserInput(){
     list.on("change", function(){
         // set global filter var
         streetFilter = list.property("value");
-
         filterData();
+		updateLineMap();
     });
 	
 	// on force node click, update linemap
 	d3.select("#forcegraph").selectAll("circle").on("click", function(d){
 		streetFilter = d.key;
+		filterData();
 		updateLineMap();
 	});
 	
-
+/*
 	// force node mouseover - show tooltip
 	d3.select("#forcegraph").selectAll("circle").on("mouseover", function(d){
-		console.log("mouseover");
 		d3.select(this)
 			.style("stroke", "black")
 			.style("stroke-width", "3px");
@@ -511,7 +530,7 @@ function getUserInput(){
 	d3.select("#forcegraph").selectAll("circle").on("mouseout", function(d){
 		d3.select(this).style("stroke-width", "0px");
 	});
-		
+*/
 
 
 }
