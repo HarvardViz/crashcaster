@@ -8,7 +8,6 @@
 	Find a fix for ordering issue for windy roads.
 	Enable click on forcegraph node to update linemap
 
-
 */
 
 
@@ -103,8 +102,8 @@ var linemapTip = d3.tip()
 // SVG drawing area - forcegraph
 var marginForce = {top: 20, right: 20, bottom: 20, left: 20};
 
-var widthForce = 1000 - marginForce.left - marginForce.right,
-	heightForce = 600 - marginForce.top - marginForce.bottom;
+var widthForce = 600 - marginForce.left - marginForce.right,
+	heightForce = 400 - marginForce.top - marginForce.bottom;
 
 var svgForce = d3.select("#forcegraph").append("svg")
 	.attr("width", widthForce + marginForce.left + marginForce.right)
@@ -112,10 +111,14 @@ var svgForce = d3.select("#forcegraph").append("svg")
 	.append("g")
 	.attr("transform", "translate(" + marginForce.left + "," + marginForce.top + ")");
 
+
+	
 // define force layout attributes
 var force = d3.layout.force()
 	.size([widthForce, heightForce])
-	.charge(-2000);
+	.charge(-1000)
+	.gravity(.3)
+	.linkDistance(50);
 
 /* Initialize tooltip */
 var forceTip = d3.tip()
@@ -127,8 +130,17 @@ var forceTip = d3.tip()
 // not needed here??
 var	parseDate = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ").parse;
 
-	 
 
+	 
+	 
+	 
+ /*	---
+	Load Data
+	---
+*/
+
+	 
+	 
 // Start application by loading the data
 loadData();
 
@@ -150,6 +162,7 @@ function loadData() {
   }
 
 
+  
   
  /*	---
 	Vis functions
@@ -209,25 +222,22 @@ function wrangleData(){
 
 	// filter out small roads and accidents that did not occur at intersections
 	var minIntersections = 10;
-    filteredData = accidentDataNested.filter(function(d) {
+    filteredAccidentData = accidentDataNested.filter(function(d) {
         return ((d.numIntersections >= minIntersections) && (d.key != "null"));
     });
 
 
-	console.log("wrangleData() - filteredData");
-	console.log(filteredData);
-
-
+	
 	// set up edge array for force graph - establish links
-	for (var i=0; i<filteredData.length; i++) {
-		for (var j = 0; j < filteredData[i].values.length; j++) {
-			for (var k = 0; k < filteredData.length; k++) {
-				if (filteredData[i].values[j].key == filteredData[k].key) {
+	for (var i=0; i<filteredAccidentData.length; i++) {
+		for (var j = 0; j < filteredAccidentData[i].values.length; j++) {
+			for (var k = 0; k < filteredAccidentData.length; k++) {
+				if (filteredAccidentData[i].values[j].key == filteredAccidentData[k].key) {
 					var temp = {};
 					temp["source"] = i;
-					temp["sourceName"] = filteredData[i].key;
+					temp["sourceName"] = filteredAccidentData[i].key;
 					temp["target"] = k;
-					temp["targetName"] = filteredData[k].key;
+					temp["targetName"] = filteredAccidentData[k].key;
 					streetLinks.push(temp);
 				}
 			}
@@ -235,7 +245,7 @@ function wrangleData(){
 	}
 
 	// save date to nodes Array for force graph
-	streetNodes = filteredData;
+	streetNodes = filteredAccidentData;
 
 	console.log("wrangleData() - streetLinks");
 	console.log(streetLinks);
@@ -246,7 +256,7 @@ function wrangleData(){
 
 	// populate HTML listbox
     list.selectAll("option")
-        .data(filteredData)
+        .data(filteredAccidentData)
         .enter()
         .append("option")
         .attr("value", function(d) {return d.key;})
@@ -259,18 +269,6 @@ function wrangleData(){
 
 
 
-function getUserInput(){
-
-    // filter event listener starts callback function
-    list.on("change", function(){
-        // set global filter var
-        streetFilter = list.property("value");
-
-        filterData();
-    });
-}
-
-
 
 function filterData() {
 	
@@ -280,7 +278,7 @@ function filterData() {
     var tempArray = [];
 	
 	// filter out selected road data
-	tempArray = filteredData.filter(function(d) {
+	tempArray = filteredAccidentData.filter(function(d) {
 		return d.key == streetFilter;
 	});
 
@@ -305,13 +303,14 @@ function filterData() {
     console.log("filterData() - filteredObject");
     console.log(filteredObject);
 	
-	updateVis();
+	updateLineMap();
+	updateForceGraph();
 
 }
 
 
 
-function updateVis() {
+function updateLineMap() {
 	
 	
     // Data-join
@@ -388,7 +387,7 @@ function updateVis() {
 	// Exit
     linemap.exit().remove();
 
-    updateForceGraph();
+    getUserInput();
 }
 
 
@@ -438,15 +437,12 @@ function updateForceGraph() {
 		.call(drag)
 		.attr("r", function(d) { return r(d.numIntersections); })
 		.style("fill", function(d){ return c(d.totalAccidents); })
-		.on("click", function(d){
-			streetFilter = d.key;
-			//updateVis();
-		})
 		.on("dblclick", dblclick)
 		.on("mouseover", forceTip.show)
 		.on("mouseout", forceTip.hide);
-
-
+		
+		
+		
 	// define ticks
 	function tick() {
 		edges.attr("x1", function(d) { return d.source.x; })
@@ -456,6 +452,8 @@ function updateForceGraph() {
 		nodes.attr("cx", function(d) { return d.x; })
 			 .attr("cy", function(d) { return d.y; });
 	}
+
+			
 
 	// release fixed node position
 	function dblclick(d) {
@@ -482,6 +480,41 @@ function updateForceGraph() {
 	---
 */
 
+
+
+function getUserInput(){
+
+    // get dropdown menu selection
+    list.on("change", function(){
+        // set global filter var
+        streetFilter = list.property("value");
+
+        filterData();
+    });
+	
+	// on force node click, update linemap
+	d3.select("#forcegraph").selectAll("circle").on("click", function(d){
+		streetFilter = d.key;
+		updateLineMap();
+	});
+	
+
+	// force node mouseover - show tooltip
+	d3.select("#forcegraph").selectAll("circle").on("mouseover", function(d){
+		console.log("mouseover");
+		d3.select(this)
+			.style("stroke", "black")
+			.style("stroke-width", "3px");
+	});
+
+	// force node mouseout - hide tooltip	
+	d3.select("#forcegraph").selectAll("circle").on("mouseout", function(d){
+		d3.select(this).style("stroke-width", "0px");
+	});
+		
+
+
+}
 
 
 function calculateDistance(point1, point2) {
