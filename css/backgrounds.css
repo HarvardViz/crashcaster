@@ -3,10 +3,13 @@
 
 [id*="section"] {
     background-size: cover;
+    width: 100%;
 }
 
 .section {
     text-align: center;
+    background-size: cover;
+    width: 100%;
 }
 
 .slide {
@@ -15,6 +18,7 @@
 
 #section0 {
     background-image: url(../img/bg-rain.jpg);
+    background-size: cover;
 }
 
 #section1 {
