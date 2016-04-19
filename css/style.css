@@ -59,6 +59,13 @@ input, textarea {
     alignment: center;
 }
 
+.textbox-hr {
+    border-top-width: 1px;
+    border-top-style: inset;
+    border-top-color: #ededed;
+    width: 70%;
+}
+
 #current-location {
 
 }
