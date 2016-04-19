@@ -109,23 +109,25 @@
             <div class="col-md-12">&nbsp;</div>
         </div>
 
-        <div class="row" align="center">
-                <button onclick="overview()" id="clear" type="button" class="btn btn-danger">Clear</button>
-                <button onclick="rain()" id="rain" type="button" class="btn btn-default">Rain</button>
-                <button onclick="snow()" id="snow" type="button" class="btn btn-default">Snow</button>
-                <button onclick="fog()" id="fog" type="button" class="btn btn-default">Fog</button>
-        </div>
+
         <div class="row">
             <div class="col-md-2 bg-content">
 
             </div>
             <div class="col-md-1"></div>
-            <div class="col-md-6 bg-content">
-
+            <div class="col-md-6  bg-content">
                 <div id="map"></div>
             </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-2 bg-content">
+            <div class="col-md-3 bg-content">
+                <div class="row" align="center">
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button onclick="rain()" id="rain" type="button" class="btn btn-default"><p class="wi wi-day-rain"></p><p>Rain</p></button>
+                        <button onclick="snow()" id="snow" type="button" class="btn btn-default"><p class="wi wi-day-snow"></p><p>Snow</p></button>
+                        <button onclick="fog()" id="fog" type="button" class="btn btn-default"><p class="wi wi-day-fog"></p><p>Fog&nbsp;</p></button>
+                        <button onclick="overview()" id="clear" type="button" class="btn btn-danger"><p class="fa fa-refresh"></p><p>Reset</p></button>
+                    </div>
+                </div>
+                <hr>
                 <h4 class="textbox-heading">Crashtistics</h4>
                 <p id="stats" class="textbox"> 100 <i class="fa fa-car fa-1x" aria-hidden="true"></i>
                     200  <i class="fa fa-bicycle fa-1x" aria-hidden="true"></i>
@@ -134,7 +136,7 @@
                 </p>
                 <hr>
                 <h4  class="textbox-heading">Today's Forecast</h4>
-                <p id="forecast-text" class="textbox"><i class="wi wi-night-sleet"></i>
+                <p id="forecast-text" class="textbox">
                     <span id="weathertxt"></span>
                     <span id="source"></span>
                     <span id="predict1"></span>
