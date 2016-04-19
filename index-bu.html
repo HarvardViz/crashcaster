@@ -7,6 +7,8 @@
     <title>Crashed - Traffic Safety in Cambridge, MA</title>
 
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/weather-icons.min.css" type="text/css">
     <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
     <link rel="stylesheet" href="css/jquery.fullPage.css" type="text/css"/>
     <link rel="stylesheet" href="css/reset.css" type="text/css"/>
@@ -29,12 +31,13 @@
     <script src="js/lib/jquery.bootstrap-autohidingnavbar.js"></script>
     <script src="js/lib/jquery.fullPage.min.js"></script>
 
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('.dropdown-toggle').dropdown();
             $('.navbar').autoHidingNavbar();
 
-            var pepe = $.fn.fullpage({
+            var fp = $.fn.fullpage({
                 slidesColor: ['#428BCA', '#5CB85C', '#5BC0DE', '#F0AD4E', '#FF530D', '#FFFFFF'], // Bootstrap
                 anchors: ['home', 'visuals', 'crashboard', 'screencast', 'processbook'],
                 menu: '#menu'
@@ -43,6 +46,16 @@
                 //navigationPosition: 'right',
                 //navigationTooltips: ['Home', 'Crashboard', 'Visuals', 'Screencast', 'Process Book']
             });
+
+            console.log("version " + crashcast.version);
+            console.log("exports " + (typeof exports));
+            console.log(crashcast);
+
+            crashcast.testCall("OUTER");
+            //crashcast.updateScreen('forecast');
+
+
+
         });
     </script>
 
@@ -65,7 +78,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">CRASHED</a>
+            <a class="navbar-brand" href="index-bu.html">CRASHED</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
@@ -94,8 +107,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3 class="center white"><br><br>Crashcast - Cambridge, MA</h3>
-                <h4 class="center white">Current Date</h4>
+                <h3 class="center white text-shadow" id="current-location"><br><br>Crashcast - Cambridge, MA</h3>
+                <h4 class="center white text-shadow" id="current-datetime">Current Date</h4>
             </div>
         </div>
         <div class="row">
@@ -104,8 +117,8 @@
         <div class="row">
             <div class="col-md-2 bg-content">
                 <h4 class="center">Today's Forecast</h4>
-                <p id="forecast-text">Expect accidents near 1st and 2nd due to foggy weather in the early morning
-                    commute.
+                <p id="forecast-text"><i class="fa fa-apple"></i>Expect accidents near 1st and 2nd due to foggy weather in the early morning
+                    commute.<i class="wi wi-night-sleet"></i>
                     Historically these conditions lead to an higher than average accident total for the day.</p>
             </div>
             <div class="col-md-1"></div>
@@ -292,6 +305,7 @@
 </div>
 
 <!-- Vendor Libraries -->
+<script src="js/lib/moment.min.js" type="text/javascript"></script>
 <script src="js/lib/lightbox-2.6.min.js" type="text/javascript"></script>
 <script src="js/lib/d3.js" type="text/javascript"></script>
 <script src="js/lib/crossfilter.js" type="text/javascript"></script>
@@ -301,6 +315,8 @@
 
 <!-- Custom JavaScript -->
 <script src="js/stock.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+
 
 </body>
 </html>

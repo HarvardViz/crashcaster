@@ -47,8 +47,9 @@ abbr,acronym { border: 0;
 /* Custom CSS
  * --------------------------------------- */
 body{
-	font-family: arial,helvetica;
-    font-size: 100%;
-	color: #333;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* font-family: 'Raleway Dots', cursive; */
+    font-size: 13px;  /* font-size: 100%; */
 	color: rgba(0,0,0,0.5);
+    background: #fff;  /* #33495f;*/
+    line-height: 1.3;
 }

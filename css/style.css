@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway+Dots);
+
 /* Custom Styles
  * -------------------------------------------- */
 
@@ -44,8 +46,24 @@ input, textarea {
 }
 
 #forecast-text {
+    color: #fff;
+    /* font-family: 'Raleway Dots', cursive; */
+    font-weight: 100;
     font-size: 1.4em;
-    color: white;
+    text-align: left;
+
+
+}
+#current-location {
+
+}
+
+#current-datetime {
+
+}
+
+.text-shadow {
+    text-shadow: 1px 1px 2px #000000;
 }
 
 .white {
