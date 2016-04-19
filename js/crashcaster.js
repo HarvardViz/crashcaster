@@ -1,23 +1,20 @@
-var crashcast = c$ = (function (crashcast, $, moment) {
+var crashcaster = c$ = (function (crashcaster, $, moment) {
 
-    var crashcast = {
+    var crashcaster = {
         version: "0.0.1",
+        init: init,
         testCall: testCall,
-        updateScreen: updateScreen,
         updateClock: updateClock,
         showLocation: showLocation
     };
-
-    var now = moment();
-    $('#current-datetime').text(now.format('llll'));
-
-
+    
+    
     function testCall(v) {
         console.log(v);
     };
 
 
-    function updateScreen(screen) {
+    function init(screen) {
 
         console.log("screen=" + screen);
 
@@ -25,17 +22,20 @@ var crashcast = c$ = (function (crashcast, $, moment) {
             case "forecast":
                 showLocation();
                 updateClock();
-                testCall('inner');
+                testCall('inner-forecast');
                 timedUpdate();
-
                 console.log("Forecast screen");
                 break;
             default:
-                console.log("Default screen");
+                console.log("Home screen");
+                showLocation();
+                updateClock();
+                testCall('inner-default');
+                timedUpdate();
         }
 
         showLocation();
-        testCall('inner');
+        testCall('inner-non-switch');
         //showTimeDate()
 
     }
@@ -57,7 +57,7 @@ var crashcast = c$ = (function (crashcast, $, moment) {
     }
 
 
-    // Run the 
+    // Run the update tick
     function timedUpdate() {
         updateClock();
         setTimeout(timedUpdate, 1000);
@@ -66,9 +66,9 @@ var crashcast = c$ = (function (crashcast, $, moment) {
     timedUpdate();
 
 
-    return crashcast;
+    return crashcaster;
 
-})(typeof crashcast !== 'undefined' && crashcast || this, $, moment);
+})(typeof crashcaster !== 'undefined' && crashcaster || this, $, moment);
 
 
 
