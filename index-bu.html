@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="css/backgrounds.css" type="text/css"/>
     <link rel="stylesheet" href="css/dc.css" type="text/css"/>
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="css/style_map.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
 
     <!--[if IE]>
     <script type="text/javascript">
@@ -107,15 +110,28 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+<<<<<<< HEAD:index-bu.html
                 <h3 class="center white text-shadow" id="current-location"><br><br>Crashcast - Cambridge, MA</h3>
                 <h4 class="center white text-shadow" id="current-datetime">Current Date</h4>
+=======
+                <h3 class="center white"><br><br>Crashcast - Cambridge, MA</h3>
+                <h4 class="center white"><span id="time"></span></h4>
+>>>>>>> be15347a8c1dd1eeabcae7ab7b18201ef7fe6d11:index.html
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">&nbsp;</div>
         </div>
+
+        <div class="row" align="center">
+                <button onclick="overview()" id="clear" type="button" class="btn btn-danger">Clear</button>
+                <button onclick="rain()" id="rain" type="button" class="btn btn-default">Rain</button>
+                <button onclick="snow()" id="snow" type="button" class="btn btn-default">Snow</button>
+                <button onclick="fog()" id="fog" type="button" class="btn btn-default">Fog</button>
+        </div>
         <div class="row">
             <div class="col-md-2 bg-content">
+<<<<<<< HEAD:index-bu.html
                 <h4 class="center">Today's Forecast</h4>
                 <p id="forecast-text"><i class="fa fa-apple"></i>Expect accidents near 1st and 2nd due to foggy weather in the early morning
                     commute.<i class="wi wi-night-sleet"></i>
@@ -124,12 +140,24 @@
             <div class="col-md-1"></div>
             <div class="col-md-6 bg-content">
                 <h1 class="center">Map</h1>
+=======
+                <h4 class="center">Crashcast</h4>
+                <span id="weathertxt"></span>
+                <span id="source"></span>
+                <span id="predict1"></span>
+                <span id="predict2"></span>
+>>>>>>> be15347a8c1dd1eeabcae7ab7b18201ef7fe6d11:index.html
             </div>
             <div class="col-md-1"></div>
+            <div class="col-md-6 bg-content" id="map"></div>
+            <div class="col-md-1">md1</div>
             <div class="col-md-2 bg-content">
-                <h1 class="center">Travel Type</h1>
-            </div>
-        </div>
+                <h4>Crashtistics</h4>
+                <div id="stats"> 100 <i class="fa fa-car fa-1x" aria-hidden="true"></i>
+                    200  <i class="fa fa-bicycle fa-1x" aria-hidden="true"></i>
+                    300  <i class="fa fa-motorcycle fa-1x" aria-hidden="true"></i>
+                    400  <i class="fa fa-male" aria-hidden="true"></i></div></div>
+                </div>
 
         <div class="row">
             <div class="col-md-12">&nbsp;</div>
@@ -137,7 +165,7 @@
 
         <div class="row">
             <div class="col-md-12 bg-content">
-                <h2 class="center">Controls & Brushes</h2>
+                Disclaimer: Please use your judgement. Drive safe. Don't text and drive and blah...
             </div>
         </div>
     </div>
@@ -315,8 +343,15 @@
 
 <!-- Custom JavaScript -->
 <script src="js/stock.js" type="text/javascript"></script>
+<<<<<<< HEAD:index-bu.html
 <script src="js/main.js" type="text/javascript"></script>
 
+=======
+<script src="js/showmap.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByBr_9yXPbMOYg3HbL31yOVRAxEXvbtGM&libraries=visualization&callback=initMap">
+</script>
+>>>>>>> be15347a8c1dd1eeabcae7ab7b18201ef7fe6d11:index.html
 
 </body>
 </html>

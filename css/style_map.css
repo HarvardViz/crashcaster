@@ -1,0 +1,24 @@
+html, body {
+    height: 100%;
+    margin: 20;
+    padding: 20;
+}
+#map {
+    height: 450px;
+    width: 450px;
+}
+
+div {
+    padding-left: 50px;
+    padding-right: 30px;
+
+}
+
+
+div#stats
+{
+font-size: 15px;
+    text-align: left ;
+    horiz-align: left;
+
+}

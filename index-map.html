@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Story Map</title>
+    <link rel="stylesheet" href="css/style_map.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+
+</head>
+
+<body>
+
+<div class="row">
+    <h1>Crashcast: Risk forecast based on Weather prediction</h1>
+
+
+    <div class="col-md-6" id="map"></div>
+    <div class="col-md-6" id="col2">
+
+
+        <h3>Weather Forecast</h3>
+        <span id="weathertxt"></span><span id="source"></span>
+        </br>
+        </br>
+
+        <div>
+            <button onclick="overview()" id="clear" type="button" class="btn btn-default">Clear</button>
+            <button onclick="rain()" id="rain" type="button" class="btn btn-default">Rain</button>
+            <button onclick="snow()" id="snow" type="button" class="btn btn-default">Snow</button>
+            <button onclick="fog()" id="fog" type="button" class="btn btn-default">Fog</button>
+        </div>
+
+
+        <h3>Crashcast</h3>
+            <p>Text which changes based on forecast (default). Overriden by the button clicked. The quick brown fox jumps over the lazy dog.
+                The quick brown fox jumps over the lazy dogThe quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog
+                The quick brown fox jumps over the lazy dogThe quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
+                The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
+            </p>
+
+        <h3>Crashtistics</h3>
+
+        <div id="stats"> X <i class="fa fa-car fa-1x" aria-hidden="true"></i>
+            &nbsp; Y  <i class="fa fa-bicycle fa-1x" aria-hidden="true"></i>
+            &nbsp;Z  <i class="fa fa-motorcycle fa-1x" aria-hidden="true"></i>
+            &nbsp;W  <i class="fa fa-male" aria-hidden="true"></i></div>
+
+
+    </div>
+</div>
+
+<script src="js/d3.min.js"></script>
+<script src="js/showmap.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByBr_9yXPbMOYg3HbL31yOVRAxEXvbtGM&libraries=visualization&callback=initMap">
+</script>
+</body>
+</html>
