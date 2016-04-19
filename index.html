@@ -36,9 +36,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.dropdown-toggle').dropdown();
-            $('.navbar').autoHidingNavbar();
-
-            var fp = $.fn.fullpage({
+            $("nav.navbar-fixed-top").autoHidingNavbar('setDisableAutohide', false);
+            $.fn.fullpage({
                 slidesColor: ['#428BCA', '#5CB85C', '#5BC0DE', '#F0AD4E', '#FF530D', '#FFFFFF'], // Bootstrap
                 anchors: ['home', 'visuals', 'crashboard', 'screencast', 'processbook'],
                 menu: '#menu'
@@ -48,10 +47,6 @@
                 //navigationTooltips: ['Home', 'Crashboard', 'Visuals', 'Screencast', 'Process Book']
             });
 
-            console.log("version " + c$.version);
-            console.log(c$);
-
-            c$.testCall("OUTER");
             c$.init();
 
         });
@@ -122,27 +117,30 @@
         </div>
         <div class="row">
             <div class="col-md-2 bg-content">
-                <h4 class="center">Today's Forecast</h4>
-                <p id="forecast-text">Expect accidents near 1st and 2nd due to foggy weather in the early morning
-                    commute. <i class="wi wi-night-sleet"></i>
-                    Historically these conditions lead to an higher than average accident total for the day.</p>
+
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-6 bg-content">
-                <span id="weathertxt"></span>
-                <span id="source"></span>
-                <span id="predict1"></span>
-                <span id="predict2"></span>
-                <div id="map">MAP</div>
+
+                <div id="map"></div>
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-2 bg-content">
-                <h4>Crashtistics</h4>
-                <div id="stats"> 100 <i class="fa fa-car fa-1x" aria-hidden="true"></i>
+                <h4 class="textbox-heading">Crashtistics</h4>
+                <p id="stats" class="textbox"> 100 <i class="fa fa-car fa-1x" aria-hidden="true"></i>
                     200  <i class="fa fa-bicycle fa-1x" aria-hidden="true"></i>
                     300  <i class="fa fa-motorcycle fa-1x" aria-hidden="true"></i>
                     400  <i class="fa fa-male" aria-hidden="true"></i>
-                </div>
+                </p>
+                <hr>
+                <h4  class="textbox-heading">Today's Forecast</h4>
+                <p id="forecast-text" class="textbox"><i class="wi wi-night-sleet"></i>
+                    <span id="weathertxt"></span>
+                    <span id="source"></span>
+                    <span id="predict1"></span>
+                    <span id="predict2"></span>
+                </p>
+
             </div>
         </div>
 

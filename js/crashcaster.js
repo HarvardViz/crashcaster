@@ -1,6 +1,6 @@
 var crashcaster = c$ = (function (crashcaster, $, moment) {
 
-    var crashcaster = {
+    crashcaster = {
         version: "0.0.1",
         init: init,
         testCall: testCall,
@@ -20,23 +20,17 @@ var crashcaster = c$ = (function (crashcaster, $, moment) {
 
         switch (screen) {
             case "forecast":
+                console.log("Forecast screen");
                 showLocation();
                 updateClock();
-                testCall('inner-forecast');
                 timedUpdate();
-                console.log("Forecast screen");
                 break;
             default:
                 console.log("Home screen");
                 showLocation();
                 updateClock();
-                testCall('inner-default');
                 timedUpdate();
         }
-
-        showLocation();
-        testCall('inner-non-switch');
-        //showTimeDate()
 
     }
 

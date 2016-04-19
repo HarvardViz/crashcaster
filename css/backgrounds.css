@@ -3,13 +3,10 @@
 
 [id*="section"] {
     background-size: cover;
-    width: 100%;
 }
 
 .section {
     text-align: center;
-    background-size: cover;
-    width: 100%;
 }
 
 .slide {
@@ -58,7 +55,7 @@
 }
 
 .section .bg-content {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;

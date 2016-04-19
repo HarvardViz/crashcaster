@@ -45,15 +45,22 @@ input, textarea {
     text-align: center;
 }
 
-#forecast-text {
+[class*="textbox"] {
     color: #fff;
     /* font-family: 'Raleway Dots', cursive; */
     font-weight: 100;
-    font-size: 1.4em;
+    font-size: 1.2em;
     text-align: left;
-
-
+    text-shadow: 1px 1px 2px #000000;
 }
+
+.textbox-heading {
+    font-weight: 200;
+    font-size: 1.5em;
+    text-align: center;
+    line-height: 2em;
+}
+
 #current-location {
 
 }
