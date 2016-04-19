@@ -17,7 +17,8 @@ div {
 
 div#stats
 {
-font-size: 30px;
-fill-opacity: 0.5;
+font-size: 15px;
+    text-align: left ;
+    horiz-align: left;
 
 }

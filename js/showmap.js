@@ -12,14 +12,18 @@ var Long1 = -71.109734;
 var zoom1 = 14;
 var Weather = "not available";
 var timenow = "not available";
+var today = new Date();
+document.getElementById('time').innerHTML=today
 
 d3.json("http://api.wunderground.com/api/053fc50550431c69/forecast10day/q/MA/Cambridge.json", function(json) {
     Weather = json.forecast.txt_forecast.forecastday[2].fcttext;
     timenow = json.forecast.txt_forecast.date;
     console.log(timenow + " " + Weather);
-    document.getElementById("source").innerHTML = "Source: Weatherunderground.com. Last updated " + timenow + ".";
-    document.getElementById("weathertxt").innerHTML = "Tomorrow's weather forecast is " + Weather + "Be careful! Disclaimer: Past data is not a predictor of the future.";
-
+    document.getElementById("source").innerHTML = "(Source: Weather Underground. Last updated " + timenow + ")";
+    document.getElementById("weathertxt").innerHTML = "Tomorrow's weather forecast is " + Weather;
+    document.getElementById("predict1").innerHTML = "Based on the weather, today there is a higher risk near the Mass Ave intersection";
+    document.getElementById("predict2").innerHTML = "Historical data suggests, today there have been 50% higher accidents on a <day>/<month>";
+    ;
 });
 
 function rain() {
