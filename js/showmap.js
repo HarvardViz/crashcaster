@@ -13,7 +13,6 @@ var zoom1 = 14;
 var Weather = "not available";
 var timenow = "not available";
 var today = new Date();
-document.getElementById('time').innerHTML=today
 
 d3.json("http://api.wunderground.com/api/053fc50550431c69/forecast10day/q/MA/Cambridge.json", function(json) {
     Weather = json.forecast.txt_forecast.forecastday[2].fcttext;
