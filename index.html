@@ -103,7 +103,8 @@
             <div class="col-md-3 bg-content">
                 <div class="row">
                     <div class="">
-                        <h3 class="center white text-shadow"><span id="current-location">Crashcast - Cambridge, MA</span></h3>
+                        <h3 class="center white text-shadow"><span
+                                id="current-location">Crashcast - Cambridge, MA</span></h3>
                         <h5 class="center white text-shadow"><span id="current-datetime"></span></h5>
                     </div>
                 </div>
@@ -113,10 +114,14 @@
                 <div class="row bg-content-white" align="center">
                     <h4 class="textbox-heading">Travel Type</h4>
                     <div class="btn-group" role="group" aria-label="...">
-                        <button onclick="c$.setTravel('car')" id="Car" type="button" class="btn btn-default"><p class="fa fa-2x fa-car"></p></button>
-                        <button onclick="c$.setTravel('bike')" id="Bike" type="button" class="btn btn-default"><p class="fa fa-2x fa-bicycle"></p></button>
-                        <button onclick="c$.setTravel('Motorcycle')" id="Motorcycle" type="button" class="btn btn-default"><p class="fa fa-2x fa-motorcycle"></p></button>
-                        <button onclick="c$.setTravel('Pedestrian')" id="Pedestrian" type="button" class="btn btn-default"><p class="fa fa-2x fa-male"></p></button>
+                        <button onclick="c$.setTravel('car')" id="Car" type="button" class="btn btn-default"><p
+                                class="fa fa-2x fa-car"></p></button>
+                        <button onclick="c$.setTravel('bike')" id="Bike" type="button" class="btn btn-default"><p
+                                class="fa fa-2x fa-bicycle"></p></button>
+                        <button onclick="c$.setTravel('Motorcycle')" id="Motorcycle" type="button"
+                                class="btn btn-default"><p class="fa fa-2x fa-motorcycle"></p></button>
+                        <button onclick="c$.setTravel('Pedestrian')" id="Pedestrian" type="button"
+                                class="btn btn-default"><p class="fa fa-2x fa-male"></p></button>
                     </div>
                 </div>
                 <div class="row">
@@ -130,55 +135,68 @@
                 </div>
             </div>
             <div class="col-md-1"></div>
-            <div class="col-md-5  bg-content">
+            <div class="col-md-5 bg-content">
                 <div id="map"></div>
             </div>
             <div class="col-md-3 bg-content">
                 <div class="row bg-content-white" align="center">
                     <h4 class="textbox-heading">Current Weather</h4>
                     <div class="btn-group" role="group" aria-label="...">
-                        <button onclick="rain()" id="rain" type="button" class="btn btn-default"><p class="wi wi-day-rain"></p><p>Rain</p></button>
-                        <button onclick="snow()" id="snow" type="button" class="btn btn-default"><p class="wi wi-day-snow"></p><p>Snow</p></button>
-                        <button onclick="fog()" id="fog" type="button" class="btn btn-default"><p class="wi wi-day-fog"></p><p>Fog&nbsp;</p></button>
-                        <button onclick="overview()" id="clear" type="button" class="btn btn-danger"><p class="fa fa-refresh"></p><p>Reset</p></button>
+                        <button onclick="rain()" id="rain" type="button" class="btn btn-default"><p
+                                class="wi wi-wu-chancerain"></p>
+                            <p>Rain</p></button>
+                        <button onclick="snow()" id="snow" type="button" class="btn btn-default"><p
+                                class="wi wi-day-snow"></p>
+                            <p>Snow</p></button>
+                        <button onclick="fog()" id="fog" type="button" class="btn btn-default"><p
+                                class="wi wi-day-fog"></p>
+                            <p>Fog&nbsp;</p></button>
+                        <button onclick="overview()" id="clear" type="button" class="btn btn-danger"><p
+                                class="fa fa-refresh"></p>
+                            <p>Reset</p></button>
                     </div>
                 </div>
                 <div class="row">
                     &nbsp;
                 </div>
                 <div class="row">
-                <h4 class="textbox-heading">Crashtistics</h4>
-                <p id="stats" class="textbox text-center"> 100 <i class="fa fa-car fa-1x" aria-hidden="true"></i>
-                    200  <i class="fa fa-bicycle fa-1x" aria-hidden="true"></i>
-                    300  <i class="fa fa-motorcycle fa-1x" aria-hidden="true"></i>
-                    400  <i class="fa fa-male" aria-hidden="true"></i>
-                </p>
+                    <h4 class="textbox-heading">Crashtistics</h4>
+                    <p id="stats" class="textbox text-center"> 100 <i class="fa fa-car fa-1x" aria-hidden="true"></i>
+                        200 <i class="fa fa-bicycle fa-1x" aria-hidden="true"></i>
+                        300 <i class="fa fa-motorcycle fa-1x" aria-hidden="true"></i>
+                        400 <i class="fa fa-male" aria-hidden="true"></i>
+                    </p>
                 </div>
                 <div class="row">
                     &nbsp;
                 </div>
                 <div class="row bg-content">
-                <h4  class="textbox-heading">Today's Forecast</h4>
-                <p id="forecast-text" class="textbox">
-                    <span id="weathertxt"></span>
-                    <span id="source"></span>
-                    <span id="predict1"></span>
-                    <span id="predict2"></span>
-                </p>
+                    <h4 class="textbox-heading">Today's Forecast</h4>
+                    <p id="forecast-text" class="textbox">
+                        <span id="weathertxt"></span>
+                        <span id="source"></span>
+                        <span id="predict1"></span>
+                        <span id="predict2"></span>
+                    </p>
                 </div>
 
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-12">Disclaimer: Please use your judgement. Drive safe. Don't text and drive and blah...&nbsp;</div>
+            &nbsp;
         </div>
 
         <div class="row">
-            <div class="col-md-12 bg-content">
-               Hour by hour chart
+            <div class="bg-content">
+                Hour by hour chart
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-12">Disclaimer: Please use your best judgement. Drive safe. Don't text and drive.</div>
+        </div>
+
     </div>
 
 </div>
@@ -267,7 +285,8 @@
 
             <div id="quarter-chart">
                 <strong>Quarters</strong>
-                <a class="reset" href="javascript:quarterChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+                <a class="reset" href="javascript:quarterChart.filterAll();dc.redrawAll();"
+                   style="display: none;">reset</a>
 
                 <div class="clearfix"></div>
             </div>

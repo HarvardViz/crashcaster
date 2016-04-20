@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Teko);
+/* @import url(http://fonts.googleapis.com/css?family=Helvetica+Nueue); */
 
 /* Custom Styles
  * -------------------------------------------- */
@@ -51,7 +51,6 @@ input, textarea {
 }
 
 .textbox-heading {
-    font-weight: 200;
     font-size: 1.5em;
     text-align: center;
     line-height: 2em;
@@ -59,7 +58,6 @@ input, textarea {
 }
 
 .textbox-forecast-count {
-    font-family: 'Helvetica Neue', sans-serif;
     font-weight: lighter;
     font-size: 13em;
     text-align: center;
