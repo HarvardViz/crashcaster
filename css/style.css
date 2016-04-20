@@ -4,8 +4,17 @@
  * -------------------------------------------- */
 
 p {
-    font-size: 1.2em;
+    font-size: .7em;
 }
+
+.btn-type-travel {
+    font-size: 1.6em;
+}
+
+.btn-type-weather {
+    font-size: 1.4em;
+}
+
 
 #menu {
     opacity: 0.5;
