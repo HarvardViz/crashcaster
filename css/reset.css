@@ -44,12 +44,41 @@ abbr,acronym { border: 0;
 }
 
 
-/* Custom CSS
- * --------------------------------------- */
-body{
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* font-family: 'Raleway Dots', cursive; */
-    font-size: 13px;  /* font-size: 100%; */
-	color: rgba(0,0,0,0.5);
-    background: #fff;  /* #33495f;*/
-    line-height: 1.3;
+
+/* Media sizing adjustments
+* -------------------------------------------- */
+/*
+@media (max-width: 768px) {
+    .container .container-fluid {
+        margin: 0 10px;
+    }
+
+    h1 {
+        font-size: 26px !important;
+    }
+
+    p, label {
+        font-size: 16px !important;
+    }
 }
+
+@media (min-width: 769px) and (max-width: 980px) {
+    h1 {
+        font-size: 34px !important;
+    }
+
+    p, label {
+        font-size: 20px !important;
+    }
+}
+
+@media (min-width: 981px) {
+    h1 {
+        font-size: 48px !important;
+    }
+
+    p, label {
+        font-size: 16px !important;
+    }
+}
+*/

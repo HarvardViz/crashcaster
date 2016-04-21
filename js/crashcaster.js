@@ -1,49 +1,116 @@
-var crashcaster = c$ = (function (crashcaster, $, d3, moment) {
+var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
 
 
-    var name = "crashcaster";
-    var version = "0.0.1";
-    var weather = {};
+    var plugin_name = "crashcaster";
+    var plugin_version = "0.0.1";
+    var READY_STATE = {_current: -1, NOT_STARTED: 0, LOADING: 1, LOADED: 2};
 
 
-    crashcaster = {
-        name: name,
-        version: version,
-        weather: weather,
-        init: init,
-        testCall: testCall,
-        updateClock: updateClock,
-        showLocation: showLocation,
-        getWeather: getWeather
+    /* Plug-in module loader functionality
+     * --------------------------------------------------------------------- */
+
+    var callbackFnName;
+    var moduleInProgress;
+    var next = -1;
+
+    // Load the plug-in modules for `crashcaster`
+    function loadModules() {
+        if (++next < modules.length) {
+            READY_STATE._current = READY_STATE.LOADING;
+            moduleInProgress = modules[next];
+            loadScript("js/" + modules[next] + ".js", checkModuleReadyState);
+            console.log("loaded " + modules[next] + ".js");
+        } else {
+            READY_STATE._current = READY_STATE.LOADED;
+            executeCallback();
+        }
     };
 
+    // Load each script of plug-in modules in `modules` array
+    function loadScript(url, callback) {
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+        script.onreadystatechange = callback;
+        script.onload = callback;
+        head.appendChild(script);
+    };
 
-    function testCall(v) {
+    // Check the READY_STATE of each module before we execute our `crashcast.run()`
+    function checkModuleReadyState(newState) {
+
+        var currentModule = moduleInProgress.replace(plugin_name + ".", "");
+
+        // If the module does not have a READY_STATE were done, load the next module
+        if (!my[currentModule].READY_STATE) {
+            loadModules();
+        } else {
+            //console.log("moduleInProgress=" + moduleInProgress);
+            //console.log("enter=" + newState);
+
+            setTimeout(function () {
+                if (newState == READY_STATE.LOADED) {
+                    loadModules();
+                } else {
+
+                    //console.log("currentModule=" + currentModule);
+                    //console.log(my[currentModule]);
+                    newState = my[currentModule].READY_STATE._current;
+                    //console.log("update=" + newState);
+                    checkModuleReadyState(newState);
+                }
+            }, 10);
+        }
+    }
+
+    // Use a local callback executor
+    function executeCallback() {
+        executeFunctionByName(callbackFnName);
+    };
+
+    // Using only the stringified name of a given function, execute the function -- pretty slick right :)
+    function executeFunctionByName(fnName, fnCtx /*, args... */) {
+        var args = Array.prototype.slice.call(arguments).splice(2);
+        var namespaces = fnName.split(".");
+        var func = namespaces.pop();
+
+        fnCtx = fnCtx || window;
+        for (var i = 0; i < namespaces.length; i++) {
+            fnCtx = fnCtx[namespaces[i]];
+        }
+        //console.log("executeFunctionByName=" + fnName + "(" + args + ")");
+        return fnCtx[func].apply(this, args);
+    }
+
+
+
+    /* Crashcaster code
+     * --------------------------------------------------------------------- */
+
+    // Initialize the entire `crashcast` and plug-in submodules
+    function init() {
+
+        // Load all our plug-in modules and call the function `crashcaster.run`
+        callbackFnName = "crashcaster.run"; // e.g. "crashcaster.run", "crashcaster.weather.run", etc.
+        loadModules();
+    }
+
+    // Run the entirety of `crashcast` once the plug-in submodules are ready to run
+    function run() {
+
+        console.log("Current condition is " + my.weather.current.current_observation.icon);
+
+        showLocation();
+        updateClock();
+        timedUpdate();
+
+    }
+
+    function echo(v) {
         console.log(v);
     };
 
-
-    function init(screen) {
-
-        console.log("screen=" + screen);
-
-        getWeather();
-
-        switch (screen) {
-            case "forecast":
-                console.log("Forecast screen");
-                showLocation();
-                updateClock();
-                timedUpdate();
-                break;
-            default:
-                console.log("Home screen");
-                showLocation();
-                updateClock();
-                timedUpdate();
-        }
-
-    }
 
     // For future use to set various locations
     function showLocation() {
@@ -68,47 +135,22 @@ var crashcaster = c$ = (function (crashcaster, $, d3, moment) {
         setTimeout(timedUpdate, 1000);
     }
 
-    timedUpdate();
+
+    // Use the selective longhand to add properties to the existing `my` object.  Don't do this for plug-in modules use {} instead
+    my.plugin_name = plugin_name;
+    my.plugin_version = plugin_version;
+    my.READY_STATE = READY_STATE;
+    my.init = init;
+    my.run = run;
+    my.echo = echo;
+    my.executeFunctionByName = executeFunctionByName;
+    my.updateClock = updateClock;
+    my.showLocation = showLocation;
 
 
-    function getWeather() {
+    return my;
 
-        d3.json("http://api.wunderground.com/api/053fc50550431c69/conditions/q/MA/Cambridge.json", function(error, json) {
-            if (error) return console.warn(error);
-
-            weather = json;
-            console.log(weather);
-            console.log("Current condition is " + weather.current_observation.icon);
-
-            /*
-            Weather = json.forecast.txt_forecast.forecastday[2].fcttext;
-            timenow = json.forecast.txt_forecast.date;
-            console.log(timenow + " " + Weather);
-            document.getElementById("source").innerHTML = "(Source: Weather Underground. Last updated " + timenow + ")";
-            document.getElementById("weathertxt").innerHTML = "Tomorrow's weather forecast is " + Weather;
-            document.getElementById("predict1").innerHTML = "Based on the weather, today there is a higher risk near the Mass Ave intersection";
-            document.getElementById("predict2").innerHTML = "Historical data suggests, today there have been 50% higher accidents on a <day>/<month>";
-            ;
-            */
-        });
-
-        /*
-        d3.json("https://api.forecast.io/forecast/319de9c9f9fab8949fcbf4bb086273b7/42.373611,%20-71.110556", function (error, json) {
-            if (error) return console.warn(error);
-            weather = json;
-            console.log("Current condition is " + weather.currently.icon);
-
-        });
-        */
-    }
-
-
-
-
-    // Expose the public variables and methods for this module
-    return crashcaster;
-
-})(typeof crashcaster !== 'undefined' && crashcaster || this, $, d3, moment);
+})(crashcaster || {}, ["crashcaster.weather", "crashcaster.model"], $, d3, moment);
 
 
 

@@ -8,11 +8,13 @@
 
     <!-- Vendor CSS, Bootstrap first -->
     <!-- link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="css/weather-icons.min.css" type="text/css">
     <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
     <link rel="stylesheet" href="css/jquery.fullPage.css" type="text/css"/>
+    <link rel="stylesheet" href="css/tether.min.css" type="text/css"/>
 
 
     <!-- Custom CSS -->
@@ -36,23 +38,26 @@
     <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="##navbar-collapse-1">
         &#9776;
     </button>
-        <div class="collapse navbar-toggleable-xs" id="navbar-collapse-1">
-            <a class="navbar-brand" href="index.html">CRASHCASTER</a>
-            <ul class="nav navbar-nav">
-                <li data-menuanchor="home" class="nav-item"><a class="nav-link" href="#home">Home <span class="sr-only">(current)</span></a></li>
-                <li data-menuanchor="visuals" class="nav-item"><a class="nav-link" href="#visuals">Visual Tour</a></li>
-                <li data-menuanchor="visuals" class="nav-item dropdown"><a href="#visuals" class="nav-link dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li data-menuanchor="visuals1"><a class="dropdown-item" href="#visuals/1">Viz One</a></li>
-                        <li data-menuanchor="visuals2"><a class="dropdown-item" href="#visuals/2">Viz Two</a></li>
-                        <li data-menuanchor="visuals3"><a class="dropdown-item" href="#visuals/3">Viz Three</a></li>
-                    </ul>
-                </li>
-                <li data-menuanchor="crashboard" class="nav-item"><a class="nav-link" href="#crashboard">Crashboard</a></li>
-                <li data-menuanchor="screencast" class="nav-item"><a class="nav-link" href="#screencast">Screencast</a></li>
-                <li data-menuanchor="processbook" class="nav-item"><a class="nav-link" href="#processbook">Process Book</a></li>
-            </ul>
-        </div>
+    <div class="collapse navbar-toggleable-xs" id="navbar-collapse-1">
+        <a class="navbar-brand" href="index.html">CRASHCASTER</a>
+        <ul class="nav navbar-nav">
+            <li data-menuanchor="home" class="nav-item"><a class="nav-link" href="#home">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li data-menuanchor="visuals" class="nav-item"><a class="nav-link" href="#visuals">Visual Tour</a></li>
+            <li data-menuanchor="visuals" class="nav-item dropdown"><a href="#visuals" class="nav-link dropdown-toggle"
+                                                                       data-toggle="dropdown"><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li data-menuanchor="visuals1"><a class="dropdown-item" href="#visuals/1">Viz One</a></li>
+                    <li data-menuanchor="visuals2"><a class="dropdown-item" href="#visuals/2">Viz Two</a></li>
+                    <li data-menuanchor="visuals3"><a class="dropdown-item" href="#visuals/3">Viz Three</a></li>
+                </ul>
+            </li>
+            <li data-menuanchor="crashboard" class="nav-item"><a class="nav-link" href="#crashboard">Crashboard</a></li>
+            <li data-menuanchor="screencast" class="nav-item"><a class="nav-link" href="#screencast">Screencast</a></li>
+            <li data-menuanchor="processbook" class="nav-item"><a class="nav-link" href="#processbook">Process Book</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 
@@ -76,19 +81,19 @@
                     <h4 class="textbox-heading">Travel Type</h4>
 
                     <div class="btn-group" role="group" aria-label="Travel Type">
-                        <button onclick="c$.setTravel('car')" id="Car" type="button"
+                        <button onclick="cc$.setTravel('car')" id="btn_car" type="button"
                                 class="btn btn-default"><p
                                 class="fa fa-car btn-type-travel"></p>
                             <p>Car</p></button>
-                        <button onclick="c$.setTravel('bike')" id="Bike" type="button"
+                        <button onclick="cc$.setTravel('bike')" id="btn_bike" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-bicycle btn-type-travel"></p>
                             <p>Bike</p></button>
-                        <button onclick="c$.setTravel('Motorcycle')" id="Motorcycle" type="button"
+                        <button onclick="cc$.setTravel('Motorcycle')" id="btn_motorcycle" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-motorcycle btn-type-travel"></p>
                             <p>Cycle</p></button>
-                        <button onclick="c$.setTravel('Pedestrian')" id="Pedestrian" type="button"
+                        <button onclick="cc$.setTravel('Pedestrian')" id="btn_pedestrian" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-male btn-type-travel"></p>
                             <p>Walk</p></button>
@@ -112,17 +117,17 @@
                 <div class="row bg-content-white" align="center">
                     <h4 class="textbox-heading">Current Weather</h4>
                     <div class="btn-group" role="group" aria-label="Weather selection">
-                        <button onclick="rain()" id="rain" type="button" class="btn btn-default"><p
+                        <button onclick="rain()" id="btn_rain" type="button" class="btn btn-default"><p
                                 class="wi wi-wu-chancerain btn-type-weather"></p>
                             <p>Rain</p></button>
-                        <button onclick="snow()" id="snow" type="button"
+                        <button onclick="snow()" id="btn_snow" type="button"
                                 class="btn btn-secondary"><p
                                 class="wi wi-day-snow btn-type-weather"></p>
                             <p>Snow</p></button>
-                        <button onclick="fog()" id="fog" type="button" class="btn btn-secondary"><p
+                        <button onclick="fog()" id="btn_fog" type="button" class="btn btn-secondary"><p
                                 class="wi wi-day-fog btn-type-weather"></p>
                             <p>Fog&nbsp;</p></button>
-                        <button onclick="overview()" id="clear" type="button" class="btn btn-danger"><p
+                        <button onclick="overview()" id="btn_clear" type="button" class="btn btn-danger"><p
                                 class="fa fa-refresh btn-type-weather"></p>
                             <p>Reset</p></button>
                     </div>
@@ -346,10 +351,13 @@
 
 <!-- Vendor JavaScript Libraries -->
 <!-- jQuery first, then Bootstrap JS. -->
+<script src="js/lib/tether.min.js"></script>
 <!-- script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script -->
 <!-- script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+        integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+        crossorigin="anonymous"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
 <script src="js/lib/jquery.bootstrap-autohidingnavbar.js"></script>
 <script src="js/lib/jquery.fullPage.min.js"></script>
@@ -370,7 +378,6 @@
 </script>
 
 
-
 <script type="text/javascript">
     $(document).ready(function () {
         $('.dropdown-toggle').dropdown();
@@ -385,9 +392,9 @@
             //navigationTooltips: ['Home', 'Crashboard', 'Visuals', 'Screencast', 'Process Book']
         });
 
-        c$.init();
-
     });
+
+    window.onload = crashcaster.init();
 </script>
 
 
