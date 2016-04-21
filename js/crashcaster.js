@@ -4,6 +4,9 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
     var plugin_name = "crashcaster";
     var plugin_version = "0.0.1";
     var READY_STATE = {_current: -1, NOT_STARTED: 0, LOADING: 1, LOADED: 2};
+    var moduleReadyStateTimeout = 10;
+    var moduleReadyStateMaxWaitTime = 7000;
+    var moduleReadyStateTimer = 0;
 
 
     /* Plug-in module loader functionality
@@ -42,7 +45,7 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
 
         var currentModule = moduleInProgress.replace(plugin_name + ".", "");
 
-        // If the module does not have a READY_STATE were done, load the next module
+        // If the module does not have a READY_STATE we're done, load the next module
         if (!my[currentModule].READY_STATE) {
             loadModules();
         } else {
@@ -51,16 +54,25 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
 
             setTimeout(function () {
                 if (newState == READY_STATE.LOADED) {
+                    moduleReadyStateTimer = 0;
+                    loadModules();
+                } else if(moduleReadyStateTimer >= moduleReadyStateMaxWaitTime) {
+
+                    console.error("Timeout loading plug-in module '" + currentModule + "' after waiting " + moduleReadyStateTimer + "ms.");
+                    console.error("Please be sure that '" + currentModule + "' sets its internal once fully loaded, e.g.");
+                    console.error("    READY_STATE._current = READY_STATE.LOADED;");
+                    console.error("Otherwise raise the `crashcast.moduleReadyStateMaxWaitTime` value higher than the current " + moduleReadyStateMaxWaitTime +"ms.");
+
+                    moduleReadyStateTimer = 0;
                     loadModules();
                 } else {
-
-                    //console.log("currentModule=" + currentModule);
+                    moduleReadyStateTimer += moduleReadyStateTimeout;
                     //console.log(my[currentModule]);
                     newState = my[currentModule].READY_STATE._current;
                     //console.log("update=" + newState);
                     checkModuleReadyState(newState);
                 }
-            }, 10);
+            }, moduleReadyStateTimeout);
         }
     }
 
@@ -140,6 +152,7 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
     my.plugin_name = plugin_name;
     my.plugin_version = plugin_version;
     my.READY_STATE = READY_STATE;
+    my.moduleReadyStateMaxWaitTime = moduleReadyStateMaxWaitTime;
     my.init = init;
     my.run = run;
     my.echo = echo;

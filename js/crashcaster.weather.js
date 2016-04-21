@@ -16,7 +16,7 @@ crashcaster.weather = (function (cc$, $, d3) {
      */
 
 
-    /* Your plug-in module code here
+    /* Your plug-in module code here - write simple functions
      * --------------------------------------------------------------------- */
 
     var plugin_name = "crashcaster.weather";
@@ -57,8 +57,8 @@ crashcaster.weather = (function (cc$, $, d3) {
 
     }
 
-    
-    // Call the initialization function by default in this module
+
+    // Call the initialization function by default for this module
     init();
 
 
