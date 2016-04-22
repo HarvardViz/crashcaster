@@ -4,13 +4,13 @@ var AccidentMap;
 
 // Chart size.
 var width = 750;
-var height = 500;
+var height = 575;
 
 // Map projection.
-var center = [ -71.118275, 42.377 ];
-var projection = d3.geo.conicEqualArea()
+var center = [ -71.112, 42.378 ];
+var projection = d3.geo.albers()
     .translate([ width / 2, height / 2 ])
-    .scale(400000)
+    .scale(600000)
     .rotate([ -center[ 0 ], 0 ])
     .center([ 0, center[ 1 ] ]);
 var path = d3.geo.path()
@@ -21,12 +21,14 @@ var MapView = {
     Neighborhoods: 1
 };
 
-AccidentMap = function AccidentMap(elementId, boundary, roads, neighborhoods, accidents) {
+AccidentMap = function AccidentMap(elementId, toggleElementId, boundary, roads, neighborhoods, accidents) {
 
     var vis = this;
 
     this.elementId = elementId;
     this.element = d3.select('#' + this.elementId);
+    this.toggleElementId = toggleElementId;
+    this.toggleElement = d3.select('#' + this.toggleElementId);
 
     this.boundary = boundary;
     this.roads = roads;
@@ -35,29 +37,32 @@ AccidentMap = function AccidentMap(elementId, boundary, roads, neighborhoods, ac
 
     // Setup toggle controls.
     this._currentView = MapView.Accidents;
-    this.mapToggle = this.element.append('div')
-        .attr('class', 'mapToggle');
-    this.accidentsToggle = this.mapToggle.append('div')
-        .attr('class', 'accidentsToggle selected')
+
+    this.label = this.toggleElement.append('div')
+        .attr('class', 'filter-label')
+        .text('Map View');
+
+    this.mapToggle = this.toggleElement.append('ul');
+    this.accidentsToggle = this.mapToggle.append('li')
+        .attr('class', 'active')
         .text('Accidents')
         .on('click', function() {
             if (vis._currentView === MapView.Accidents) { return; }
-            vis.accidentsToggle.classed('selected', true);
-            vis.neighborhoodsToggle.classed('selected', false);
+            vis.accidentsToggle.classed('active', true);
+            vis.neighborhoodsToggle.classed('active', false);
             vis._currentView = MapView.Accidents;
             vis.update();
         });
-    this.neighborhoodsToggle = this.mapToggle.append('div')
-        .attr('class', 'neighborhoodsToggle')
+    this.neighborhoodsToggle = this.mapToggle.append('li')
         .text('Neighborhoods')
         .on('click', function() {
             if (vis._currentView === MapView.Neighborhoods) { return; }
-            vis.accidentsToggle.classed('selected', false);
-            vis.neighborhoodsToggle.classed('selected', true);
+            vis.accidentsToggle.classed('active', false);
+            vis.neighborhoodsToggle.classed('active', true);
             vis._currentView = MapView.Neighborhoods;
             vis.update();
         });
-    this.mapToggle.append('div')
+    this.element.append('div')
         .attr('class', 'clearfix');
 
     // Setup chart.

@@ -2,6 +2,15 @@ var WeatherFilter;
 
 (function() {
 
+var icons = {
+    'Fog'          : 'wi-fog',
+    'Rain'         : 'wi-rain',
+    'Thunderstorm' : 'wi-thunderstorm',
+    'Snow'         : 'wi-snow',
+    'Hail'         : 'wi-hail',
+    'None'         : 'wi-day-sunny'
+};
+
 WeatherFilter = function WeatherFilter(elementId, accidents) {
 
     var fil = this;
@@ -18,30 +27,52 @@ WeatherFilter = function WeatherFilter(elementId, accidents) {
         _selected[ event ] = true;
     }
 
-    // Setup filter controls.
-    this.element = d3.select('#' + this.elementId).append('ul');
-    this.filterOptions = this.element.selectAll('li')
-        .data(weatherEvents);
-    var listItems = this.filterOptions.enter().append('li');
-    listItems.append('input')
-        .attr('type', 'checkbox')
-        .attr('name', function(d) { return d; })
-        .attr('checked', 'checked')
-        .on('change', function() {
-            _selected[ this.name ] = this.checked;
-            fil.accidents.weather.filter(function(d) {
-                for (var event of Object.keys(_selected)) {
-                    if (_selected[ event ] && (event === 'None' ? d === '' : d.indexOf(event) !== -1)) {
-                        return true;
-                    }
+    // Function to update the crossfilter based on the data here.
+    function updateCrossfilter() {
+        fil.accidents.weather.filter(function(d) {
+            for (var event of Object.keys(_selected)) {
+                if (_selected[ event ] && (event === 'None' ? d === '' : d.indexOf(event) !== -1)) {
+                    return true;
                 }
-                return false;
-            });
-            $.event.trigger({ type: 'accidents:crossfilter:update' });
+            }
+            return false;
         });
-    listItems.append('label')
-        .attr('for', function(d) { return d; })
-        .text(function(d) { return d; });
+        $.event.trigger({ type: 'accidents:crossfilter:update' });
+    }
+
+    // Setup main element and label.
+    this.element = d3.select('#' + this.elementId);
+    this.label = this.element.append('div')
+        .attr('class', 'filter-label')
+        .text('Weather');
+
+    // Setup filter controls.
+    var ul = this.element.append('ul');
+    var filterOptions = ul.selectAll('li')
+        .data(weatherEvents);
+    var listItems = filterOptions.enter().append('li')
+        .attr('class', 'active')
+        .attr('title', function(d) { return d; })
+        .on('click', function(d) {
+            _selected[ d ] = !_selected[ d ];
+            this.classList[ _selected[ d ] ? 'add' : 'remove' ]('active');
+            updateCrossfilter();
+        });
+    listItems.append('i')
+        .attr('class', function(d) { return 'wi ' + icons[ d ]; });
+    var resetButton = ul.append('li')
+        .attr('class', 'reset')
+        .on('click', function() {
+            filterOptions.attr('class', 'active');
+            for (var event of Object.keys(_selected)) {
+                _selected[ event ] = true;
+            }
+            updateCrossfilter();
+        });
+    resetButton.append('i')
+        .attr('class', 'fa fa-refresh');
+    this.element.append('div')
+        .attr('class', 'clearfix');
 };
 
 }());

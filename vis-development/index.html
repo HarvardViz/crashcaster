@@ -3,20 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Traffic - Road Safety in Cambridge</title>
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../css/weather-icons.min.css" />
     <link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
-    <div id="container">
-        <div id="accidentTypeFilter"></div>
-        <div id="weatherFilter"></div>
+    <div id="crashboard">
 
-        <div class="clearfix"></div>
+        <div id="crashboardToolbar">
+            <div id="accidentTypeFilter"></div>
+            <div id="weatherFilter"></div>
+            <div id="mapToggle"></div>
+            <div class="clearfix"></div>
+        </div>
 
-        <div id="accidentMap"></div>
-        <div id="yearChart"></div>
-        <div id="monthChart"></div>
-        <div id="dayChart"></div>
-        <div id="hourChart"></div>
+        <div id="accidentMapWrapper">
+            <div id="accidentMap"></div>
+            <div id="yearChart"></div>
+            <div id="monthChart"></div>
+            <div id="dayChart"></div>
+            <div id="hourChart"></div>
+        </div>
+
     </div>
 
     <script src="js/lib/jquery.js"></script>

@@ -1,5 +1,6 @@
-#container {
-    width: 750px;
+#crashboard {
+    width: 900px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     padding: 0 20px;
     margin: 50px auto;
 }
@@ -10,75 +11,127 @@
 }
 
 /*
- * Checkbox Filters
+ * Accident Type / Weather Filters
  */
+
+ #crashboardToolbar {
+    margin-bottom: 16px;
+ }
 
 #accidentTypeFilter,
 #weatherFilter {
-    clear: both;
+    float: left;
+    color: #373A3C;
+    margin-right: 20px;
+}
+#mapToggle {
+    float: right;
+    color: #373A3C;
 }
 
+#accidentTypeFilter .filter-label,
+#weatherFilter .filter-label,
+#mapToggle .filter-label {
+    height: 15px;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 15px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
 #accidentTypeFilter ul,
-#weatherFilter ul {
+#weatherFilter ul,
+#mapToggle ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    clear: both;
 }
-
 #accidentTypeFilter ul li,
-#weatherFilter ul li {
+#weatherFilter ul li,
+#mapToggle ul li {
     float: left;
+    width: 40px;
+    height: 32px;
+    font-size: 17px;
+    line-height: 32px;
+    text-align: center;
+    background: #FFF;
+    border: 1px solid #CCC;
+    margin-left: -1px;
+    opacity: 0.3;
+    cursor: pointer;
 }
-
-#accidentTypeFilter ul li input[type='checkbox'],
-#weatherFilter ul li input[type='checkbox'] {
-    margin-right: 4px;
+#mapToggle ul li {
+    width: auto;
+    font-size: 14px;
+    padding: 0 8px;
 }
-
-#accidentTypeFilter ul li label,
-#weatherFilter ul li label {
-    
+#accidentTypeFilter ul li:hover,
+#weatherFilter ul li:hover,
+#mapToggle ul li:hover {
+    background-color: #E6E6E6;
+    border-color: #ADADAD;
+}
+#accidentTypeFilter ul li.reset,
+#weatherFilter ul li.reset,
+#mapToggle ul li.reset {
+    color: #FFF;
+    background-color: #D9534F;
+    border-color: #D9534F;
+    opacity: 1.0;
+}
+#accidentTypeFilter ul li.reset:hover,
+#weatherFilter ul li.reset:hover,
+#mapToggle ul li.reset:hover {
+    background-color: #C9302C;
+    border-color: #C12E2A;
+}
+#accidentTypeFilter ul li:first-child,
+#weatherFilter ul li:first-child,
+#mapToggle ul li:first-child {
+    border-radius: 3px 0 0 3px;
+    margin-left: 0;
+}
+#accidentTypeFilter ul li:last-child,
+#weatherFilter ul li:last-child,
+#mapToggle ul li:last-child {
+    border-radius: 0 3px 3px 0;
+}
+#accidentTypeFilter ul li.active,
+#weatherFilter ul li.active,
+#mapToggle ul li.active {
+    opacity: 1.0;
 }
 
 /*
- * Map Toggle
+ * Layout
  */
-.mapToggle {
-    clear: both;
-    margin: 10px 0;
+#accidentMapWrapper {
+    position: relative;
+    width: 900px;
+    height: 575px;
 }
-
-.mapToggle .accidentsToggle,
-.mapToggle .neighborhoodsToggle {
-    float: left;
-    color: #373A3C;
-    background: #FFF;
-    padding: 3px 6px;
-    border: 1px solid #CCC;
-    cursor: pointer;
+#accidentMapWrapper #accidentMap {
+    position: absolute;
+    top: 0; left: 0;
 }
-
-.mapToggle .accidentsToggle.selected,
-.mapToggle .neighborhoodsToggle.selected {
-    background: #E6E6E6;
+#accidentMapWrapper #yearChart,
+#accidentMapWrapper #monthChart,
+#accidentMapWrapper #dayChart,
+#accidentMapWrapper #hourChart {
+    position: absolute;
+    right: 10px;
 }
-
-.mapToggle .accidentsToggle {
-    border-radius: 3px 0 0 3px;
-}
-
-.mapToggle .neighborhoodsToggle {
-    border-radius: 0 3px 3px 0;
-    border-left: none;
-}
+#accidentMapWrapper #yearChart { top: 0; }
+#accidentMapWrapper #monthChart { top: 80px; }
+#accidentMapWrapper #dayChart { top: 160px; }
+#accidentMapWrapper #hourChart { top: 240px; }
 
 /*
  * Accident Map
  */
 
 #accidentMap svg {
-    background: #EEE;
 }
 
 #accidentMap svg path.neighborhood {
@@ -110,7 +163,17 @@
 #monthChart svg,
 #dayChart svg,
 #hourChart svg {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
 
+#yearChart svg .chart-title,
+#monthChart svg .chart-title,
+#dayChart svg .chart-title,
+#hourChart svg .chart-title {
+    font-weight: 600;
+    font-size: 11px;
+    fill: #373A3C;
+    text-transform: uppercase;
 }
 
 #yearChart svg .axis path,
@@ -126,11 +189,10 @@
     fill: none;
 }
 
-#yearChart svg .y-axis text,
-#monthChart svg .y-axis text,
-#dayChart svg .y-axis text,
-#hourChart svg .y-axis text,
-#hourChart svg .x-axis text {
+#yearChart svg .axis text,
+#monthChart svg .axis text,
+#dayChart svg .axis text,
+#hourChart svg .axis text {
     font-size: 12px;
     fill: #333;
 }
@@ -139,7 +201,7 @@
 #monthChart svg .bg path.area,
 #dayChart svg .bg path.area,
 #hourChart svg .bg path.area {
-    fill: #D8D8D8;
+    fill: #FFF;
 }
 
 #yearChart svg .fg path.area,
@@ -154,7 +216,7 @@
 #dayChart svg .bg path.line,
 #hourChart svg .bg path.line {
     stroke-width: 1;
-    stroke: #B2B2B2;
+    stroke: #CCC;
     fill: none;
 }
 
@@ -175,13 +237,9 @@
     fill-opacity: 0.1;
 }
 
-
-
-
-
-/*********************/
-/*  TOOLTIP OVERLAY  */
-/*********************/
+/*
+ * Tooltips
+ */
 
 .tooltip-title {
     display: block;

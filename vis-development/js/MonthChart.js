@@ -3,9 +3,9 @@ var MonthChart;
 (function() {
 
 // Chart size.
-var margin = { top: 10, right: 0, bottom: 25, left: 30 };
-var width = 750 - margin.left - margin.right;
-var height = 100 - margin.top - margin.bottom;
+var margin = { top: 15, right: 0, bottom: 15, left: 30 };
+var width = 450 - margin.left - margin.right;
+var height = 65 - margin.top - margin.bottom;
 
 var xDateFormatter = d3.time.format('%b');
 
@@ -24,6 +24,11 @@ MonthChart = function MonthChart(elementId, accidents) {
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
         .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+    this.title = this.svg.append('text')
+        .attr('class', 'chart-title')
+        .attr('transform', 'translate(' + margin.left + ', 10)')
+        .text('Month');
 
     this.chart = this.svg.append('g')
         .attr('transform',  'translate(' + margin.left + ',' + margin.top + ')');
@@ -47,7 +52,7 @@ MonthChart = function MonthChart(elementId, accidents) {
     this.yAxis = d3.svg.axis()
         .scale(this.y)
         .orient('left')
-        .ticks(5);
+        .ticks(2);
 
     // SVG generators.
     this.area = d3.svg.area()

@@ -3,9 +3,9 @@ var HourChart;
 (function() {
 
 // Chart size.
-var margin = { top: 10, right: 0, bottom: 25, left: 30 };
-var width = 750 - margin.left - margin.right;
-var height = 100 - margin.top - margin.bottom;
+var margin = { top: 15, right: 0, bottom: 15, left: 30 };
+var width = 450 - margin.left - margin.right;
+var height = 65 - margin.top - margin.bottom;
 
 var xDateFormatter = d3.time.format('%-I%p');
 
@@ -17,13 +17,18 @@ HourChart = function HourChart(elementId, accidents) {
     this.accidents = accidents;
 
     this.startDate = new Date(2014, 0, 1);
-    this.endDate = new Date(2014, 0, 2, 0, 0, -1);
+    this.endDate = new Date(2014, 0, 2);
 
     // Setup chart.
     this.svg = d3.select('#' + this.elementId).append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
         .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+    this.title = this.svg.append('text')
+        .attr('class', 'chart-title')
+        .attr('transform', 'translate(' + margin.left + ', 10)')
+        .text('Time of Day');
 
     this.chart = this.svg.append('g')
         .attr('transform',  'translate(' + margin.left + ',' + margin.top + ')');
@@ -40,14 +45,14 @@ HourChart = function HourChart(elementId, accidents) {
     this.xAxis = d3.svg.axis()
         .scale(this.x)
         .orient('bottom')
-        .ticks(d3.time.hours)
+        .ticks(d3.time.hours, 2)
         .innerTickSize(-height)
         .tickFormat(function(d) { return xDateFormatter(d).replace('AM', 'am').replace('PM', 'pm'); });
 
     this.yAxis = d3.svg.axis()
         .scale(this.y)
         .orient('left')
-        .ticks(5);
+        .ticks(2);
 
     // SVG generators.
     this.area = d3.svg.area()
@@ -128,14 +133,9 @@ HourChart = function HourChart(elementId, accidents) {
     // Draw axes and axis labels.
     this.xAxis_g = this.chart.append('g')
         .attr('class', 'axis x-axis')
+        .style('text-anchor', 'middle')
         .attr('transform', 'translate(0, ' + height + ')')
         .call(this.xAxis);
-    // Center the day labels.
-    var ticks = this.xAxis.scale().ticks(this.xAxis.ticks()[ 0 ]);
-    var tickSize = this.x(ticks[ 1 ]) - this.x(ticks[ 0 ]);
-    this.xAxis_g.selectAll('.tick text')
-        .style('text-anchor', 'middle')
-        .attr('x', tickSize / 2);
 
     this.yAxis_g = this.chart.append('g')
         .attr('class', 'axis y-axis')
