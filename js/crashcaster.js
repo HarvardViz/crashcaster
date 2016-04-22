@@ -59,7 +59,7 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
                 } else if(moduleReadyStateTimer >= moduleReadyStateMaxWaitTime) {
 
                     console.error("Timeout loading plug-in module '" + currentModule + "' after waiting " + moduleReadyStateTimer + "ms.");
-                    console.error("Please be sure that '" + currentModule + "' sets its internal once fully loaded, e.g.");
+                    console.error("Please be sure that '" + currentModule + "' sets its internal READY_STATE once fully loaded, e.g.");
                     console.error("    READY_STATE._current = READY_STATE.LOADED;");
                     console.error("Otherwise raise the `crashcast.moduleReadyStateMaxWaitTime` value higher than the current " + moduleReadyStateMaxWaitTime +"ms.");
 
@@ -108,45 +108,18 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
         loadModules();
     }
 
-    // Run the entirety of `crashcast` once the plug-in submodules are ready to run
+    // Run the entirety of `crashcast` once the plug-in submodules are initialized and ready to run
     function run() {
 
-        console.log("Current condition is " + my.weather.current.current_observation.icon);
-
-        showLocation();
-        updateClock();
-        timedUpdate();
+        // Run UI modules from here, once everything is loaded and initialized
+        my.ui_forecast.run();
 
     }
 
     function echo(v) {
         console.log(v);
     };
-
-
-    // For future use to set various locations
-    function showLocation() {
-
-        var city = "Cambridge";
-        var state = "MA";
-
-        $('#current-location').text(city + ", " + state);
-
-    }
-
-    // Show the current date and time
-    function updateClock() {
-        var now = moment();
-        $('#current-datetime').text(now.format('llll'));
-    }
-
-
-    // Run the update tick
-    function timedUpdate() {
-        updateClock();
-        setTimeout(timedUpdate, 1000);
-    }
-
+    
 
     // Use the selective longhand to add properties to the existing `my` object.  Don't do this for plug-in modules use {} instead
     my.plugin_name = plugin_name;
@@ -157,13 +130,11 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
     my.run = run;
     my.echo = echo;
     my.executeFunctionByName = executeFunctionByName;
-    my.updateClock = updateClock;
-    my.showLocation = showLocation;
 
 
     return my;
 
-})(crashcaster || {}, ["crashcaster.weather", "crashcaster.model"], $, d3, moment);
+})(crashcaster || {}, ["crashcaster.weather", "crashcaster.model", "crashcaster.ui_forecast"], $, d3, moment);
 
 
 

@@ -30,6 +30,11 @@ crashcaster.module_template_copy_me = (function (cc$, $, d3) {
         getWeather();
     }
 
+    // Once the module is ready via init(), add anything that needs to be run here
+    function run() {
+        echo("running crashcaster.module_template_copy_me");
+    }
+
     // COOL VARS & METHODS GO HERE
 
     var some_data = {}; // Some JSON data to expose publically by adding it to the var my = {} object at the bottom
@@ -69,6 +74,7 @@ crashcaster.module_template_copy_me = (function (cc$, $, d3) {
         plugin_version: plugin_version,
         READY_STATE: READY_STATE,
         init: init,
+        run: run,
         echo: echo,
         some_data: some_data
     };
