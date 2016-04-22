@@ -1,0 +1,1258 @@
+crashcaster.crossfilter = (function (cc$, $, queue, d3, crossfilter) {
+    /* Above:
+     * 1. Define the plug-in module name, e.g. `crashcaster.weather` (no `var` is needed since `crashcaster` already exists)
+     * 2. The plug-in module name should be named to match, e.g. `crashcaster.weather.js`
+     * 3. The function arguments are libraries we want to import for use within the closure (this plug-in module), e.g. $, d3
+     *    Note `cc$` is a shortcut to the main `crashcaster` object, you could just as easily use `crashcaster` instead
+     *
+     *    IMPORTANT:  For async calls like d3.json be sure to set the current READY_STATE in the callback to LOADED or in the
+     *    init(), e.g.
+     *
+     *      READY_STATE._current = READY_STATE.LOADED;
+     *
+     *  4. Update the last line of the `crashcaster.js` by adding the module name to the module array, e.g.
+     *
+     *      })(crashcaster || {}, ["crashcaster.weather", "crashcaster.model"], $, d3, moment);
+     */
+
+
+    /* Your plug-in module code here - write simple functions
+     * --------------------------------------------------------------------- */
+
+    var plugin_name = "crashcaster.crossfilter";
+    var plugin_version = "0.0.1";
+    var READY_STATE = { _current: -1, NOT_STARTED: 0, LOADING: 1, LOADED: 2 };
+
+
+    // Add ANYTHING that needs happen when this plugin/module is initialized
+    function init() {
+        READY_STATE._current = READY_STATE.NOT_STARTED;
+        echo("initialize " + plugin_name);
+        loadData();
+    }
+
+    // Once the module is ready via init(), add anything that needs to be run here
+    function run() {
+        echo("running " + plugin_name);
+    }
+
+    // Public method: A simple example function, exposed as a public method in the var my = {} object at the bottom
+    function echo(v) {
+        console.log(v);
+    };
+
+    var filters = {
+        accidentTypeFilter: null,
+        weatherFilter: null
+    };
+
+    var visualizations = {
+        accidentMap: null,
+        yearChart: null,
+        monthChart: null,
+        dayChart: null,
+        hourChart: null
+    };
+
+    // Private method: fetch the weather data
+    function loadData() {
+
+        READY_STATE._current = READY_STATE.LOADING;
+
+        queue()
+            .defer(d3.json, 'data/BOUNDARY_CityBoundary.geojson')
+            .defer(d3.json, 'data/BOUNDARY_Neighborhoods.geojson')
+            .defer(d3.json, 'data/BASEMAP_Roads.geojson')
+            .defer(d3.json, 'data/cambridge_accidents_2010-2014.json')
+            .defer(d3.json, 'data/cambridge_weather_2010-2014.json')
+            .defer(d3.json, 'data/cambridge_citations_2010-2014.json')
+            .await(processData);
+    }
+
+    function processData(err, boundary, neighborhoods, roads, accidents, weather, citations) {
+
+        if (err) { throw err; }
+
+        // Convert date information.
+        accidents.forEach(function(d, i) {
+            d.id = i;
+            d.date = new Date(d.date);
+        });
+        // Create a weather lookup, by date.
+        var _weatherLookup = {};
+        weather.forEach(function(d) {
+            d.date = new Date(d.date);
+            d.sunrise = new Date(d.sunrise);
+            d.sunset = new Date(d.sunset);
+            _weatherLookup[ d3.time.format("%Y-%m-%d")(d.date) ] = d;
+        });
+        citations.forEach(function(d) {
+            d.date = new Date(d.date);
+        });
+
+        // Initialize cross filtering for accidents.
+        accidents = crossfilter(accidents);
+        accidents.all           = accidents.dimension(function(d, i) { return i; });
+        accidents.accidentType  = accidents.dimension(function(d) { return d.accidentType; });
+        accidents.accidentTypes = accidents.accidentType.group();
+        accidents.weather       = accidents.dimension(function(d) {
+            var weatherData = _weatherLookup[ d3.time.format("%Y-%m-%d")(d.date) ];
+            var result = [];
+            if (weatherData.events.fog) { result.push('Fog'); }
+            if (weatherData.events.rain) { result.push('Rain'); }
+            if (weatherData.events.thunderstorm) { result.push('Thunderstorm'); }
+            if (weatherData.events.snow) { result.push('Snow'); }
+            if (weatherData.events.hail) { result.push('Hail'); }
+            return result.join('-');
+        });
+        accidents.year          = accidents.dimension(function(d) { return new Date(d.date.getFullYear(), d.date.getMonth(), 0); });
+        accidents.years         = accidents.year.group();
+        accidents.month         = accidents.dimension(function(d) { return new Date(2014, d.date.getMonth(), d.date.getDate()); });
+        accidents.months        = accidents.month.group();
+        accidents.day           = accidents.dimension(function(d) { return new Date(2014, 0, 5 + d.date.getDay(), d.date.getHours()); });
+        accidents.days          = accidents.day.group();
+        accidents.hour          = accidents.dimension(function(d) { return new Date(2014, 0, 1, d.date.getHours()); });
+        accidents.hours         = accidents.hour.group();
+
+        // Create visualizations.
+        filters.accidentTypeFilter = new AccidentTypeFilter('accidentTypeFilter', accidents);
+        filters.weatherFilter = new WeatherFilter('weatherFilter', accidents);
+        visualizations.accidentMap = new AccidentMap('accidentMap', 'mapToggle', boundary, roads, neighborhoods, accidents);
+        visualizations.yearChart = new YearChart('yearChart', accidents);
+        visualizations.monthChart = new MonthChart('monthChart', accidents);
+        visualizations.dayChart = new DayChart('dayChart', accidents);
+        visualizations.hourChart = new HourChart('hourChart', accidents);
+
+        // Update each visualization when the crossfilter is updated.
+        $(document).on('accidents:crossfilter:update', function() {
+            visualizations.accidentMap.update();
+            visualizations.yearChart.update();
+            visualizations.monthChart.update();
+            visualizations.dayChart.update();
+            visualizations.hourChart.update();
+        });
+
+        READY_STATE._current = READY_STATE.LOADED;
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // AccidentMap
+    //----------------------------------------------------------------------------------------------
+
+    var AccidentMap;
+
+    (function() {
+
+    // Chart size.
+    var width = 750;
+    var height = 575;
+
+    // Map projection.
+    var center = [ -71.112, 42.378 ];
+    var projection = d3.geo.albers()
+        .translate([ width / 2, height / 2 ])
+        .scale(600000)
+        .rotate([ -center[ 0 ], 0 ])
+        .center([ 0, center[ 1 ] ]);
+    var path = d3.geo.path()
+        .projection(projection);
+
+    var MapView = {
+        Accidents: 0,
+        Neighborhoods: 1
+    };
+
+    AccidentMap = function AccidentMap(elementId, toggleElementId, boundary, roads, neighborhoods, accidents) {
+
+        var vis = this;
+
+        this.elementId = elementId;
+        this.element = d3.select('#' + this.elementId);
+        this.toggleElementId = toggleElementId;
+        this.toggleElement = d3.select('#' + this.toggleElementId);
+
+        this.boundary = boundary;
+        this.roads = roads;
+        this.neighborhoods = neighborhoods;
+        this.accidents = accidents;
+
+        // Setup toggle controls.
+        this._currentView = MapView.Accidents;
+
+        this.label = this.toggleElement.append('div')
+            .attr('class', 'filter-label')
+            .text('Map View');
+
+        this.mapToggle = this.toggleElement.append('ul');
+        this.accidentsToggle = this.mapToggle.append('li')
+            .attr('class', 'active')
+            .text('Accidents')
+            .on('click', function() {
+                if (vis._currentView === MapView.Accidents) { return; }
+                vis.accidentsToggle.classed('active', true);
+                vis.neighborhoodsToggle.classed('active', false);
+                vis._currentView = MapView.Accidents;
+                vis.update();
+            });
+        this.neighborhoodsToggle = this.mapToggle.append('li')
+            .text('Neighborhoods')
+            .on('click', function() {
+                if (vis._currentView === MapView.Neighborhoods) { return; }
+                vis.accidentsToggle.classed('active', false);
+                vis.neighborhoodsToggle.classed('active', true);
+                vis._currentView = MapView.Neighborhoods;
+                vis.update();
+            });
+        this.element.append('div')
+            .attr('class', 'clearfix');
+
+        // Setup chart.
+        this.svg = this.element.append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('viewBox', '0 0 ' + width + ' ' + height);
+        this.chart = this.svg.append('g');
+
+        // Draw the boundary of the map.
+        var boundary = this.chart.selectAll('path.boundary')
+            .data(this.boundary.features);
+        boundary.enter().append('path')
+            .attr('class', 'boundary')
+            .attr('d', path);
+
+        // Draw the roads on the map.
+        var roads = this.chart.selectAll('path.road')
+            .data(this.roads.features);
+        roads.enter().append('path')
+            .attr('class', 'road')
+            .attr('d', path);
+
+        // Setup tooltips.
+        this.tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([ -10, 0 ])
+            .html(function(d) {
+                return d.properties.NAME;
+            });
+        this.svg.call(this.tip);
+
+        this.update();
+    }
+    AccidentMap.prototype = {
+
+        /**
+         * Updates the map. This should be called any time data for the map is updated.
+         */
+        update: function() {
+
+            var data = this.accidents.all.top(Infinity);
+
+            // Draw the accidents view.
+            if (this._currentView === MapView.Accidents) {
+
+                // Delete all existing neighborhoods.
+                this.chart.selectAll('path.neighborhood').remove();
+
+                // Draw the accident data points on the map.
+                var points = this.chart.selectAll('circle.accident')
+                    .data(data, function(d) { return d.id; });
+                points.enter().append('circle')
+                    .attr('class', 'accident')
+                    .attr('cx', function(d) { return projection(d.coordinates)[ 0 ]; })
+                    .attr('cy', function(d) { return projection(d.coordinates)[ 1 ]; })
+                    .attr('r', 2);
+                points.exit().remove();
+            }
+            // Draw the neighborhoods view.
+            else {
+
+                // Delete all existing accident points.
+                this.chart.selectAll('circle.accident').remove();
+
+                // Compute the choropleth values for the data.
+                var _numAccidents = {};
+                var _maxAccidents = 0;
+                this.neighborhoods.features.forEach(function(d) {
+                    _numAccidents[ d.properties[ 'N_HOOD' ] ] = 0;
+                });
+                data.forEach(function(d) {
+                    if (d.neighborhood !== null) {
+                        if (++_numAccidents[ d.neighborhood ] > _maxAccidents) {
+                            _maxAccidents = _numAccidents[ d.neighborhood ];
+                        }
+                    }
+                });
+                var accidentLevels = {};
+                for (var id of Object.keys(_numAccidents)) {
+                    accidentLevels[ id ] = _numAccidents[ id ] / _maxAccidents;
+                }
+
+                // Draw the neighborhoods on the map.
+                var neighborhoods = this.chart.selectAll('path.neighborhood')
+                    .data(this.neighborhoods.features);
+                neighborhoods.enter().append('path')
+                    .attr('class', 'neighborhood')
+                    .attr('d', path)
+                    .on('mouseover', this.tip.show)
+                    .on('mouseout', this.tip.hide)
+                neighborhoods
+                    .attr('fill-opacity', function(d) {
+                        return accidentLevels[ d.properties[ 'N_HOOD' ] ] || 0;
+                    });
+                neighborhoods.exit().remove();
+            }
+        }
+    }
+
+    })();
+
+    //----------------------------------------------------------------------------------------------
+    // AccidentTypeFilter
+    //----------------------------------------------------------------------------------------------
+
+    var AccidentTypeFilter;
+
+    (function() {
+
+    var icons = {
+        'Auto'             : 'fa-car',
+        'Motorcycle/Moped' : 'fa-motorcycle',
+        'Bicycle'          : 'fa-bicycle',
+        'Pedestrian'       : 'fa-male',
+        'Parked Vehicle'   : 'fa-arrow-circle-down',
+        'Fixed Object'     : 'fa-tree',
+        'Miscellaneous'    : 'fa-ellipsis-h'
+    };
+
+    AccidentTypeFilter = function AccidentTypeFilter(elementId, accidents) {
+
+        var fil = this;
+
+        this.elementId = elementId;
+        this.accidents = accidents;
+
+        // All unique accident types.
+        var accidentTypes = [ 'Auto', 'Motorcycle/Moped', 'Bicycle', 'Pedestrian', 'Parked Vehicle', 'Fixed Object', 'Miscellaneous' ];
+
+        // Initialize all accident types as selected.
+        var _selected = {};
+        for (var type of accidentTypes) {
+            _selected[ type ] = true;
+        }
+
+        // Function to update the crossfilter based on the data here.
+        function updateCrossfilter() {
+            fil.accidents.accidentType.filter(function(d) {
+                return _selected[ d ];
+            });
+            $.event.trigger({ type: 'accidents:crossfilter:update' });
+        }
+
+        // Setup main element and label.
+        this.element = d3.select('#' + this.elementId);
+        this.label = this.element.append('div')
+            .attr('class', 'filter-label')
+            .text('Accident Types');
+
+        // Setup filter controls.
+        var ul = this.element.append('ul');
+        var filterOptions = ul.selectAll('li')
+            .data(accidentTypes);
+        var listItems = filterOptions.enter().append('li')
+            .attr('class', 'active')
+            .attr('title', function(d) { return d; })
+            .on('click', function(d) {
+                _selected[ d ] = !_selected[ d ];
+                this.classList[ _selected[ d ] ? 'add' : 'remove' ]('active');
+                updateCrossfilter();
+            });
+        listItems.append('i')
+            .attr('class', function(d) { return 'fa ' + icons[ d ]; });
+        var resetButton = ul.append('li')
+            .attr('class', 'reset')
+            .on('click', function() {
+                filterOptions.attr('class', 'active');
+                for (var event of Object.keys(_selected)) {
+                    _selected[ event ] = true;
+                }
+                updateCrossfilter();
+            });
+        resetButton.append('i')
+            .attr('class', 'fa fa-refresh');
+        this.element.append('div')
+            .attr('class', 'clearfix');
+    };
+
+    }());
+
+    //----------------------------------------------------------------------------------------------
+    // WeatherFilter
+    //----------------------------------------------------------------------------------------------
+
+    var WeatherFilter;
+
+    (function() {
+
+    var icons = {
+        'Fog'          : 'wi-fog',
+        'Rain'         : 'wi-rain',
+        'Thunderstorm' : 'wi-thunderstorm',
+        'Snow'         : 'wi-snow',
+        'Hail'         : 'wi-hail',
+        'None'         : 'wi-day-sunny'
+    };
+
+    WeatherFilter = function WeatherFilter(elementId, accidents) {
+
+        var fil = this;
+
+        this.elementId = elementId;
+        this.accidents = accidents;
+
+        // All unique weather events.
+        var weatherEvents = [ 'Fog', 'Rain', 'Thunderstorm', 'Snow', 'Hail', 'None' ];
+
+        // Initialize all accident types as selected.
+        var _selected = {};
+        for (var event of weatherEvents) {
+            _selected[ event ] = true;
+        }
+
+        // Function to update the crossfilter based on the data here.
+        function updateCrossfilter() {
+            fil.accidents.weather.filter(function(d) {
+                for (var event of Object.keys(_selected)) {
+                    if (_selected[ event ] && (event === 'None' ? d === '' : d.indexOf(event) !== -1)) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+            $.event.trigger({ type: 'accidents:crossfilter:update' });
+        }
+
+        // Setup main element and label.
+        this.element = d3.select('#' + this.elementId);
+        this.label = this.element.append('div')
+            .attr('class', 'filter-label')
+            .text('Weather');
+
+        // Setup filter controls.
+        var ul = this.element.append('ul');
+        var filterOptions = ul.selectAll('li')
+            .data(weatherEvents);
+        var listItems = filterOptions.enter().append('li')
+            .attr('class', 'active')
+            .attr('title', function(d) { return d; })
+            .on('click', function(d) {
+                _selected[ d ] = !_selected[ d ];
+                this.classList[ _selected[ d ] ? 'add' : 'remove' ]('active');
+                updateCrossfilter();
+            });
+        listItems.append('i')
+            .attr('class', function(d) { return 'wi ' + icons[ d ]; });
+        var resetButton = ul.append('li')
+            .attr('class', 'reset')
+            .on('click', function() {
+                filterOptions.attr('class', 'active');
+                for (var event of Object.keys(_selected)) {
+                    _selected[ event ] = true;
+                }
+                updateCrossfilter();
+            });
+        resetButton.append('i')
+            .attr('class', 'fa fa-refresh');
+        this.element.append('div')
+            .attr('class', 'clearfix');
+    };
+
+    }());
+
+    //----------------------------------------------------------------------------------------------
+    // YearChart
+    //----------------------------------------------------------------------------------------------
+
+    var YearChart;
+
+    (function() {
+
+    // Chart size.
+    var margin = { top: 15, right: 0, bottom: 15, left: 30 };
+    var width = 450 - margin.left - margin.right;
+    var height = 65 - margin.top - margin.bottom;
+
+    var xDateFormatter = d3.time.format('%Y');
+
+    YearChart = function YearChart(elementId, accidents) {
+
+        var vis = this;
+
+        this.elementId = elementId;
+        this.accidents = accidents;
+
+        this.startDate = new Date(2010, 0, 1);
+        this.endDate = new Date(2015, 0, 0, 0, 0, -1);
+
+        // Setup chart.
+        this.svg = d3.select('#' + this.elementId).append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+        this.title = this.svg.append('text')
+            .attr('class', 'chart-title')
+            .attr('transform', 'translate(' + margin.left + ', 10)')
+            .text('Year');
+
+        this.chart = this.svg.append('g')
+            .attr('transform',  'translate(' + margin.left + ',' + margin.top + ')');
+
+        // Setup scales.
+        this.x = d3.time.scale()
+            .domain([ this.startDate, this.endDate ])
+            .range([ 0, width ]);
+
+        this.y = d3.scale.linear()
+            .range([ height, 0 ]);
+
+        // Setup axes.
+        this.xAxis = d3.svg.axis()
+            .scale(this.x)
+            .orient('bottom')
+            .ticks(d3.time.years)
+            .innerTickSize(-height)
+            .tickFormat(xDateFormatter);
+
+        this.yAxis = d3.svg.axis()
+            .scale(this.y)
+            .orient('left')
+            .ticks(2);
+
+        // SVG generators.
+        this.area = d3.svg.area()
+            .x(function(d) { return vis.x(d.key); })
+            .y0(height)
+            .y1(function(d) { return vis.y(d.value); })
+            .interpolate('step-after');
+
+        this.line = d3.svg.line()
+            .x(function(d) { return vis.x(d.key); })
+            .y(function(d) { return vis.y(d.value); })
+            .interpolate('step-after');
+
+        // Create the foreground and background chart groups / paths.
+        for (var name of [ 'bg', 'fg' ]) {
+            this[ name + '_chart' ] = this.chart.append('g')
+                .attr('class', name);
+            this[ name + '_area_path' ] = this[ name + '_chart' ].append('path')
+                .attr('class', 'area');
+            this[ name + '_line_path' ] = this[ name + '_chart' ].append('path')
+                .attr('class', 'line');
+        }
+        this.fg_chart
+            .attr('clip-path', 'url(#' + this.elementId + '-brush-clip)');
+
+        // Setup brush.
+        this.brush = d3.svg.brush()
+            .x(this.x)
+            .on('brush', function() {
+                var extent0 = vis.brush.extent();
+                var extent1;
+                // If dragging, preserve the width of the extent.
+                if (d3.event.mode === 'move') {
+                    var d0 = d3.time.year.round(extent0[ 0 ]);
+                    var d1 = d3.time.year.offset(d0, Math.round((extent0[ 1 ] - extent0[ 0 ]) / 31536000000));
+                    extent1 = [ d0, d1 ];
+                }
+                // If resizing, round both dates.
+                else {
+                    extent1 = extent0.map(d3.time.year.round);
+                }
+                // Apply the new extent to the brush and clip path.
+                d3.select(this)
+                    .call(vis.brush.extent(extent1));
+                d3.select('#' + vis.elementId + '-brush-clip rect')
+                    .attr('x', vis.x(extent1[ 0 ]))
+                    .attr('width', vis.x(extent1[ 1 ]) - vis.x(extent1[ 0 ]));
+                // Apply the new extent to the crossfilter.
+                vis.accidents.year.filterRange(extent1);
+                // Issue an event informing all visualizations that the crossfilter has been updated.
+                $.event.trigger({ type: 'accidents:crossfilter:update' });
+            })
+            .on('brushend', function() {
+                if (vis.brush.empty()) {
+                    // Reset the clip path.
+                    d3.select('#' + vis.elementId + '-brush-clip rect')
+                        .attr('x', 0)
+                        .attr('width', width);
+                    // Reset the crossfilter.
+                    vis.accidents.year.filterAll();
+                }
+                // Issue an event informing all visualizations that the crossfilter has been updated.
+                $.event.trigger({ type: 'accidents:crossfilter:update' });
+            });
+
+        this.chart.append('g')
+            .attr('class', 'brush')
+            .call(this.brush)
+            .selectAll('rect')
+                .attr('height', height);
+
+        this.brushClip = this.chart.append('clipPath')
+                .attr('id', this.elementId + '-brush-clip')
+            .append('rect')
+                .attr('width', width)
+                .attr('height', height);
+
+        // Draw axes and axis labels.
+        this.xAxis_g = this.chart.append('g')
+            .attr('class', 'axis x-axis')
+            .attr('transform', 'translate(0, ' + height + ')')
+            .call(this.xAxis);
+        // Center the day labels.
+        var ticks = this.xAxis.scale().ticks(this.xAxis.ticks()[ 0 ]);
+        var tickSize = this.x(ticks[ 1 ]) - this.x(ticks[ 0 ]);
+        this.xAxis_g.selectAll('.tick text')
+            .style('text-anchor', 'middle')
+            .attr('x', tickSize / 2);
+
+        this.yAxis_g = this.chart.append('g')
+            .attr('class', 'axis y-axis')
+            .attr('transform', 'translate(0, 0)');
+
+        this.update();
+    }
+    YearChart.prototype = {
+
+        /**
+         * Updates the chart. This should be called any time data for the chart is updated.
+         */
+        update: function() {
+
+            // Get the data from the crossfilter group.
+            var data = this.accidents.years.all();
+
+            // Set the y domain and update the y axis.
+            this.y
+                .domain([ 0, d3.max(data, function(d) { return d.value; }) ]);
+            this.yAxis_g
+                .transition()
+                .delay(50)
+                .duration(300)
+                .call(this.yAxis);
+
+            // Draw the background and foreground charts.
+            for (var name of [ 'bg', 'fg']) {
+                this[ name + '_area_path' ]
+                    .datum(data)
+                    .transition()
+                    .delay(50)
+                    .duration(300)
+                    .attr('d', this.area);
+                this[ name + '_line_path' ]
+                    .datum(data)
+                    .transition()
+                    .delay(50)
+                    .duration(300)
+                    .attr('d', this.line);
+            }
+        }
+    }
+
+    })();
+
+    //----------------------------------------------------------------------------------------------
+    // MonthChart
+    //----------------------------------------------------------------------------------------------
+
+    var MonthChart;
+
+    (function() {
+
+    // Chart size.
+    var margin = { top: 15, right: 0, bottom: 15, left: 30 };
+    var width = 450 - margin.left - margin.right;
+    var height = 65 - margin.top - margin.bottom;
+
+    var xDateFormatter = d3.time.format('%b');
+
+    MonthChart = function MonthChart(elementId, accidents) {
+
+        var vis = this;
+
+        this.elementId = elementId;
+        this.accidents = accidents;
+
+        this.startDate = new Date(2014, 0, 1);
+        this.endDate = new Date(2015, 0, 0, 0, 0, -1);
+
+        // Setup chart.
+        this.svg = d3.select('#' + this.elementId).append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+        this.title = this.svg.append('text')
+            .attr('class', 'chart-title')
+            .attr('transform', 'translate(' + margin.left + ', 10)')
+            .text('Month');
+
+        this.chart = this.svg.append('g')
+            .attr('transform',  'translate(' + margin.left + ',' + margin.top + ')');
+
+        // Setup scales.
+        this.x = d3.time.scale()
+            .domain([ this.startDate, this.endDate ])
+            .range([ 0, width ]);
+
+        this.y = d3.scale.linear()
+            .range([ height, 0 ]);
+
+        // Setup axes.
+        this.xAxis = d3.svg.axis()
+            .scale(this.x)
+            .orient('bottom')
+            .ticks(d3.time.months)
+            .innerTickSize(-height)
+            .tickFormat(xDateFormatter);
+
+        this.yAxis = d3.svg.axis()
+            .scale(this.y)
+            .orient('left')
+            .ticks(2);
+
+        // SVG generators.
+        this.area = d3.svg.area()
+            .x(function(d) { return vis.x(d.key); })
+            .y0(height)
+            .y1(function(d) { return vis.y(d.value); })
+            .interpolate('step-after');
+
+        this.line = d3.svg.line()
+            .x(function(d) { return vis.x(d.key); })
+            .y(function(d) { return vis.y(d.value); })
+            .interpolate('step-after');
+
+        // Create the foreground and background chart groups / paths.
+        for (var name of [ 'bg', 'fg' ]) {
+            this[ name + '_chart' ] = this.chart.append('g')
+                .attr('class', name);
+            this[ name + '_area_path' ] = this[ name + '_chart' ].append('path')
+                .attr('class', 'area');
+            this[ name + '_line_path' ] = this[ name + '_chart' ].append('path')
+                .attr('class', 'line');
+        }
+        this.fg_chart
+            .attr('clip-path', 'url(#' + this.elementId + '-brush-clip)');
+
+        // Setup brush.
+        this.brush = d3.svg.brush()
+            .x(this.x)
+            .on('brush', function() {
+                var extent0 = vis.brush.extent();
+                var extent1;
+                // If dragging, preserve the width of the extent.
+                if (d3.event.mode === 'move') {
+                    var d0 = d3.time.month.round(extent0[ 0 ]);
+                    var d1 = d3.time.month.offset(d0, Math.round((extent0[ 1 ] - extent0[ 0 ]) / 2592000000));
+                    extent1 = [ d0, d1 ];
+                }
+                // If resizing, round both dates.
+                else {
+                    extent1 = extent0.map(d3.time.month.round);
+                }
+                // Apply the new extent to the brush and clip path.
+                d3.select(this)
+                    .call(vis.brush.extent(extent1));
+                d3.select('#' + vis.elementId + '-brush-clip rect')
+                    .attr('x', vis.x(extent1[ 0 ]))
+                    .attr('width', vis.x(extent1[ 1 ]) - vis.x(extent1[ 0 ]));
+                // Apply the new extent to the crossfilter.
+                vis.accidents.month.filterRange(extent1);
+                // Issue an event informing all visualizations that the crossfilter has been updated.
+                $.event.trigger({ type: 'accidents:crossfilter:update' });
+            })
+            .on('brushend', function() {
+                if (vis.brush.empty()) {
+                    // Reset the clip path.
+                    d3.select('#' + vis.elementId + '-brush-clip rect')
+                        .attr('x', 0)
+                        .attr('width', width);
+                    // Reset the crossfilter.
+                    vis.accidents.month.filterAll();
+                }
+                // Issue an event informing all visualizations that the crossfilter has been updated.
+                $.event.trigger({ type: 'accidents:crossfilter:update' });
+            });
+
+        this.chart.append('g')
+            .attr('class', 'brush')
+            .call(this.brush)
+            .selectAll('rect')
+                .attr('height', height);
+
+        this.brushClip = this.chart.append('clipPath')
+                .attr('id', this.elementId + '-brush-clip')
+            .append('rect')
+                .attr('width', width)
+                .attr('height', height);
+
+        // Draw axes and axis labels.
+        this.xAxis_g = this.chart.append('g')
+            .attr('class', 'axis x-axis')
+            .attr('transform', 'translate(0, ' + height + ')')
+            .call(this.xAxis);
+        // Center the day labels.
+        var ticks = this.xAxis.scale().ticks(this.xAxis.ticks()[ 0 ]);
+        var tickSize = this.x(ticks[ 1 ]) - this.x(ticks[ 0 ]);
+        this.xAxis_g.selectAll('.tick text')
+            .style('text-anchor', 'middle')
+            .attr('x', tickSize / 2);
+
+        this.yAxis_g = this.chart.append('g')
+            .attr('class', 'axis y-axis')
+            .attr('transform', 'translate(0, 0)');
+
+        this.update();
+    }
+    MonthChart.prototype = {
+
+        /**
+         * Updates the chart. This should be called any time data for the chart is updated.
+         */
+        update: function() {
+
+            // Get the data from the crossfilter group.
+            var data = this.accidents.months.all();
+
+            // Set the y domain and update the y axis.
+            this.y
+                .domain([ 0, d3.max(data, function(d) { return d.value; }) ]);
+            this.yAxis_g
+                .transition()
+                .delay(50)
+                .duration(300)
+                .call(this.yAxis);
+
+            // Draw the background and foreground charts.
+            for (var name of [ 'bg', 'fg']) {
+                this[ name + '_area_path' ]
+                    .datum(data)
+                    .transition()
+                    .delay(50)
+                    .duration(300)
+                    .attr('d', this.area);
+                this[ name + '_line_path' ]
+                    .datum(data)
+                    .transition()
+                    .delay(50)
+                    .duration(300)
+                    .attr('d', this.line);
+            }
+        }
+    }
+
+    })();
+
+    //----------------------------------------------------------------------------------------------
+    // DayChart
+    //----------------------------------------------------------------------------------------------
+
+    var DayChart;
+
+    (function() {
+
+    // Chart size.
+    var margin = { top: 15, right: 0, bottom: 15, left: 30 };
+    var width = 450 - margin.left - margin.right;
+    var height = 65 - margin.top - margin.bottom;
+
+    var xDateFormatter = d3.time.format('%a');
+
+    DayChart = function DayChart(elementId, accidents) {
+
+        var vis = this;
+
+        this.elementId = elementId;
+        this.accidents = accidents;
+
+        this.startDate = new Date(2014, 0, 5);
+        this.endDate = new Date(2014, 0, 12, 0, 0, 0, -1);
+
+        // Setup chart.
+        this.svg = d3.select('#' + this.elementId).append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+        this.title = this.svg.append('text')
+            .attr('class', 'chart-title')
+            .attr('transform', 'translate(' + margin.left + ', 10)')
+            .text('Day of Week');
+
+        this.chart = this.svg.append('g')
+            .attr('transform',  'translate(' + margin.left + ',' + margin.top + ')');
+
+        // Setup scales.
+        this.x = d3.time.scale()
+            .domain([ this.startDate, this.endDate ])
+            .range([ 0, width ]);
+
+        this.y = d3.scale.linear()
+            .range([ height, 0 ]);
+
+        // Setup axes.
+        this.xAxis = d3.svg.axis()
+            .scale(this.x)
+            .orient('bottom')
+            .ticks(d3.time.days)
+            .innerTickSize(-height)
+            .tickFormat(xDateFormatter);
+
+        this.yAxis = d3.svg.axis()
+            .scale(this.y)
+            .orient('left')
+            .ticks(2);
+
+        // SVG generators.
+        this.area = d3.svg.area()
+            .x(function(d) { return vis.x(d.key); })
+            .y0(height)
+            .y1(function(d) { return vis.y(d.value); })
+            .interpolate('step-after');
+
+        this.line = d3.svg.line()
+            .x(function(d) { return vis.x(d.key); })
+            .y(function(d) { return vis.y(d.value); })
+            .interpolate('step-after');
+
+        // Create the foreground and background chart groups / paths.
+        for (var name of [ 'bg', 'fg' ]) {
+            this[ name + '_chart' ] = this.chart.append('g')
+                .attr('class', name);
+            this[ name + '_area_path' ] = this[ name + '_chart' ].append('path')
+                .attr('class', 'area');
+            this[ name + '_line_path' ] = this[ name + '_chart' ].append('path')
+                .attr('class', 'line');
+        }
+        this.fg_chart
+            .attr('clip-path', 'url(#' + this.elementId + '-brush-clip)');
+
+        // Setup brush.
+        this.brush = d3.svg.brush()
+            .x(this.x)
+            .on('brush', function() {
+                var extent0 = vis.brush.extent();
+                var extent1;
+                // If dragging, preserve the width of the extent.
+                if (d3.event.mode === 'move') {
+                    var d0 = d3.time.day.round(extent0[ 0 ]);
+                    var d1 = d3.time.day.offset(d0, Math.round((extent0[ 1 ] - extent0[ 0 ]) / 86400000));
+                    extent1 = [ d0, d1 ];
+                }
+                // If resizing, round both dates.
+                else {
+                    extent1 = extent0.map(d3.time.day.round);
+                }
+                // Apply the new extent to the brush and clip path.
+                d3.select(this)
+                    .call(vis.brush.extent(extent1));
+                d3.select('#' + vis.elementId + '-brush-clip rect')
+                    .attr('x', vis.x(extent1[ 0 ]))
+                    .attr('width', vis.x(extent1[ 1 ]) - vis.x(extent1[ 0 ]));
+                // Apply the new extent to the crossfilter.
+                vis.accidents.day.filterRange(extent1);
+                // Issue an event informing all visualizations that the crossfilter has been updated.
+                $.event.trigger({ type: 'accidents:crossfilter:update' });
+            })
+            .on('brushend', function() {
+                if (vis.brush.empty()) {
+                    // Reset the clip path.
+                    d3.select('#' + vis.elementId + '-brush-clip rect')
+                        .attr('x', 0)
+                        .attr('width', width);
+                    // Reset the crossfilter.
+                    vis.accidents.day.filterAll();
+                }
+                // Issue an event informing all visualizations that the crossfilter has been updated.
+                $.event.trigger({ type: 'accidents:crossfilter:update' });
+            });
+
+        this.chart.append('g')
+            .attr('class', 'brush')
+            .call(this.brush)
+            .selectAll('rect')
+                .attr('height', height);
+
+        this.brushClip = this.chart.append('clipPath')
+                .attr('id', this.elementId + '-brush-clip')
+            .append('rect')
+                .attr('width', width)
+                .attr('height', height);
+
+        // Draw axes and axis labels.
+        this.xAxis_g = this.chart.append('g')
+            .attr('class', 'axis x-axis')
+            .attr('transform', 'translate(0, ' + height + ')')
+            .call(this.xAxis);
+        // Center the day labels.
+        var ticks = this.xAxis.scale().ticks(this.xAxis.ticks()[ 0 ]);
+        var tickSize = this.x(ticks[ 1 ]) - this.x(ticks[ 0 ]);
+        this.xAxis_g.selectAll('.tick text')
+            .style('text-anchor', 'middle')
+            .attr('x', tickSize / 2);
+
+        this.yAxis_g = this.chart.append('g')
+            .attr('class', 'axis y-axis')
+            .attr('transform', 'translate(0, 0)');
+
+        this.update();
+    }
+    DayChart.prototype = {
+
+        /**
+         * Updates the chart. This should be called any time data for the chart is updated.
+         */
+        update: function() {
+
+            // Get the data from the crossfilter group.
+            var data = this.accidents.days.all();
+
+            // Set the y domain and update the y axis.
+            this.y
+                .domain([ 0, d3.max(data, function(d) { return d.value; }) ]);
+            this.yAxis_g
+                .transition()
+                .delay(50)
+                .duration(300)
+                .call(this.yAxis);
+
+            // Draw the background and foreground charts.
+            for (var name of [ 'bg', 'fg']) {
+                this[ name + '_area_path' ]
+                    .datum(data)
+                    .transition()
+                    .delay(50)
+                    .duration(300)
+                    .attr('d', this.area);
+                this[ name + '_line_path' ]
+                    .datum(data)
+                    .transition()
+                    .delay(50)
+                    .duration(300)
+                    .attr('d', this.line);
+            }
+        }
+    }
+
+    })();
+
+    //----------------------------------------------------------------------------------------------
+    // HourChart
+    //----------------------------------------------------------------------------------------------
+
+    var HourChart;
+
+    (function() {
+
+    // Chart size.
+    var margin = { top: 15, right: 0, bottom: 15, left: 30 };
+    var width = 450 - margin.left - margin.right;
+    var height = 65 - margin.top - margin.bottom;
+
+    var xDateFormatter = d3.time.format('%-I%p');
+
+    HourChart = function HourChart(elementId, accidents) {
+
+        var vis = this;
+
+        this.elementId = elementId;
+        this.accidents = accidents;
+
+        this.startDate = new Date(2014, 0, 1);
+        this.endDate = new Date(2014, 0, 2);
+
+        // Setup chart.
+        this.svg = d3.select('#' + this.elementId).append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+        this.title = this.svg.append('text')
+            .attr('class', 'chart-title')
+            .attr('transform', 'translate(' + margin.left + ', 10)')
+            .text('Time of Day');
+
+        this.chart = this.svg.append('g')
+            .attr('transform',  'translate(' + margin.left + ',' + margin.top + ')');
+
+        // Setup scales.
+        this.x = d3.time.scale()
+            .domain([ this.startDate, this.endDate ])
+            .range([ 0, width ]);
+
+        this.y = d3.scale.linear()
+            .range([ height, 0 ]);
+
+        // Setup axes.
+        this.xAxis = d3.svg.axis()
+            .scale(this.x)
+            .orient('bottom')
+            .ticks(d3.time.hours, 2)
+            .innerTickSize(-height)
+            .tickFormat(function(d) { return xDateFormatter(d).replace('AM', 'am').replace('PM', 'pm'); });
+
+        this.yAxis = d3.svg.axis()
+            .scale(this.y)
+            .orient('left')
+            .ticks(2);
+
+        // SVG generators.
+        this.area = d3.svg.area()
+            .x(function(d) { return vis.x(d.key); })
+            .y0(height)
+            .y1(function(d) { return vis.y(d.value); })
+            .interpolate('step-after');
+
+        this.line = d3.svg.line()
+            .x(function(d) { return vis.x(d.key); })
+            .y(function(d) { return vis.y(d.value); })
+            .interpolate('step-after');
+
+        // Create the foreground and background chart groups / paths.
+        for (var name of [ 'bg', 'fg' ]) {
+            this[ name + '_chart' ] = this.chart.append('g')
+                .attr('class', name);
+            this[ name + '_area_path' ] = this[ name + '_chart' ].append('path')
+                .attr('class', 'area');
+            this[ name + '_line_path' ] = this[ name + '_chart' ].append('path')
+                .attr('class', 'line');
+        }
+        this.fg_chart
+            .attr('clip-path', 'url(#' + this.elementId + '-brush-clip)');
+
+        // Setup brush.
+        this.brush = d3.svg.brush()
+            .x(this.x)
+            .on('brush', function() {
+                var extent0 = vis.brush.extent();
+                var extent1;
+                // If dragging, preserve the width of the extent.
+                if (d3.event.mode === 'move') {
+                    var d0 = d3.time.hour.round(extent0[ 0 ]);
+                    var d1 = d3.time.hour.offset(d0, Math.round((extent0[ 1 ] - extent0[ 0 ]) / 3600000));
+                    extent1 = [ d0, d1 ];
+                }
+                // If resizing, round both dates.
+                else {
+                    extent1 = extent0.map(d3.time.hour.round);
+                }
+                // Apply the new extent to the brush and clip path.
+                d3.select(this)
+                    .call(vis.brush.extent(extent1));
+                d3.select('#' + vis.elementId + '-brush-clip rect')
+                    .attr('x', vis.x(extent1[ 0 ]))
+                    .attr('width', vis.x(extent1[ 1 ]) - vis.x(extent1[ 0 ]));
+                // Apply the new extent to the crossfilter.
+                vis.accidents.hour.filterRange(extent1);
+                // Issue an event informing all visualizations that the crossfilter has been updated.
+                $.event.trigger({ type: 'accidents:crossfilter:update' });
+            })
+            .on('brushend', function() {
+                if (vis.brush.empty()) {
+                    // Reset the clip path.
+                    d3.select('#' + vis.elementId + '-brush-clip rect')
+                        .attr('x', 0)
+                        .attr('width', width);
+                    // Reset the crossfilter.
+                    vis.accidents.hour.filterAll();
+                }
+                // Issue an event informing all visualizations that the crossfilter has been updated.
+                $.event.trigger({ type: 'accidents:crossfilter:update' });
+            });
+
+        this.chart.append('g')
+            .attr('class', 'brush')
+            .call(this.brush)
+            .selectAll('rect')
+                .attr('height', height);
+
+        this.brushClip = this.chart.append('clipPath')
+                .attr('id', this.elementId + '-brush-clip')
+            .append('rect')
+                .attr('width', width)
+                .attr('height', height);
+
+        // Draw axes and axis labels.
+        this.xAxis_g = this.chart.append('g')
+            .attr('class', 'axis x-axis')
+            .style('text-anchor', 'middle')
+            .attr('transform', 'translate(0, ' + height + ')')
+            .call(this.xAxis);
+
+        this.yAxis_g = this.chart.append('g')
+            .attr('class', 'axis y-axis')
+            .attr('transform', 'translate(0, 0)');
+
+        this.update();
+    }
+    HourChart.prototype = {
+
+        /**
+         * Updates the chart. This should be called any time data for the chart is updated.
+         */
+        update: function() {
+
+            // Get the data from the crossfilter group.
+            var data = this.accidents.hours.all();
+
+            // Set the y domain and update the y axis.
+            this.y
+                .domain([ 0, d3.max(data, function(d) { return d.value; }) ]);
+            this.yAxis_g
+                .transition()
+                .delay(50)
+                .duration(300)
+                .call(this.yAxis);
+
+            // Draw the background and foreground charts.
+            for (var name of [ 'bg', 'fg']) {
+                this[ name + '_area_path' ]
+                    .datum(data)
+                    .transition()
+                    .delay(50)
+                    .duration(300)
+                    .attr('d', this.area);
+                this[ name + '_line_path' ]
+                    .datum(data)
+                    .transition()
+                    .delay(50)
+                    .duration(300)
+                    .attr('d', this.line);
+            }
+        }
+    }
+
+    })();
+
+    // Call the initialization function by default for this module or call it from elsewhere, e.g.
+    //      crashcaster.module_template_copy_me.init();
+    init();
+
+    // Public variables and methods we want to expose.  Just add the var or function reference here.
+    var my = {
+        plugin_name: plugin_name,
+        plugin_version: plugin_version,
+        READY_STATE: READY_STATE,
+        init: init,
+        run: run,
+        echo: echo,
+        filters: filters,
+        visualizations: visualizations
+    };
+
+
+    // Expose the public variables and methods for this module by returning the public object
+    return my;
+
+})(crashcaster, $, queue, d3, crossfilter);
