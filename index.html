@@ -80,19 +80,19 @@
                     <h4 class="textbox-heading">Travel Type</h4>
 
                     <div class="btn-group" role="group" aria-label="Travel Type">
-                        <button onclick="cc$.setTravel('car')" id="btn_car" type="button"
+                        <button onclick="cc$.ui_forecast.setTravel('car')" id="btn_car" type="button"
                                 class="btn btn-default"><p
                                 class="fa fa-car btn-type-travel"></p>
                             <p>Car</p></button>
-                        <button onclick="cc$.setTravel('bike')" id="btn_bike" type="button"
+                        <button onclick="cc$.ui_forecast.setTravel('bike')" id="btn_bike" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-bicycle btn-type-travel"></p>
                             <p>Bike</p></button>
-                        <button onclick="cc$.setTravel('Motorcycle')" id="btn_motorcycle" type="button"
+                        <button onclick="cc$.ui_forecast.setTravel('Motorcycle')" id="btn_motorcycle" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-motorcycle btn-type-travel"></p>
                             <p>Cycle</p></button>
-                        <button onclick="cc$.setTravel('Pedestrian')" id="btn_pedestrian" type="button"
+                        <button onclick="cc$.ui_forecast.setTravel('Pedestrian')" id="btn_pedestrian" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-male btn-type-travel"></p>
                             <p>Walk</p></button>
@@ -116,17 +116,17 @@
                 <div class="row bg-content-white" align="center">
                     <h4 class="textbox-heading">Current Weather</h4>
                     <div class="btn-group" role="group" aria-label="Weather selection">
-                        <button onclick="rain()" id="btn_rain" type="button" class="btn btn-default"><p
+                        <button onclick="cc$.heatmap.rain()" id="btn_rain" type="button" class="btn btn-default"><p
                                 class="wi wi-wu-chancerain btn-type-weather"></p>
                             <p>Rain</p></button>
-                        <button onclick="snow()" id="btn_snow" type="button"
+                        <button onclick="cc$.heatmap.snow()" id="btn_snow" type="button"
                                 class="btn btn-secondary"><p
                                 class="wi wi-day-snow btn-type-weather"></p>
                             <p>Snow</p></button>
-                        <button onclick="fog()" id="btn_fog" type="button" class="btn btn-secondary"><p
+                        <button onclick="cc$.heatmap.fog()" id="btn_fog" type="button" class="btn btn-secondary"><p
                                 class="wi wi-day-fog btn-type-weather"></p>
                             <p>Fog&nbsp;</p></button>
-                        <button onclick="overview()" id="btn_clear" type="button" class="btn btn-danger"><p
+                        <button onclick="cc$.heatmap.overview()" id="btn_clear" type="button" class="btn btn-danger"><p
                                 class="fa fa-refresh btn-type-weather"></p>
                             <p>Reset</p></button>
                     </div>
