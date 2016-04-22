@@ -81,6 +81,15 @@ AccidentMap = function AccidentMap(elementId, boundary, roads, neighborhoods, ac
         .attr('class', 'road')
         .attr('d', path);
 
+    // Setup tooltips.
+    this.tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([ -10, 0 ])
+        .html(function(d) {
+            return d.properties.NAME;
+        });
+    this.svg.call(this.tip);
+
     this.update();
 }
 AccidentMap.prototype = {
@@ -137,7 +146,9 @@ AccidentMap.prototype = {
                 .data(this.neighborhoods.features);
             neighborhoods.enter().append('path')
                 .attr('class', 'neighborhood')
-                .attr('d', path);
+                .attr('d', path)
+                .on('mouseover', this.tip.show)
+                .on('mouseout', this.tip.hide)
             neighborhoods
                 .attr('fill-opacity', function(d) {
                     return accidentLevels[ d.properties[ 'N_HOOD' ] ] || 0;

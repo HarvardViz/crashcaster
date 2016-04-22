@@ -84,6 +84,10 @@
 #accidentMap svg path.neighborhood {
     fill: #4682B4;
 }
+#accidentMap svg path.neighborhood:hover {
+    stroke-width: 1px;
+    stroke: #EEE;
+}
 
 #accidentMap svg path.boundary {
     fill: #CCC;
