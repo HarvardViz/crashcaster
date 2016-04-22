@@ -81,9 +81,12 @@
 }
 
 #slide1 {
+    /*
     background: -webkit-gradient(linear, top left, bottom left, from(#b4feff), to(#91dbdc));
     background: -webkit-linear-gradient(#b4feff, #91dbdc);
     background: linear-gradient(#b4feff, #91dbdc);
+    */
+    background-image: url(../img/bg-rain.jpg);
 }
 
 #slide2 {

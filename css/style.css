@@ -179,7 +179,7 @@ div
 
 p#title
 {
-    font: 25px arial, sans-serif;
+    font-size: 25px;
     padding-left: 25px;
     padding-top: 10px;
     font-weight: bold;
