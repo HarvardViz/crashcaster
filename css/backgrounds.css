@@ -19,18 +19,18 @@
 }
 
 #section1 {
-    background: -webkit-gradient(linear, top left, bottom left, from(#fefefe), to(#e0e0e0));
-    background: -webkit-linear-gradient(#fefefe, #e0e0e0);
-    background: linear-gradient(#fefefe, #e0e0e0);
+    background: -webkit-gradient(linear, top left, bottom left, from(#fefefe), to(#c0c0c0));
+    background: -webkit-linear-gradient(#fefefe, #c0c0c0);
+    background: linear-gradient(#fefefe, #c0c0c0);
     /*
     background-image: url(../img/bg1.jpg);
     */
 }
 
 #section2 {
-    background: -webkit-gradient(linear, top left, bottom left, from(#fefefe), to(#e0e0e0));
-    background: -webkit-linear-gradient(#fefefe, #e0e0e0);
-    background: linear-gradient(#fefefe, #e0e0e0);
+    background: -webkit-gradient(linear, top left, bottom left, from(#fefefe), to(#c0c0c0));
+    background: -webkit-linear-gradient(#fefefe, #c0c0c0);
+    background: linear-gradient(#fefefe, #c0c0c0);
     /*
     background-image: url(../img/bg2.jpg);
     */
@@ -46,9 +46,9 @@
 }
 
 #section4 {
-    background: -webkit-gradient(linear, top left, bottom left, from(#fefefe), to(#e0e0e0));
-    background: -webkit-linear-gradient(#fefefe, #e0e0e0);
-    background: linear-gradient(#fefefe, #e0e0e0);
+    background: -webkit-gradient(linear, top left, bottom left, from(#fefefe), to(#c0c0c0));
+    background: -webkit-linear-gradient(#fefefe, #c0c0c0);
+    background: linear-gradient(#fefefe, #c0c0c0);
     /*
    background-image: url(../img/bg3.jpg);
    */
@@ -86,7 +86,13 @@
     background: -webkit-linear-gradient(#b4feff, #91dbdc);
     background: linear-gradient(#b4feff, #91dbdc);
     */
-    background-image: url(../img/bg-rain.jpg);
+
+    background: -webkit-gradient(linear, top left, bottom left, from(#fefefe), to(#c0c0c0));
+    background: -webkit-linear-gradient(#fefefe, #c0c0c0);
+    background: linear-gradient(#fefefe, #c0c0c0);
+
+    /* background-image: url(../img/XWAXv5i-weather-wallpapers.jpg); */
+
 }
 
 #slide2 {
