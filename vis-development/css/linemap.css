@@ -1,0 +1,29 @@
+
+
+
+/*  Bar Chart */
+
+
+.barchart-bar {
+    fill: #a50f15;  //red
+}
+
+
+.barchart-xAxis path,
+.barchart-xAxis line {
+    fill: none;
+    stroke: #333;
+    shape-rendering: crispEdges;
+}
+
+.barchart-yAxis path,
+.barchart-yAxis line {
+    fill: none;
+    stroke: #333;
+    shape-rendering: crispEdges;
+}
+
+.barchart-xAxis .barchart-yAxis path {
+    display: none;
+}
+
