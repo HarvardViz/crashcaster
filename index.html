@@ -81,19 +81,19 @@
                     <h4 class="textbox-heading">Travel Type</h4>
 
                     <div class="btn-group" role="group" aria-label="Travel Type">
-                        <button onclick="cc$.ui_forecast.setTravel('car')" id="btn_car" type="button"
+                        <button onclick="cc$.heatmap.car()" id="btn_car" type="button"
                                 class="btn btn-default"><p
                                 class="fa fa-car btn-type-travel"></p>
                             <p>Car</p></button>
-                        <button onclick="cc$.ui_forecast.setTravel('bike')" id="btn_bike" type="button"
+                        <button onclick="cc$.heatmap.bike()" id="btn_bike" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-bicycle btn-type-travel"></p>
                             <p>Bike</p></button>
-                        <button onclick="cc$.ui_forecast.setTravel('Motorcycle')" id="btn_motorcycle" type="button"
+                        <button onclick="cc$.heatmap.bicycle()" id="btn_motorcycle" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-motorcycle btn-type-travel"></p>
                             <p>Cycle</p></button>
-                        <button onclick="cc$.ui_forecast.setTravel('Pedestrian')" id="btn_pedestrian" type="button"
+                        <button onclick="cc$.heatmap.walk()" id="btn_pedestrian" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-male btn-type-travel"></p>
                             <p>Walk</p></button>
@@ -164,22 +164,20 @@
 
 
                     <div class="btn-group" role="group" aria-label="Weather selection">
-                        <button onclick="cc$.heatmap.overview()" id="btn_clearday" type="button" class="btn btn-s"><p
-                                class="wi wi-wu-cloudy btn-type-weather"></p>
-                            <p>Clear</p></button>
-                        <button onclick="cc$.heatmap.thunderstorm()" id="btn_thunderstorm" type="button" class="btn btn-secondary"><p
-                                class="wi wi-wu-chancetstorms btn-type-weather"></p>
-                            <p>T-Storm</p></button>
-                        <button onclick="cc$.heatmap.rain()" id="btn_rain" type="button" class="btn btn-secondary"><p
+                        <button onclick="cc$.heatmap.rain()" id="btn_rain" type="button" class="btn btn-default"><p
                                 class="wi wi-wu-chancerain btn-type-weather"></p>
                             <p>Rain</p></button>
-                        <button onclick="cc$.heatmap.fog()" id="btn_fog" type="button" class="btn btn-secondary"><p
-                                class="wi wi-day-fog btn-type-weather"></p>
-                            <p>Fog&nbsp;</p></button>
                         <button onclick="cc$.heatmap.snow()" id="btn_snow" type="button"
                                 class="btn btn-secondary"><p
                                 class="wi wi-day-snow btn-type-weather"></p>
                             <p>Snow</p></button>
+                        <button onclick="cc$.heatmap.fog()" id="btn_fog" type="button" class="btn btn-secondary"><p
+                                class="wi wi-day-fog btn-type-weather"></p>
+                            <p>Fog&nbsp;</p></button>
+                        <button onclick="cc$.heatmap.sunny()" id="btn_sun" type="button" class="btn btn-secondary"><p
+                                class="wi wi-day-sunny btn-type-weather"></p>
+                            <p>Clear</p></button>
+
                     </div>
                 </div>
                 <div class="row">
