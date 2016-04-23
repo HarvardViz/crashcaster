@@ -54,6 +54,10 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         hourChart: null
     };
 
+    var features = {
+        stories: null
+    };
+
     // Private method: fetch the weather data
     function loadData() {
 
@@ -122,6 +126,7 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         visualizations.monthChart = new MonthChart('crashboard_monthChart', accidents);
         visualizations.dayChart = new DayChart('crashboard_dayChart', accidents);
         visualizations.hourChart = new HourChart('crashboard_hourChart', accidents);
+        features.stories = new Stories('crashboard_storiesBar', 'crashboard_storiesContent');
 
         // Update each visualization when the crossfilter is updated.
         $(document).on('accidents:crossfilter:update', function() {
@@ -365,6 +370,27 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
                     .text(function(d) { return d; });
                 legendLabels.exit().remove();
             }
+        },
+        /*
+         * Add an area marker to the map.
+         */
+        showAreaMarker: function showAreaMarker(coordinates) {
+
+            this.chart.append('circle')
+                .attr('class', 'areaMarker')
+                .attr('cx', function(d) { return projection(coordinates)[ 0 ]; })
+                .attr('cy', function(d) { return projection(coordinates)[ 1 ]; })
+                .attr('r', 1)
+                .transition()
+                .duration(300)
+                .attr('r', 60);
+        },
+        /*
+         * Clear all area markers on the map.
+         */
+        clearAreaMarkers: function clearAreaMarkers() {
+
+            this.chart.selectAll('circle.areaMarker').remove();
         }
     }
 
@@ -1299,6 +1325,98 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
 
     })();
 
+    //----------------------------------------------------------------------------------------------
+    // Stories
+    //----------------------------------------------------------------------------------------------
+
+    var Stories;
+
+    (function() {
+
+    Stories = function Stories(barElementId, contentElementId) {
+
+        var feat = this;
+
+        this.barElementId = barElementId;
+        this.contentElementId = contentElementId;
+
+        this._currentStory = null;
+
+        var stories = [{
+            coordinates: [ -71.122, 42.378 ],
+            title: 'Story 1'
+        }, {
+            coordinates: [ -71.112, 42.378 ],
+            title: 'Story 2'
+        }, {
+            coordinates: [ -71.132, 42.378 ],
+            title: 'Story 3'
+        }, {
+            coordinates: [ -71.142, 42.390 ],
+            title: 'Story 4'
+        }];
+
+        // Setup bar element and label.
+        this.barElement = d3.select('#' + this.barElementId);
+        this.label = this.barElement.append('div')
+            .attr('class', 'filter-label')
+            .text('Stories');
+
+        // Setup story buttons.
+        var ul = this.barElement.append('ul');
+        var storyButtons = ul.selectAll('li')
+            .data(stories);
+        var listItems = storyButtons.enter().append('li')
+            .attr('class', 'active')
+            .attr('title', function(d) { return d.title; })
+            .text(function(d, i) { return i + 1; })
+            .on('click', function(d, i) {
+                openStory(i);
+            });
+        var closeButton = ul.append('li')
+            .attr('class', 'reset')
+            .on('click', function() { closeStory(); });
+        closeButton.append('i')
+            .attr('class', 'fa fa-times');
+        this.barElement.append('div')
+            .attr('class', 'clearfix');
+
+        // Setup content element.
+        this.contentElement = d3.select('#' + this.contentElementId);
+
+        // Function to open the story at the given index.
+        function openStory(i) {
+
+            var story = stories[ i ];
+            var html = '' +
+                '<h3>' + story.title + '</h3>' +
+                '<p>Lorem ipsum dolor sit amet.</p>';
+
+            // Add the HTML to the element and show it.
+            feat.contentElement.html(html);
+            feat.contentElement.style('opacity', 1);
+
+            // Mark areas on the map if necessary.
+            visualizations.accidentMap.clearAreaMarkers();
+            if (story.coordinates) {
+                visualizations.accidentMap.showAreaMarker(story.coordinates);
+            }
+        }
+
+        // Function to close the story content area.
+        function closeStory() {
+
+            // Clear the HTML from the element and hide it.
+            feat.contentElement.html('');
+            feat.contentElement.style('opacity', 0);
+
+            // Clear the area markers on the map.
+            visualizations.accidentMap.clearAreaMarkers();
+        }
+    };
+
+    })();
+
     // Call the initialization function by default for this module or call it from elsewhere, e.g.
     //      crashcaster.module_template_copy_me.init();
     init();
@@ -1312,7 +1430,8 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         run: run,
         echo: echo,
         filters: filters,
-        visualizations: visualizations
+        visualizations: visualizations,
+        features: features
     };
 
 
