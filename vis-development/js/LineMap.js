@@ -422,7 +422,7 @@ function updateForceGraph() {
 	// Scale - circle radius - based on # intersections
 	var r = d3.scale.linear()
 		.range([5,30])
-		.domain([0, d3.max(streetNodes, function(d) { return d.numIntersections; }) ]);
+		.domain([0, d3.max(streetNodes, function(d) { return d.totalAccidents; }) ]);
 
 	// Scale - circle radius - based on # intersections
 	var w = d3.scale.linear()
@@ -504,7 +504,7 @@ function updateForceGraph() {
 		link_update.enter()
 			.insert("line")
 			.attr("class", "force-link")
-			.style("stroke", "#888")
+			.style("stroke", "blue")
 			.style("stroke-width", 1);
 
 
@@ -522,16 +522,15 @@ function updateForceGraph() {
 		// update node attributes for new circles
 		node_update.enter()
 			.append("circle")
-			.attr("class", "force-node")
-			//.call(drag)
-			.transition().duration(1000).attr("r", function (d) {
-				return r(d.numIntersections);
-			});
+			.attr("class", "force-node");
 
 		node_update
-			.style("fill", function (d) {
-				return c(d.totalAccidents);
+			.style("fill", function(d) { if (d.key == streetFilter) return "blue"; else return "red"; })
+			//.call(drag)
+			.attr("r", function (d) {
+				return r(d.totalAccidents);
 			})
+			//.style("fill", function (d) {				return c(d.totalAccidents);			})
 			.on("click", click)
 			//.on("dblclick", dblclick)
 			.on("mouseover", function (d) {
