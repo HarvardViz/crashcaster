@@ -115,20 +115,70 @@
             <div class="col-md-3 bg-content">
                 <div class="row bg-content-white" align="center">
                     <h4 class="textbox-heading">Current Weather</h4>
+
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-lg btn-info" id="btn_clearday" onclick="cc$.heatmap.overview()"><p
+                                class="wi wi-wu-cloudy btn-type-weather"></p>
+                            <p>Clear</p></button>
+                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only"><br>Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" onclick="cc$.heatmap.overview()" id="btn_clearday"><p
+                                    class="wi wi-wu-cloudy btn-type-weather"></p>
+                                <p>Clear</p></a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <a class="dropdown-item" href="#" onclick="cc$.heatmap.thunderstorm()" id="btn_thunderstorm"><p
+                                    class="wi wi-wu-chancetstorms btn-type-weather"></p>
+                                <p>T-Storm</p></a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <a class="dropdown-item" href="#" onclick="cc$.heatmap.rain()" id="btn_rain"><p
+                                    class="wi wi-wu-chancerain btn-type-weather"></p>
+                                <p>Rain</p></a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <a class="dropdown-item" href="#" onclick="cc$.heatmap.fog()" id="btn_fog"><p
+                                    class="wi wi-day-fog btn-type-weather"></p>
+                                <p>Fog</p></a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <a class="dropdown-item" href="#" onclick="cc$.heatmap.snow()" id="btn_snow"><p
+                                    class="wi wi-day-snow btn-type-weather"></p>
+                                <p>Snow</p></a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <a class="dropdown-item" href="#" onclick="cc$.heatmap.overview()" id="btn_reset"><p
+                                    class="fa fa-refresh"></p>
+                                <p>Reset</p></a></a>
+                        </div>
+                    </div>
+
+
                     <div class="btn-group" role="group" aria-label="Weather selection">
-                        <button onclick="cc$.heatmap.rain()" id="btn_rain" type="button" class="btn btn-default"><p
+                        <button onclick="cc$.heatmap.overview()" id="btn_clearday" type="button" class="btn btn-s"><p
+                                class="wi wi-wu-cloudy btn-type-weather"></p>
+                            <p>Clear</p></button>
+                        <button onclick="cc$.heatmap.thunderstorm()" id="btn_thunderstorm" type="button" class="btn btn-secondary"><p
+                                class="wi wi-wu-chancetstorms btn-type-weather"></p>
+                            <p>T-Storm</p></button>
+                        <button onclick="cc$.heatmap.rain()" id="btn_rain" type="button" class="btn btn-secondary"><p
                                 class="wi wi-wu-chancerain btn-type-weather"></p>
                             <p>Rain</p></button>
+                        <button onclick="cc$.heatmap.fog()" id="btn_fog" type="button" class="btn btn-secondary"><p
+                                class="wi wi-day-fog btn-type-weather"></p>
+                            <p>Fog&nbsp;</p></button>
                         <button onclick="cc$.heatmap.snow()" id="btn_snow" type="button"
                                 class="btn btn-secondary"><p
                                 class="wi wi-day-snow btn-type-weather"></p>
                             <p>Snow</p></button>
-                        <button onclick="cc$.heatmap.fog()" id="btn_fog" type="button" class="btn btn-secondary"><p
-                                class="wi wi-day-fog btn-type-weather"></p>
-                            <p>Fog&nbsp;</p></button>
-                        <button onclick="cc$.heatmap.overview()" id="btn_clear" type="button" class="btn btn-danger"><p
-                                class="fa fa-refresh btn-type-weather"></p>
-                            <p>Reset</p></button>
                     </div>
                 </div>
                 <div class="row">
