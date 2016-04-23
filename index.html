@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="css/dc.css" type="text/css"/>
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <link rel="stylesheet" href="css/style_map.css">
+    <link rel="stylesheet" href="css/style_crashboard.css">
 
 
     <style type="text/css">
@@ -331,80 +332,26 @@
 
 <div class="section" id="section2">
 
-    <div class="container">
-        <div class="row">
-            <div id="yearly-bubble-chart" class="dc-chart">
-                <strong>Yearly Performance</strong> (radius: fluctuation/index ratio, color: gain/loss)
-                <a class="reset" href="javascript:yearlyBubbleChart.filterAll();dc.redrawAll();"
-                   style="display: none;">reset</a>
-
-                <div class="clearfix"></div>
-            </div>
+    <div id="crashboard_wrapper">
+        <div id="crashboard_toolbar">
+            <div id="crashboard_accidentTypeFilter"></div>
+            <div id="crashboard_weatherFilter"></div>
+            <div id="crashboard_mapToggle"></div>
+            <div class="clearfix"></div>
         </div>
-
-        <div class="row">
-            <div id="gain-loss-chart">
-                <strong>Days by Gain/Loss</strong>
-                <a class="reset" href="javascript:gainOrLossChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-
-                <div class="clearfix"></div>
-            </div>
-
-            <div id="quarter-chart">
-                <strong>Quarters</strong>
-                <a class="reset" href="javascript:quarterChart.filterAll();dc.redrawAll();"
-                   style="display: none;">reset</a>
-
-                <div class="clearfix"></div>
-            </div>
-
-            <div id="day-of-week-chart">
-                <strong>Day of Week</strong>
-                <a class="reset" href="javascript:dayOfWeekChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-
-                <div class="clearfix"></div>
-            </div>
-
-            <div id="fluctuation-chart">
-                <strong>Days by Fluctuation(%)</strong>
-                <span class="reset" style="display: none;">range: <span class="filter"></span></span>
-                <a class="reset" href="javascript:fluctuationChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-
-                <div class="clearfix"></div>
-            </div>
+        <div id="crashboard_accidentMapWrapper">
+            <div id="crashboard_accidentMap"></div>
+            <div id="crashboard_yearChart"></div>
+            <div id="crashboard_monthChart"></div>
+            <div id="crashboard_dayChart"></div>
+            <div id="crashboard_hourChart"></div>
         </div>
-
-        <div class="row">
-            <div id="monthly-move-chart">
-                <strong>Monthly Index Abs Move & Volume/500,000 Chart</strong>
-                <span class="reset" style="display: none;">range: <span class="filter"></span></span>
-                <a class="reset" href="javascript:moveChart.filterAll();volumeChart.filterAll();dc.redrawAll();"
-                   style="display: none;">reset</a>
-
-                <div class="clearfix"></div>
-            </div>
+        <div id="crashboard_storiesWrapper">
+            <div id="crashboard_storiesBar"></div>
+            <div id="crashboard_storiesContent"></div>
         </div>
-
-        <div class="row">
-            <div id="monthly-volume-chart">
-            </div>
-        </div>
-
-        <!--
-        <div class="row">
-            <div>
-                <div class="dc-data-count">
-                    <span class="filter-count"></span> selected out of <span class="total-count"></span> records | <a
-                        href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a>
-                </div>
-            </div>
-            <table class="table table-hover dc-data-table">
-            </table>
-        </div>
-        -->
-
-        <div class="clearfix"></div>
     </div>
+
 </div>
 
 <div class="section" id="section3">
@@ -452,14 +399,15 @@
 <script src="js/lib/jquery.fullPage.min.js"></script>
 <script src="js/lib/moment.min.js" type="text/javascript"></script>
 <script src="js/lib/lightbox-2.6.min.js" type="text/javascript"></script>
+<script src="js/lib/queue.js" type="text/javascript"></script>
 <script src="js/lib/d3.js" type="text/javascript"></script>
+<script src="js/lib/d3.tip.js" type="text/javascript"></script>
 <script src="js/lib/crossfilter.js" type="text/javascript"></script>
 <script src="js/lib/dc.js" type="text/javascript"></script>
 <script src="js/lib/colorbrewer.js" type="text/javascript"></script>
 
 
 <!-- Custom JavaScript -->
-<script src="js/stock.js" type="text/javascript"></script>
 <script src="js/crashcaster.js" type="text/javascript"></script>
 
 <script type="text/javascript">

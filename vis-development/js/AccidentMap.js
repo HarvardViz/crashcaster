@@ -121,6 +121,8 @@ AccidentMap.prototype = {
                 .attr('cy', function(d) { return projection(d.coordinates)[ 1 ]; })
                 .attr('r', 2);
             points.exit().remove();
+
+            console.log(data.length);
         }
         // Draw the neighborhoods view.
         else {

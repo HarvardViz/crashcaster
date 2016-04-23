@@ -1,0 +1,338 @@
+#crashboard_wrapper {
+    position: relative;
+    box-sizing: border-box;
+    width: 940px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    padding: 0 20px;
+    margin: 50px auto;
+}
+
+.clearfix {
+    display: block;
+    clear: both;
+}
+
+/*
+ * Accident Type / Weather Filters
+ */
+
+#crashboard_toolbar {
+    margin-bottom: 16px;
+}
+
+#crashboard_accidentTypeFilter,
+#crashboard_weatherFilter {
+    float: left;
+    color: #373A3C;
+    margin-right: 20px;
+}
+#crashboard_mapToggle {
+    float: right;
+    color: #373A3C;
+}
+#crashboard_storiesBar {
+    color: #373A3C;
+}
+
+#crashboard_storiesBar .filter-label,
+#crashboard_accidentTypeFilter .filter-label,
+#crashboard_weatherFilter .filter-label,
+#crashboard_mapToggle .filter-label {
+    height: 15px;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 15px;
+    text-transform: uppercase;
+    text-align: left;
+    margin-bottom: 4px;
+}
+#crashboard_storiesBar ul,
+#crashboard_accidentTypeFilter ul,
+#crashboard_weatherFilter ul,
+#crashboard_mapToggle ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#crashboard_storiesBar ul li,
+#crashboard_accidentTypeFilter ul li,
+#crashboard_weatherFilter ul li,
+#crashboard_mapToggle ul li {
+    float: left;
+    width: 40px;
+    height: 32px;
+    font-size: 17px;
+    line-height: 32px;
+    text-align: center;
+    background: #FFF;
+    border: 1px solid #CCC;
+    margin-left: -1px;
+    opacity: 0.3;
+    cursor: pointer;
+}
+#crashboard_mapToggle ul li {
+    width: auto;
+    font-size: 14px;
+    padding: 0 8px;
+}
+#crashboard_storiesBar ul li:hover,
+#crashboard_accidentTypeFilter ul li:hover,
+#crashboard_weatherFilter ul li:hover,
+#crashboard_mapToggle ul li:hover {
+    background-color: #E6E6E6;
+    border-color: #ADADAD;
+}
+#crashboard_storiesBar ul li.reset,
+#crashboard_accidentTypeFilter ul li.reset,
+#crashboard_weatherFilter ul li.reset,
+#crashboard_mapToggle ul li.reset {
+    color: #FFF;
+    background-color: #D9534F;
+    border-color: #D9534F;
+    opacity: 1.0;
+}
+#crashboard_storiesBar ul li.reset:hover,
+#crashboard_accidentTypeFilter ul li.reset:hover,
+#crashboard_weatherFilter ul li.reset:hover,
+#crashboard_mapToggle ul li.reset:hover {
+    background-color: #C9302C;
+    border-color: #C12E2A;
+}
+#crashboard_storiesBar ul li:first-child,
+#crashboard_accidentTypeFilter ul li:first-child,
+#crashboard_weatherFilter ul li:first-child,
+#crashboard_mapToggle ul li:first-child {
+    border-radius: 3px 0 0 3px;
+    margin-left: 0;
+}
+#crashboard_storiesBar ul li:last-child,
+#crashboard_accidentTypeFilter ul li:last-child,
+#crashboard_weatherFilter ul li:last-child,
+#crashboard_mapToggle ul li:last-child {
+    border-radius: 0 3px 3px 0;
+}
+#crashboard_storiesBar ul li.active,
+#crashboard_accidentTypeFilter ul li.active,
+#crashboard_weatherFilter ul li.active,
+#crashboard_mapToggle ul li.active {
+    opacity: 1.0;
+}
+
+/*
+ * Layout
+ */
+#crashboard_accidentMapWrapper {
+    position: relative;
+    width: 900px;
+    height: 575px;
+}
+#crashboard_accidentMapWrapper #crashboard_accidentMap {
+    position: absolute;
+    top: 0; left: 0;
+}
+#crashboard_accidentMapWrapper #crashboard_yearChart,
+#crashboard_accidentMapWrapper #crashboard_monthChart,
+#crashboard_accidentMapWrapper #crashboard_dayChart,
+#crashboard_accidentMapWrapper #crashboard_hourChart {
+    position: absolute;
+    right: 10px;
+}
+#crashboard_accidentMapWrapper #crashboard_yearChart { top: 0; }
+#crashboard_accidentMapWrapper #crashboard_monthChart { top: 80px; }
+#crashboard_accidentMapWrapper #crashboard_dayChart { top: 160px; }
+#crashboard_accidentMapWrapper #crashboard_hourChart { top: 240px; }
+
+/*
+ * Accident Map
+ */
+
+#crashboard_accidentMap svg {
+}
+
+#crashboard_accidentMap svg .accidentMapLegend text {
+    font-size: 11px;
+    fill: #333;
+}
+
+#crashboard_accidentMap svg .accidentMapLegend rect.neighborhoodLegend {
+    fill: #4682B4;
+}
+
+#crashboard_accidentMap svg path.neighborhood {
+    fill: #4682B4;
+}
+#crashboard_accidentMap svg path.neighborhood:hover {
+    stroke-width: 1px;
+    stroke: #EEE;
+}
+
+#crashboard_accidentMap svg path.boundary {
+    fill: #CCC;
+}
+
+#crashboard_accidentMap svg path.road {
+    fill: #EEE;
+}
+
+#crashboard_accidentMap svg circle.accident {
+    fill: #4682B4;
+}
+
+#crashboard_accidentMap svg circle.areaMarker {
+    fill: none;
+    stroke-width: 2px;
+    stroke: #4682B4;
+}
+
+/*
+ * Year / Month / Day / Hour Chart
+ */
+
+#crashboard_yearChart svg,
+#crashboard_monthChart svg,
+#crashboard_dayChart svg,
+#crashboard_hourChart svg {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#crashboard_yearChart svg .chart-title,
+#crashboard_monthChart svg .chart-title,
+#crashboard_dayChart svg .chart-title,
+#crashboard_hourChart svg .chart-title {
+    font-weight: 600;
+    font-size: 11px;
+    fill: #373A3C;
+    text-transform: uppercase;
+}
+
+#crashboard_yearChart svg .axis path,
+#crashboard_yearChart svg .axis line,
+#crashboard_monthChart svg .axis path,
+#crashboard_monthChart svg .axis line,
+#crashboard_dayChart svg .axis path,
+#crashboard_dayChart svg .axis line,
+#crashboard_hourChart svg .axis path,
+#crashboard_hourChart svg .axis line {
+    stroke-width: 1px;
+    stroke: #333;
+    fill: none;
+}
+
+#crashboard_yearChart svg .axis text,
+#crashboard_monthChart svg .axis text,
+#crashboard_dayChart svg .axis text,
+#crashboard_hourChart svg .axis text {
+    font-size: 12px;
+    fill: #333;
+}
+
+#crashboard_yearChart svg .bg path.area,
+#crashboard_monthChart svg .bg path.area,
+#crashboard_dayChart svg .bg path.area,
+#crashboard_hourChart svg .bg path.area {
+    fill: #FFF;
+    fill-opacity: 0.3;
+}
+
+#crashboard_yearChart svg .fg path.area,
+#crashboard_monthChart svg .fg path.area,
+#crashboard_dayChart svg .fg path.area,
+#crashboard_hourChart svg .fg path.area {
+    fill: #A3C1DA;
+}
+
+#crashboard_yearChart svg .bg path.line,
+#crashboard_monthChart svg .bg path.line,
+#crashboard_dayChart svg .bg path.line,
+#crashboard_hourChart svg .bg path.line {
+    stroke-width: 1;
+    stroke: #CCC;
+    fill: none;
+}
+
+#crashboard_yearChart svg .fg path.line,
+#crashboard_monthChart svg .fg path.line,
+#crashboard_dayChart svg .fg path.line,
+#crashboard_hourChart svg .fg path.line {
+    stroke-width: 1;
+    stroke: #4682B4;
+    fill: none;
+}
+
+#crashboard_yearChart svg .brush .extent,
+#crashboard_monthChart svg .brush .extent,
+#crashboard_dayChart svg .brush .extent,
+#crashboard_hourChart svg .brush .extent {
+    fill: #4682B4;
+    fill-opacity: 0.1;
+}
+
+/*
+ * Crashboard Stories
+ */
+#crashboard_storiesWrapper {
+    position: absolute;
+    bottom: 0; left: 0;
+}
+
+#crashboard_storiesContent {
+    position: absolute;
+    bottom: 36px; left: 0;
+    width: 300px;
+    height: 185px;
+    font-size: 14px;
+    color: #666;
+    text-align: left;
+    background: #FFF;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #CCC;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#crashboard_storiesContent h3 {
+    font-weight: 600;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+/*
+ * Tooltips
+ */
+
+#crashboard_wrapper .tooltip-title {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+#crashboard_wrapper .d3-tip {
+    line-height: 1;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+#crashboard_wrapper .d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+/* Style northward tooltips differently */
+#crashboard_wrapper .d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+}
