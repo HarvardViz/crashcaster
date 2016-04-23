@@ -183,7 +183,7 @@
     <div class="slide" id="slide0">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 bg-content">
+                <div class="col-md-12 bg-content-white">
                     <h1>Visual Tour</h1>
                 </div>
             </div>
@@ -192,14 +192,56 @@
 
     <div class="slide" id="slide1">
         <div class="container">
+
             <div class="row">
-                <div class="col-md-12 bg-content">
-                    <h1>Viz 1</h1>
-                    <p><img src="img/1.png"
-                            alt="Viz 1"
-                            title="Viz 1"
-                            class="img-responsive"
-                            style="margin:auto;"></p>
+                <div class="bg-content">
+
+                    <div class="row">
+                        <div class="col-md-12 bg-content-white" style="background-color: rgba(255, 255, 255, 0.8);">
+                            <h1>What happens when the weather turns bad?</h1>
+                            <p id="title"><i>Number of accidents per day normalized by weather</i></p>
+
+                        </div>
+                    </div>
+
+                    <div class="row">&nbsp;</div>
+                    <div class="row">&nbsp;</div>
+
+                    <div class="row">
+                        <div class="col-md-12 bg-content-white" style="background-color: rgba(255, 255, 255, 0.8);">
+
+                            <button onclick="filte_me()" id="Clear" type="button" class="btn btn-danger">Clear <i
+                                    class="fa fa-filter fa-1x" aria-hidden="true"></i></button>
+                            <button onclick="filte_me()" id="Auto" type="button" class="btn btn-default"><i
+                                    class="fa fa-car fa-1x" aria-hidden="true"></i>&nbsp;Auto
+                            </button>
+                            <button onclick="filte_me()" id="Bicycle" type="button" class="btn btn-default"><i
+                                    class="fa fa-bicycle fa-1x" aria-hidden="true"></i>&nbsp;Bicycle
+                            </button>
+                            <button onclick="filte_me()" id="Fixed" type="button" class="btn btn-default"><i
+                                    class="fa fa-tree fa-1x" aria-hidden="true"></i>&nbsp;Fixed Object
+                            </button>
+                            <button onclick="filte_me()" id="Motorcycle" type="button" class="btn btn-default"><i
+                                    class="fa fa-motorcycle fa-1x" aria-hidden="true"></i>&nbsp;Motorcycle
+                            </button>
+                            <button onclick="filte_me()" id="Parked" type="button" class="btn btn-default"><i
+                                    class="fa fa-map-signs fa-1x" aria-hidden="true"></i>&nbsp;Parked Vehicle
+                            </button>
+                            <button onclick="filte_me()" id="Pedestrian" type="button" class="btn btn-default"><i
+                                    class="fa fa-male fa-1x" aria-hidden="true"></i>&nbsp;Pedestrian
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <div class="row">&nbsp;</div>
+
+                    <div class="row">
+                        <div class="col-md-12 bg-content-white" style="background-color: rgba(255, 255, 255, 0.925);">
+                            <p id="chart"></p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -208,7 +250,7 @@
     <div class="slide" id="slide2">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 bg-content">
+                <div class="col-md-12 bg-content-white">
                     <h1>Viz 2</h1>
                     <p><img src="img/2.png"
                             alt="Viz 2"
@@ -223,7 +265,7 @@
     <div class="slide" id="slide3">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 bg-content">
+                <div class="col-md-12 bg-content-white">
                     <h1>Viz 3</h1>
                     <p><img src="img/3.png"
                             alt="Viz 3"
@@ -240,32 +282,28 @@
 
 <div class="section" id="section2">
 
-    <div class="container">
-        <div class="row">
-            <div id="crashboard">
-                <div id="crashboardToolbar">
-                    <div id="accidentTypeFilter"></div>
-                    <div id="weatherFilter"></div>
-                    <div id="mapToggle"></div>
-                    <div class="clearfix"></div>
-                </div>
-                <div id="accidentMapWrapper">
-                    <div id="accidentMap"></div>
-                    <div id="yearChart"></div>
-                    <div id="monthChart"></div>
-                    <div id="dayChart"></div>
-                    <div id="hourChart"></div>
-                </div>
-
-            </div>
+    <div id="crashboard_wrapper">
+        <div id="crashboard_toolbar">
+            <div id="crashboard_accidentTypeFilter"></div>
+            <div id="crashboard_weatherFilter"></div>
+            <div id="crashboard_mapToggle"></div>
+            <div class="clearfix"></div>
+        </div>
+        <div id="crashboard_accidentMapWrapper">
+            <div id="crashboard_accidentMap"></div>
+            <div id="crashboard_yearChart"></div>
+            <div id="crashboard_monthChart"></div>
+            <div id="crashboard_dayChart"></div>
+            <div id="crashboard_hourChart"></div>
         </div>
     </div>
+
 </div>
 
 <div class="section" id="section3">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 bg-content">
+            <div class="col-md-12 bg-content-white">
                 <h1>Screencast</h1>
             </div>
         </div>
@@ -276,7 +314,7 @@
 <div class="section" id="section4">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 bg-content">
+            <div class="col-md-12 bg-content-white">
                 <h1>Process Book</h1>
                 <p>Data, Sources, etc.</p>
             </div>
@@ -329,7 +367,7 @@
             //sectionsColor: ['#C63D0F', '#1BBC9B', '#7E8F7C'],
             //navigation: true,
             //navigationPosition: 'right',
-            //navigationTooltips: ['Home', 'Crashboard', 'Visuals', 'Screencast', 'Process Book']
+            //navigationTooltips: ['Home', 'Visuals', 'Crashboard', 'Screencast', 'Process Book']
         });
 
     });

@@ -1,4 +1,4 @@
-#crashboard {
+#crashboard_wrapper {
     width: 900px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     padding: 0 20px;
@@ -14,24 +14,24 @@
  * Accident Type / Weather Filters
  */
 
- #crashboardToolbar {
+#crashboard_toolbar {
     margin-bottom: 16px;
- }
+}
 
-#accidentTypeFilter,
-#weatherFilter {
+#crashboard_accidentTypeFilter,
+#crashboard_weatherFilter {
     float: left;
     color: #373A3C;
     margin-right: 20px;
 }
-#mapToggle {
+#crashboard_mapToggle {
     float: right;
     color: #373A3C;
 }
 
-#accidentTypeFilter .filter-label,
-#weatherFilter .filter-label,
-#mapToggle .filter-label {
+#crashboard_accidentTypeFilter .filter-label,
+#crashboard_weatherFilter .filter-label,
+#crashboard_mapToggle .filter-label {
     height: 15px;
     font-weight: 600;
     font-size: 11px;
@@ -39,16 +39,16 @@
     text-transform: uppercase;
     margin-bottom: 4px;
 }
-#accidentTypeFilter ul,
-#weatherFilter ul,
-#mapToggle ul {
+#crashboard_accidentTypeFilter ul,
+#crashboard_weatherFilter ul,
+#crashboard_mapToggle ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-#accidentTypeFilter ul li,
-#weatherFilter ul li,
-#mapToggle ul li {
+#crashboard_accidentTypeFilter ul li,
+#crashboard_weatherFilter ul li,
+#crashboard_mapToggle ul li {
     float: left;
     width: 40px;
     height: 32px;
@@ -61,178 +61,187 @@
     opacity: 0.3;
     cursor: pointer;
 }
-#mapToggle ul li {
+#crashboard_mapToggle ul li {
     width: auto;
     font-size: 14px;
     padding: 0 8px;
 }
-#accidentTypeFilter ul li:hover,
-#weatherFilter ul li:hover,
-#mapToggle ul li:hover {
+#crashboard_accidentTypeFilter ul li:hover,
+#crashboard_weatherFilter ul li:hover,
+#crashboard_mapToggle ul li:hover {
     background-color: #E6E6E6;
     border-color: #ADADAD;
 }
-#accidentTypeFilter ul li.reset,
-#weatherFilter ul li.reset,
-#mapToggle ul li.reset {
+#crashboard_accidentTypeFilter ul li.reset,
+#crashboard_weatherFilter ul li.reset,
+#crashboard_mapToggle ul li.reset {
     color: #FFF;
     background-color: #D9534F;
     border-color: #D9534F;
     opacity: 1.0;
 }
-#accidentTypeFilter ul li.reset:hover,
-#weatherFilter ul li.reset:hover,
-#mapToggle ul li.reset:hover {
+#crashboard_accidentTypeFilter ul li.reset:hover,
+#crashboard_weatherFilter ul li.reset:hover,
+#crashboard_mapToggle ul li.reset:hover {
     background-color: #C9302C;
     border-color: #C12E2A;
 }
-#accidentTypeFilter ul li:first-child,
-#weatherFilter ul li:first-child,
-#mapToggle ul li:first-child {
+#crashboard_accidentTypeFilter ul li:first-child,
+#crashboard_weatherFilter ul li:first-child,
+#crashboard_mapToggle ul li:first-child {
     border-radius: 3px 0 0 3px;
     margin-left: 0;
 }
-#accidentTypeFilter ul li:last-child,
-#weatherFilter ul li:last-child,
-#mapToggle ul li:last-child {
+#crashboard_accidentTypeFilter ul li:last-child,
+#crashboard_weatherFilter ul li:last-child,
+#crashboard_mapToggle ul li:last-child {
     border-radius: 0 3px 3px 0;
 }
-#accidentTypeFilter ul li.active,
-#weatherFilter ul li.active,
-#mapToggle ul li.active {
+#crashboard_accidentTypeFilter ul li.active,
+#crashboard_weatherFilter ul li.active,
+#crashboard_mapToggle ul li.active {
     opacity: 1.0;
 }
 
 /*
  * Layout
  */
-#accidentMapWrapper {
+#crashboard_accidentMapWrapper {
     position: relative;
     width: 900px;
     height: 575px;
 }
-#accidentMapWrapper #accidentMap {
+#crashboard_accidentMapWrapper #crashboard_accidentMap {
     position: absolute;
     top: 0; left: 0;
 }
-#accidentMapWrapper #yearChart,
-#accidentMapWrapper #monthChart,
-#accidentMapWrapper #dayChart,
-#accidentMapWrapper #hourChart {
+#crashboard_accidentMapWrapper #crashboard_yearChart,
+#crashboard_accidentMapWrapper #crashboard_monthChart,
+#crashboard_accidentMapWrapper #crashboard_dayChart,
+#crashboard_accidentMapWrapper #crashboard_hourChart {
     position: absolute;
     right: 10px;
 }
-#accidentMapWrapper #yearChart { top: 0; }
-#accidentMapWrapper #monthChart { top: 80px; }
-#accidentMapWrapper #dayChart { top: 160px; }
-#accidentMapWrapper #hourChart { top: 240px; }
+#crashboard_accidentMapWrapper #crashboard_yearChart { top: 0; }
+#crashboard_accidentMapWrapper #crashboard_monthChart { top: 80px; }
+#crashboard_accidentMapWrapper #crashboard_dayChart { top: 160px; }
+#crashboard_accidentMapWrapper #crashboard_hourChart { top: 240px; }
 
 /*
  * Accident Map
  */
 
-#accidentMap svg {
+#crashboard_accidentMap svg {
 }
 
-#accidentMap svg path.neighborhood {
+#crashboard_accidentMap svg .accidentMapLegend text {
+    font-size: 11px;
+    fill: #333;
+}
+
+#crashboard_accidentMap svg .accidentMapLegend rect.neighborhoodLegend {
     fill: #4682B4;
 }
-#accidentMap svg path.neighborhood:hover {
+
+#crashboard_accidentMap svg path.neighborhood {
+    fill: #4682B4;
+}
+#crashboard_accidentMap svg path.neighborhood:hover {
     stroke-width: 1px;
     stroke: #EEE;
 }
 
-#accidentMap svg path.boundary {
+#crashboard_accidentMap svg path.boundary {
     fill: #CCC;
 }
 
-#accidentMap svg path.road {
+#crashboard_accidentMap svg path.road {
     fill: #EEE;
 }
 
-#accidentMap svg circle.accident {
+#crashboard_accidentMap svg circle.accident {
     fill: #4682B4;
-    fill-opacity: 0.2;
 }
 
 /*
  * Year / Month / Day / Hour Chart
  */
 
-#yearChart svg,
-#monthChart svg,
-#dayChart svg,
-#hourChart svg {
+#crashboard_yearChart svg,
+#crashboard_monthChart svg,
+#crashboard_dayChart svg,
+#crashboard_hourChart svg {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-#yearChart svg .chart-title,
-#monthChart svg .chart-title,
-#dayChart svg .chart-title,
-#hourChart svg .chart-title {
+#crashboard_yearChart svg .chart-title,
+#crashboard_monthChart svg .chart-title,
+#crashboard_dayChart svg .chart-title,
+#crashboard_hourChart svg .chart-title {
     font-weight: 600;
     font-size: 11px;
     fill: #373A3C;
     text-transform: uppercase;
 }
 
-#yearChart svg .axis path,
-#yearChart svg .axis line,
-#monthChart svg .axis path,
-#monthChart svg .axis line,
-#dayChart svg .axis path,
-#dayChart svg .axis line,
-#hourChart svg .axis path,
-#hourChart svg .axis line {
+#crashboard_yearChart svg .axis path,
+#crashboard_yearChart svg .axis line,
+#crashboard_monthChart svg .axis path,
+#crashboard_monthChart svg .axis line,
+#crashboard_dayChart svg .axis path,
+#crashboard_dayChart svg .axis line,
+#crashboard_hourChart svg .axis path,
+#crashboard_hourChart svg .axis line {
     stroke-width: 1px;
     stroke: #333;
     fill: none;
 }
 
-#yearChart svg .axis text,
-#monthChart svg .axis text,
-#dayChart svg .axis text,
-#hourChart svg .axis text {
+#crashboard_yearChart svg .axis text,
+#crashboard_monthChart svg .axis text,
+#crashboard_dayChart svg .axis text,
+#crashboard_hourChart svg .axis text {
     font-size: 12px;
     fill: #333;
 }
 
-#yearChart svg .bg path.area,
-#monthChart svg .bg path.area,
-#dayChart svg .bg path.area,
-#hourChart svg .bg path.area {
+#crashboard_yearChart svg .bg path.area,
+#crashboard_monthChart svg .bg path.area,
+#crashboard_dayChart svg .bg path.area,
+#crashboard_hourChart svg .bg path.area {
     fill: #FFF;
+    fill-opacity: 0.3;
 }
 
-#yearChart svg .fg path.area,
-#monthChart svg .fg path.area,
-#dayChart svg .fg path.area,
-#hourChart svg .fg path.area {
+#crashboard_yearChart svg .fg path.area,
+#crashboard_monthChart svg .fg path.area,
+#crashboard_dayChart svg .fg path.area,
+#crashboard_hourChart svg .fg path.area {
     fill: #A3C1DA;
 }
 
-#yearChart svg .bg path.line,
-#monthChart svg .bg path.line,
-#dayChart svg .bg path.line,
-#hourChart svg .bg path.line {
+#crashboard_yearChart svg .bg path.line,
+#crashboard_monthChart svg .bg path.line,
+#crashboard_dayChart svg .bg path.line,
+#crashboard_hourChart svg .bg path.line {
     stroke-width: 1;
     stroke: #CCC;
     fill: none;
 }
 
-#yearChart svg .fg path.line,
-#monthChart svg .fg path.line,
-#dayChart svg .fg path.line,
-#hourChart svg .fg path.line {
+#crashboard_yearChart svg .fg path.line,
+#crashboard_monthChart svg .fg path.line,
+#crashboard_dayChart svg .fg path.line,
+#crashboard_hourChart svg .fg path.line {
     stroke-width: 1;
     stroke: #4682B4;
     fill: none;
 }
 
-#yearChart svg .brush .extent,
-#monthChart svg .brush .extent,
-#dayChart svg .brush .extent,
-#hourChart svg .brush .extent {
+#crashboard_yearChart svg .brush .extent,
+#crashboard_monthChart svg .brush .extent,
+#crashboard_dayChart svg .brush .extent,
+#crashboard_hourChart svg .brush .extent {
     fill: #4682B4;
     fill-opacity: 0.1;
 }
@@ -241,13 +250,13 @@
  * Tooltips
  */
 
-#crashboard .tooltip-title {
+#crashboard_wrapper .tooltip-title {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
 }
 
-#crashboard .d3-tip {
+#crashboard_wrapper .d3-tip {
     line-height: 1;
     padding: 12px;
     background: rgba(0, 0, 0, 0.8);
@@ -256,7 +265,7 @@
 }
 
 /* Creates a small triangle extender for the tooltip */
-#crashboard .d3-tip:after {
+#crashboard_wrapper .d3-tip:after {
     box-sizing: border-box;
     display: inline;
     font-size: 10px;
@@ -269,7 +278,7 @@
 }
 
 /* Style northward tooltips differently */
-#crashboard .d3-tip.n:after {
+#crashboard_wrapper .d3-tip.n:after {
     margin: -1px 0 0 0;
     top: 100%;
     left: 0;

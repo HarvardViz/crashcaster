@@ -1,4 +1,4 @@
-crashcaster.crossfilter = (function (cc$, $, queue, d3, crossfilter) {
+crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
     /* Above:
      * 1. Define the plug-in module name, e.g. `crashcaster.weather` (no `var` is needed since `crashcaster` already exists)
      * 2. The plug-in module name should be named to match, e.g. `crashcaster.weather.js`
@@ -19,7 +19,7 @@ crashcaster.crossfilter = (function (cc$, $, queue, d3, crossfilter) {
     /* Your plug-in module code here - write simple functions
      * --------------------------------------------------------------------- */
 
-    var plugin_name = "crashcaster.crossfilter";
+    var plugin_name = "crashcaster.crashboard";
     var plugin_version = "0.0.1";
     var READY_STATE = { _current: -1, NOT_STARTED: 0, LOADING: 1, LOADED: 2 };
 
@@ -115,13 +115,13 @@ crashcaster.crossfilter = (function (cc$, $, queue, d3, crossfilter) {
         accidents.hours         = accidents.hour.group();
 
         // Create visualizations.
-        filters.accidentTypeFilter = new AccidentTypeFilter('accidentTypeFilter', accidents);
-        filters.weatherFilter = new WeatherFilter('weatherFilter', accidents);
-        visualizations.accidentMap = new AccidentMap('accidentMap', 'mapToggle', boundary, roads, neighborhoods, accidents);
-        visualizations.yearChart = new YearChart('yearChart', accidents);
-        visualizations.monthChart = new MonthChart('monthChart', accidents);
-        visualizations.dayChart = new DayChart('dayChart', accidents);
-        visualizations.hourChart = new HourChart('hourChart', accidents);
+        filters.accidentTypeFilter = new AccidentTypeFilter('crashboard_accidentTypeFilter', accidents);
+        filters.weatherFilter = new WeatherFilter('crashboard_weatherFilter', accidents);
+        visualizations.accidentMap = new AccidentMap('crashboard_accidentMap', 'crashboard_mapToggle', boundary, roads, neighborhoods, accidents);
+        visualizations.yearChart = new YearChart('crashboard_yearChart', accidents);
+        visualizations.monthChart = new MonthChart('crashboard_monthChart', accidents);
+        visualizations.dayChart = new DayChart('crashboard_dayChart', accidents);
+        visualizations.hourChart = new HourChart('crashboard_hourChart', accidents);
 
         // Update each visualization when the crossfilter is updated.
         $(document).on('accidents:crossfilter:update', function() {
@@ -212,6 +212,9 @@ crashcaster.crossfilter = (function (cc$, $, queue, d3, crossfilter) {
             .attr('height', height)
             .attr('viewBox', '0 0 ' + width + ' ' + height);
         this.chart = this.svg.append('g');
+        this.legend = this.svg.append('g')
+            .attr('class', 'accidentMapLegend')
+            .attr('transform', 'translate(280, 20)');
 
         // Draw the boundary of the map.
         var boundary = this.chart.selectAll('path.boundary')
@@ -250,8 +253,13 @@ crashcaster.crossfilter = (function (cc$, $, queue, d3, crossfilter) {
             // Draw the accidents view.
             if (this._currentView === MapView.Accidents) {
 
+                var dataPointOpacity = 0.5 - ((data.length / 7813) * 0.4);
+                var legendValues = [ 1, 2, 4, 8, 16, 32 ];
+
                 // Delete all existing neighborhoods.
                 this.chart.selectAll('path.neighborhood').remove();
+                this.legend.selectAll('rect.neighborhoodLegend').remove();
+                this.legend.selectAll('text.neighborhoodLabel').remove();
 
                 // Draw the accident data points on the map.
                 var points = this.chart.selectAll('circle.accident')
@@ -261,13 +269,46 @@ crashcaster.crossfilter = (function (cc$, $, queue, d3, crossfilter) {
                     .attr('cx', function(d) { return projection(d.coordinates)[ 0 ]; })
                     .attr('cy', function(d) { return projection(d.coordinates)[ 1 ]; })
                     .attr('r', 2);
+                points
+                    .attr('fill-opacity', dataPointOpacity);
                 points.exit().remove();
+
+                // Draw the legend.
+                var legend = this.legend.selectAll('circle.accident')
+                    .data(legendValues);
+                legend.enter().append('circle')
+                    .attr('class', 'accident')
+                    .attr('cx', function(d, i) { return i * 21; })
+                    .attr('cy', 0)
+                    .attr('r', 8);
+                legend
+                    .attr('fill-opacity', function(d) {
+                        var calculatedOpacity = dataPointOpacity;
+                        for (var j = 0; j < d; j++) {
+                            calculatedOpacity = calculatedOpacity + (1 - calculatedOpacity) * dataPointOpacity;
+                        }
+                        return calculatedOpacity;
+                    });
+                legend.exit().remove();
+                var legendLabels = this.legend.selectAll('text.accidentLabel')
+                    .data(legendValues);
+                legendLabels.enter().append('text')
+                    .attr('class', 'accidentLabel')
+                    .attr('x', function(d, i) { return i * 21; })
+                    .attr('y', 20)
+                    .text(function(d) { return d; })
+                    .attr('text-anchor', 'middle');
+                legendLabels.exit().remove();
             }
             // Draw the neighborhoods view.
             else {
 
+                var legendValues = [ 0.14, 0.28, 0.42, 0.56, 0.6, 0.74, 0.88, 1.0 ];
+
                 // Delete all existing accident points.
                 this.chart.selectAll('circle.accident').remove();
+                this.legend.selectAll('circle.accident').remove();
+                this.legend.selectAll('text.accidentLabel').remove();
 
                 // Compute the choropleth values for the data.
                 var _numAccidents = {};
@@ -300,6 +341,29 @@ crashcaster.crossfilter = (function (cc$, $, queue, d3, crossfilter) {
                         return accidentLevels[ d.properties[ 'N_HOOD' ] ] || 0;
                     });
                 neighborhoods.exit().remove();
+
+                // Draw the legend.
+                var legend = this.legend.selectAll('rect.neighborhoodLegend')
+                    .data(legendValues);
+                legend.enter().append('rect')
+                    .attr('class', 'neighborhoodLegend')
+                    .attr('x', function(d, i) { return i * 16; })
+                    .attr('y', -8)
+                    .attr('width', 16)
+                    .attr('height', 16);
+                legend
+                    .attr('fill-opacity', function(d) { return d; });
+                legend.exit().remove();
+                var legendLabels = this.legend.selectAll('text.neighborhoodLabel')
+                    .data([ 0, _maxAccidents ]);
+                legendLabels.enter().append('text')
+                    .attr('class', 'neighborhoodLabel')
+                    .attr('x', function(d, i) { return i === 0 ? 0 : legendValues.length * 16; })
+                    .attr('y', 20)
+                    .attr('text-anchor', 'middle');
+                legendLabels
+                    .text(function(d) { return d; });
+                legendLabels.exit().remove();
             }
         }
     }
