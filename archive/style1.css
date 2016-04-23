@@ -1,3 +1,6 @@
+/* Sankey diagram custom css
+ *--------------------------------*/
+
 .node rect {
   cursor: move;
   fill-opacity: 1;

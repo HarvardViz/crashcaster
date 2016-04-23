@@ -6,28 +6,38 @@
 
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/main.css" />
+	<link rel="stylesheet" href="css/linemap.css" />
 </head>
 <body>
 
-<div class="container-fluid">
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<h2>Explore Cambridge's Intersections</h2>
+		</div>
+		<div class="col-md-8">
+			<div id="streetview-title"></div>
+			<div id="streetview"></div>		
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="col-md-12">
-			<h2>Explore Cambridge's Intersections</h2>
-			<!--<div id="list"></div>-->
 			<div id="linemap"></div>
 		</div>
 	</div>
+
 	<div class="row">
+		<div class="col-md-6">
+			<div id="barchart"></div>
+		</div>
 		<div class="col-md-6">
 			<div id="forcegraph-title"></div>
 			<div id="forcegraph"></div>
 		</div>
-		<div class="col-md-5">
-			<div id="streetview-title"></div>
-			<div id="streetview"></div>
-		</div>
-		<div class="col-md-1"></div>
 	</div>
+
+</div>
 
 
     <script src="js/lib/jquery.js"></script>

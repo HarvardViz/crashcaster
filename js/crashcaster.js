@@ -136,7 +136,13 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
 
     return my;
 
-})(crashcaster || {}, ["crashcaster.weather", "crashcaster.model", "crashcaster.heatmap", "crashcaster.ui_forecast", "crashcaster.crashboard"], $, d3, moment);
+})(crashcaster || {},
+    [   "crashcaster.weather",
+        "crashcaster.model",
+        "crashcaster.heatmap",
+        "crashcaster.ui_forecast",
+        "crashcaster.ui_sankey",
+        "crashcaster.crashboard"], $, d3, moment);
 
 
 

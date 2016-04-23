@@ -6,7 +6,6 @@
 	
 	Use actual distances for line positioning
 	Find a fix for ordering issue for windy roads.
-	Enable click on forcegraph node to update linemap
 
 */
 
@@ -24,70 +23,78 @@ var streetNodes = [];
 /* linemap definitions */
 
 // SVG drawing area - linemap
-var margin = {top: 30, right: 100, bottom: 30, left: 100};
+var marginLinemap = {top: 30, right: 100, bottom: 30, left: 100};
 
-var width = 1000 - margin.left - margin.right,
-    height = 100 - margin.top - margin.bottom;
+var widthLinemap = 1000 - marginLinemap.left - marginLinemap.right,
+    heightLinemap = 100 - marginLinemap.top - marginLinemap.bottom;
 
 
-var svg = d3.select("#linemap").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+var svgLinemap = d3.select("#linemap").append("svg")
+    .attr("width", widthLinemap + marginLinemap.left + marginLinemap.right)
+    .attr("height", heightLinemap + marginLinemap.top + marginLinemap.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + marginLinemap.left + "," + marginLinemap.top + ")");
 
 
 // street line where circles are placed for intersections
-var line = svg.append("line")
+var line = svgLinemap.append("line")
 	.attr("class", "linemap-line");
 
 
 // add chart title
-var title = svg.append("text")
+var titleLinemap = svgLinemap.append("text")
 	.text(streetFilter + " Intersections (Rollover circles for more detail. Click for street views)")
-	.attr("transform", "translate(" + 0 + ", " + height + ")")
+	.attr("transform", "translate(" + 0 + ", " + heightLinemap + ")")
 	.style("text-anchor", "left");
 
 // add directionals
-svg.append("text")
+svgLinemap.append("text")
 	.text("Westbound")
-	.attr("x", 0-margin.left/2)
+	.attr("x", 0 - marginLinemap.left/2)
 	.attr("y", 4)
 	//.attr("transform", "translate(" + (0-margin.left/2) + ", " + 0 + ")")
 	.style("text-anchor", "middle")
 	.style("vertical-align", "middle");
 
 // add directionals
-svg.append("text")
+svgLinemap.append("text")
 	.text("Eastbound")
-	.attr("x", width+margin.right/2)
+	.attr("x", widthLinemap + marginLinemap.right/2)
 	.attr("y", 4)
 	//.attr("transform", "translate(" + (0-margin.left/2) + ", " + 0 + ")")
 	.style("text-anchor", "middle")
 	.style("vertical-align", "middle");
 
 
-//  html listbox
-var list = d3.select("#list").append("select");
+
+
+/*  Street Views */
+
+
+var widthStreetImage = 400;
+var heightStreetImage = 125;
+
 
 //  html streetview image
 var streetImage = d3.selectAll("#streetview")
 	.append("svg")
-		.attr("width", 600)
-		.attr("height", 200)
+		.attr("width", widthStreetImage)
+		.attr("height", heightStreetImage)
+		.attr("transform", "translate(" + marginLinemap.left + ", " + 0 + ")")
 		.append("image")
-			.attr("width", 600)
-			.attr("height", 200);
+			.attr("width", widthStreetImage)
+			.attr("height", heightStreetImage);
 
 
 //  html streetview image
 var streetImage2 = d3.selectAll("#streetview")
 	.append("svg")
-		.attr("width", 600)
-		.attr("height", 200)
+		.attr("width", widthStreetImage)
+		.attr("height", heightStreetImage)
+		.attr("transform", "translate(" + marginLinemap.left +  widthStreetImage + ", " + 0 + ")")
 		.append("image")
-			.attr("width", 600)
-			.attr("height", 200);
+			.attr("width", widthStreetImage)
+			.attr("height", heightStreetImage);
 
 
 /* Initialize tooltip */
@@ -112,14 +119,12 @@ var svgForce = d3.select("#forcegraph").append("svg")
 	.append("g")
 	.attr("transform", "translate(" + marginForce.left + "," + marginForce.top + ")");
 
-
-	
 // define force layout attributes
 var force = d3.layout.force()
 	.size([widthForce, heightForce])
-	.charge(-1000)
-	.gravity(.3)
-	.linkDistance(50);
+	.charge(-100)
+	//.gravity(.3)
+	.linkDistance(75);
 
 /* Initialize tooltip */
 var forceTip = d3.tip()
@@ -127,12 +132,48 @@ var forceTip = d3.tip()
 	.offset([-10, 0])
 	.html(function(d) { return d.key + "<br>" + d.numIntersections + " Intersections<br>" + d.totalAccidents + " Accidents"; });
 
+	
 
-// not needed here??
-var	parseDate = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ").parse;
+	
+	
+	
+/* barchart definitions */
+
+// SVG drawing area - barchart
+var marginBarchart = {top: 50, right: 30, bottom: 30, left: 150};
+
+var widthBarChart = 500 - marginBarchart.left - marginBarchart.right,
+    heightBarChart = 600 - marginBarchart.top - marginBarchart.bottom;
+
+var svgBarChart = d3.select("#barchart").append("svg")
+    .attr("width", widthBarChart + marginBarchart.left + marginBarchart.right)
+    .attr("height", heightBarChart + marginBarchart.top + marginBarchart.bottom)
+    .append("g")
+    .attr("transform", "translate(" + marginBarchart.left + "," + marginBarchart.top + ")");
 
 
-	 
+var xBar = d3.scale.linear()
+	.range([0, widthBarChart]);
+	
+var xBarAxis = d3.svg.axis()
+	.scale(xBar)
+	.orient("top")
+	.ticks(5);
+	
+var yBar = d3.scale.ordinal()
+	.rangeRoundBands([0, heightBarChart], .4);
+
+var yBarAxis = d3.svg.axis()
+	.scale(yBar)
+	.orient("left");
+	
+	
+	
+	
+	
+	
+
+	
 	 
 	 
  /*	---
@@ -150,10 +191,6 @@ function loadData() {
         if(!error){
             accidentData = jsonData;
 
-            accidentData.forEach(function(d) {
-                d.date = parseDate(d.date);         // extract date from string
-            });
-
 		    console.log("loadData() - accidentData");
             console.log(accidentData);
 
@@ -166,9 +203,8 @@ function loadData() {
   
   
  /*	---
-	Vis functions
-	---
-*/
+	Data prep functions
+	--- */
 
 function wrangleData(){
 
@@ -176,7 +212,6 @@ function wrangleData(){
     accidentDataNested = d3.nest()
         .key(function(d) { return d.streetName; })  // main key
         .key(function(d) { return d.crossStreet; }) // secondary key
-        //.rollup(function(d) { return d.length; })
         .entries(accidentData);
 
 
@@ -200,7 +235,6 @@ function wrangleData(){
 				if (i == 0)  
 					lastCoordinates = v.coordinates; 
 				else {
-					//console.log(calculateDistance(v.coordinates, lastCoordinates));
 					d.totalDistance += calculateDistance(v.coordinates, lastCoordinates);
 				}
 			}
@@ -221,23 +255,27 @@ function wrangleData(){
     });
 
 
-	// filter out small roads and accidents that did not occur at intersections
-	var minIntersections = 10;
+
+	// filter out accidents that did not occur at intersections
     filteredAccidentData = accidentDataNested.filter(function(d) {
-        return ((d.numIntersections >= minIntersections) && (d.key != "null"));
+        return (d.key != "null");
     });
 
 
-	
+	// keep only the top 30 roads with the most accidents
+	var sectionSize = 30;
+	filteredAccidentData = accidentDataNested.slice(0, sectionSize);
+
+
 	// set up edge array for force graph - establish links
 	for (var i=0; i<filteredAccidentData.length; i++) {
 		for (var j = 0; j < filteredAccidentData[i].values.length; j++) {
 			for (var k = 0; k < filteredAccidentData.length; k++) {
 				if (filteredAccidentData[i].values[j].key == filteredAccidentData[k].key) {
 					var temp = {};
-					temp["source"] = i;
+					//temp["source"] = i;
 					temp["sourceName"] = filteredAccidentData[i].key;
-					temp["target"] = k;
+					//temp["target"] = k;
 					temp["targetName"] = filteredAccidentData[k].key;
 					streetLinks.push(temp);
 				}
@@ -248,25 +286,9 @@ function wrangleData(){
 	// save date to nodes Array for force graph
 	streetNodes = filteredAccidentData;
 
-	console.log("wrangleData() - streetLinks");
-	console.log(streetLinks);
+    filterLinemapData();
 
-	console.log("wrangleData() - streetNodes");
-	console.log(streetNodes);
-
-	/*
-	// populate HTML listbox
-    list.selectAll("option")
-        .data(filteredAccidentData)
-        .enter()
-        .append("option")
-        .attr("value", function(d) {return d.key;})
-        .text(function(d) {
-            return d.key; });
-	*/
-
-    filterData();
-
+	initBarChart();
 	updateLineMap();
 	updateForceGraph();
 }
@@ -274,7 +296,7 @@ function wrangleData(){
 
 
 
-function filterData() {
+function filterLinemapData() {
 	
     console.log("filterData() - streetFilter");
 	console.log(streetFilter);
@@ -293,46 +315,35 @@ function filterData() {
         return (d.key != "null");
     });
 
-
 	// filter out intersections with low number of accidents on big roads
     if (filteredObject.numIntersections >50)
 		filteredObject.values = filteredObject.values.filter(function(d){
 			return (d.values.length >=  5);
 		});
-	
-	// recalculate numIntersections
-    filteredObject.numIntersections = filteredObject.values.length;
-	
-	
-    console.log("filterData() - filteredObject");
-    console.log(filteredObject);
 
 }
 
 
 
+
+
+/*	---
+	Vis functions
+	--- */
+
+
 function updateLineMap() {
-	
-	
+
     // Data-join
-    var linemap = svg.selectAll("circle")
+    var linemap = svgLinemap.selectAll("circle")
         .data(filteredObject.values);
 
-		
     // define scales
 
-	/*
-	// Scale - line length
-	var l = d3.scale.linear()
-		.range([100, width])
-		.domain([1, 150]);
-	*/
-
-		
 	// Scale - circle position along line
 	var x = d3.scale.linear()
-		.range([0, width])
-		.domain([0, filteredObject.numIntersections]);
+		.range([0, widthLinemap])
+		.domain([0, filteredObject.values.length]);
 		
 	// Scale - circle radius   --- discontinued ---
 	var r = d3.scale.linear()
@@ -348,18 +359,17 @@ function updateLineMap() {
 	
 
 	// invoke tooltips
-	svg.call(linemapTip);
+	svgLinemap.call(linemapTip);
 	
 
 	// draw street line
 	line
 		.attr("x1", 0)
         .attr("y1", 0)
-        //.attr("x2", l(filteredObject.numIntersections))
-        .attr("x2", width+10)
+        .attr("x2", widthLinemap+10)
         .attr("y2", 0)
-        .attr("stroke-width", 1)
-        .attr("stroke", "gray");
+        .attr("linemap-stroke-width", 1)
+        .attr("linemap-stroke", "#000");
 	
 	
     // Enter - add circle elements
@@ -386,7 +396,7 @@ function updateLineMap() {
         .attr("cx", function(d, i) { return 10 + x(i); });
 
 	// update chart title
-	title.text(streetFilter + "'s main intersections (Rollover circles for more detail. Click for street views)");
+	titleLinemap.text(streetFilter + "'s main intersections (Rollover circles for more detail. Click for street views)");
 
 	// Exit
     linemap.exit().remove();
@@ -399,6 +409,9 @@ function updateLineMap() {
 
 function updateForceGraph() {
 
+	console.log("----------------updateForceGraph()-------------------");
+
+
 	$("#forcegraph-title").text("Cambridge's main road connections - select a circle node below to update the linemap above");
 
 	// Scale - circle color - based on # accidents
@@ -408,72 +421,203 @@ function updateForceGraph() {
 
 	// Scale - circle radius - based on # intersections
 	var r = d3.scale.linear()
-		.range([3,30])
-		.domain([0, d3.max(streetNodes, function(d) { return d.numIntersections; }) ]);
+		.range([5,30])
+		.domain([0, d3.max(streetNodes, function(d) { return d.totalAccidents; }) ]);
+
+	// Scale - circle radius - based on # intersections
+	var w = d3.scale.linear()
+		.range([1,5])
+		.domain([0, d3.max(streetNodes, function(d) { return d.totalAccidents; }) ]);
+
 
 	// invoke tooltips
-	svg.call(forceTip);
+	svgForce.call(forceTip);
 
-
+	/*	--- PHASED OUT ----
 	// function to allow manual repositioning of nodes
 	var drag = force.drag()
 		.on("dragstart", dragstart);
+	*/
+
+	// define place for graph elements corresponding only to selected street
+	var filteredLinks = [];
+	var filteredNodes = [];
 
 
-	// start force layout simulation
-	force
-		.nodes(streetNodes)
-		.links(streetLinks)
-		.on("tick", tick)
-		.start();
+	function mouseover(){
+		forceTip.show();
+	}
 
-	// add force edges to SVG
-	var edges = svgForce.selectAll("line")
-		.data(streetLinks)
-		.enter()
-		.append("line")
-		.style("stroke", "#ccc")
-		.style("stroke-width", 1);
+	start();
 
-	// add force nodes to SVG
-	var nodes = svgForce.selectAll("circle")
-		.data(streetNodes)
-		.enter()
-		.append("circle")
-		.call(drag)
-		.attr("r", function(d) { return r(d.numIntersections); })
-		.style("fill", function(d){ return c(d.totalAccidents); })
-		.on("dblclick", dblclick)
-		.on("mouseover",function(d){
-			forceTip.show(d);
-			d3.select(this)
-				.style("stroke","black")
-				.style("stroke-width", "3px");
-		})
-		.on("mouseout",function(d){
-			forceTip.hide(d);
-			d3.select(this)
-				.style("stroke-width", "0px");
+	function start() {
+
+		// set array of links to streets that intersect to the selected street
+		filteredLinks = streetLinks.filter(function (d) {
+			return (d.sourceName == streetFilter);
+		});
+
+		// set array of nodes for streets that intersect to the selected street
+		filteredNodes = streetNodes.filter(function (d) {
+			var match = false;
+			filteredLinks.forEach(function (s) {
+				if ((d.key == s.sourceName) || (d.key == s.targetName)) match = true;
+			});
+			return match;
 		});
 
 
-function mouseover(){
-	forceTip.show();
+		// set source/target index values to position in current filtered array
+		filteredLinks.forEach(function (l) {
+			l.source = searchArrayObjects(filteredNodes, "key", l.sourceName);
+			l.target = searchArrayObjects(filteredNodes, "key", l.targetName);
 
-}
-		
-	// define ticks
-	function tick() {
-		edges.attr("x1", function(d) { return d.source.x; })
-			 .attr("y1", function(d) { return d.source.y; })
-			 .attr("x2", function(d) { return d.target.x; })
-			 .attr("y2", function(d) { return d.target.y; });
-		nodes.attr("cx", function(d) { return d.x; })
-			 .attr("cy", function(d) { return d.y; });
+			function searchArrayObjects(array, attr, value) { 	// find matching value, return array index
+				for (var i = 0; i < array.length; i += 1) {
+					if (array[i][attr] == value) { return i; 	}
+				}
+			}
+		});
+
+		// filter out any links to streets which have been previously filtered out (too few accidents)
+		filteredLinks.filter(function (d) {
+			return (typeof d.target === "number");
+		});
+
+
+		// define force layout
+		force
+			.links(filteredLinks)
+			.nodes(filteredNodes)
+			.on("tick", tick);
+
+
+		// define updated link list for selected street/node
+		var link_update = svgForce.selectAll(".force-link")
+			.data(force.links(),
+				function (d) {
+					return (d.source + "-" + d.target);
+				}
+			);
+
+		// define new link properties for selected street/node
+		link_update.enter()
+			.insert("line")
+			.attr("class", "force-link")
+			.style("stroke", "blue")
+			.style("stroke-width", 1);
+
+
+		link_update.exit()
+			.remove();
+
+		// define updated node list
+		var node_update = svgForce.selectAll(".force-node")
+			.data(force.nodes(),
+				function (d) {
+					return d.key;
+				}
+			);
+
+		// update node attributes for new circles
+		node_update.enter()
+			.append("circle")
+			.attr("class", "force-node");
+
+		node_update
+			.style("fill", function(d) { if (d.key == streetFilter) return "blue"; else return "red"; })
+			//.call(drag)
+			.attr("r", function (d) {
+				return r(d.totalAccidents);
+			})
+			//.style("fill", function (d) {				return c(d.totalAccidents);			})
+			.on("click", click)
+			//.on("dblclick", dblclick)
+			.on("mouseover", function (d) {
+				forceTip.show(d);
+				d3.select(this)
+					.style("stroke", "black")
+					.style("stroke-width", "3px");
+			})
+			.on("mouseout", function (d) {
+				forceTip.hide(d);
+				d3.select(this)
+					.style("stroke-width", "0px");
+			});
+/*
+		node_update.enter()
+			.append("text")
+			.attr("class", "force-text")
+			.text(function(d){ return d.key; })
+			.attr("x", function(d) {
+				if (d.x < widthForce) {
+					return d.x - 10;
+				} else return d.x + 10;
+			})
+			.attr("y", function(d) {
+				if (d.y < heightForce) {
+					return d.y - 10;
+				} else return d.y + 10;
+			});
+			*/
+
+
+		// remove old nodes
+		node_update.exit()
+			.remove();
+
+		force.start();
+
+
+		//	 fast forward through force sim so positions appear fixed
+		//runThroughTicks();
+		function runThroughTicks() {
+			var n = 100;
+			for (var i = n * n; i > 0; --i) force.tick();
+		}
+
+
 	}
 
-			
 
+	// define ticks
+	function tick() {
+		svgForce.selectAll(".force-link")
+			.attr("x1", function(d) { return d.source.x; })
+			.attr("y1", function(d) { return d.source.y; })
+			.attr("x2", function(d) { return d.target.x; })
+			.attr("y2", function(d) { return d.target.y; });
+
+
+		svgForce.selectAll(".force-node")
+			.attr("cx", function(d) { return d.x; })
+			.attr("cy", function(d) { return d.y; });
+/*
+		svgForce.selectAll(".force-text")
+			.attr("x", function(d) {
+				if (d.x < widthForce)
+					return d.x - 10;
+				else return d.x + 10;
+			})
+			.attr("y", function(d) {
+
+				console.log(d.y);
+				if (d.y < heightForce)
+					return d.y - 10;
+				else return d.y + 10;
+			});
+*/
+	}
+
+
+	function click(d) {
+		streetFilter = d.key;
+		//d3.select(this).classed("fixed", d.fixed = true);
+		updateForceGraph();
+	}
+
+
+	/*   --- PHASED OUT -----
 	// release fixed node position
 	function dblclick(d) {
 		d3.select(this).classed("fixed", d.fixed = false);
@@ -483,10 +627,49 @@ function mouseover(){
 	function dragstart(d) {
 		d3.select(this).classed("fixed", d.fixed = true);
 	}
+	*/
+
 
 	getUserInput();
 
+
+
 }
+
+
+
+function initBarChart(){
+	
+	console.log("initBarChart() - filteredAccidentData");
+	console.log(filteredAccidentData);
+	
+	
+	xBar.domain([0, d3.max(filteredAccidentData, function(d) { return d.totalAccidents; })]);
+	yBar.domain(filteredAccidentData.map(function(d) { return d.key; }));
+	
+	
+	svgBarChart.append("g")
+		.attr("class", "barchart-xAxis")
+		.call(xBarAxis);
+		
+	svgBarChart.append("g")
+		.attr("class", "barchart-yAxis")
+		.call(yBarAxis);
+	
+	svgBarChart.selectAll(".barchart-bar")
+		.data(filteredAccidentData)
+		.enter()
+		.append("rect")
+			.attr("class", "barchart-bar")
+			.attr("x", 0)
+			.attr("width", function(d) { return xBar(d.totalAccidents); })
+			.attr("y", function(d) { return yBar(d.key); })
+			.attr("height", yBar.rangeBand());
+		
+
+	
+}
+
 
 
 
@@ -496,28 +679,26 @@ function mouseover(){
 
 /*	---
 	support functions
-	---
-*/
+	--- */
 
 
 
 function getUserInput(){
 
-    // get dropdown menu selection
-    list.on("change", function(){
-        // set global filter var
-        streetFilter = list.property("value");
-        filterData();
-		updateLineMap();
-    });
-	
+/*
 	// on force node click, update linemap
 	d3.select("#forcegraph").selectAll("circle").on("click", function(d){
 		streetFilter = d.key;
-		filterData();
+	 	filterLinemapData();
 		updateLineMap();
 	});
-	
+*/
+	// on barchart bar click, update linemap
+	d3.select("#barchart").selectAll("rect").on("click", function(d){
+		streetFilter = d.key;
+		filterLinemapData();
+		updateLineMap();
+	});
 /*
 	// force node mouseover - show tooltip
 	d3.select("#forcegraph").selectAll("circle").on("mouseover", function(d){
@@ -558,8 +739,8 @@ function showStreetView(coords) {
 	console.log(coords);
 	
 	var parameters = {
-		width: 600,
-		height: 200,
+		width: widthStreetImage,
+		height: heightStreetImage,
 		heading: 0,
 		fov: 180,
 		pitch: -10
