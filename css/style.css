@@ -22,6 +22,14 @@ p {
     font-size: 1.4em;
 }
 
+.btn-type-weather-current {
+    font-size: 2.4em;
+}
+
+p.weather-current {
+    font-size: 1.7em;
+}
+
 #menu {
     opacity: 0.5;
 }
