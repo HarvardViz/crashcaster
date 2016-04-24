@@ -30,8 +30,12 @@ p.weather-current {
     font-size: 1.7em;
 }
 
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,.9);
+}
+
 #menu {
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
 input, textarea {
