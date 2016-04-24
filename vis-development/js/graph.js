@@ -384,14 +384,35 @@ function updateForceGraph() {
 		console.log(d.key.toUpperCase());
 		console.log(streetFilter.toUpperCase());
 
-		// if new street is selected, grab coordinates of intersection and show street view
+		console.log(streetNodes);
+
 		if (d.key.toUpperCase() != streetFilter.toUpperCase()) {
 			var coords = [];
-			d.values.forEach(function (v) {
-				console.log(v);
-				if (v.key.toUpperCase() == streetFilter.toUpperCase())
-					coords = v.values[0].coordinates;
+
+			//  run through full node list to locate matching intersections
+			//  search both ways streetFilter-d.key  and d.key-streetFilter
+				// due to the way the data was originally encoded in the raw dataset
+
+			streetNodes.forEach(function (n) {
+				if (n.key.toUpperCase() == streetFilter.toUpperCase()) {
+					n.values.forEach(function (v) {
+						if (v.key.toUpperCase() == d.key.toUpperCase()) {
+							coords = v.values[0].coordinates;
+						}
+					});
+				}
 			});
+
+			streetNodes.forEach(function (n) {
+				if (n.key.toUpperCase() == d.key.toUpperCase()) {
+					n.values.forEach(function (v) {
+						if (v.key.toUpperCase() == streetFilter.toUpperCase()) {
+							coords = v.values[0].coordinates;
+						}
+					});
+				}
+			});
+
 			$("#streetview-title").text("Intersection of " + streetFilter.toUpperCase() + " & " + d.key.toUpperCase());
 			showStreetView(coords);
 
@@ -400,9 +421,10 @@ function updateForceGraph() {
 			start();
 		}
 	}
-
-
 }
+
+
+
 
 
 
