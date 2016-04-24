@@ -75,6 +75,15 @@
     color: #333;
 }
 
+.bg-content-hourly {
+    background-color: rgba(0, 0, 0, 0.6);
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    padding: 5px;
+    color: #333;
+}
+
 /* Adding background for the slides
  * --------------------------------------- */
 #slide0 {
