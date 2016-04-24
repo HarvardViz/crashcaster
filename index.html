@@ -54,9 +54,9 @@
             </li>
             <li data-menuanchor="crashboard" class="nav-item"><a class="nav-link" href="#crashboard">Crashboard</a></li>
             <li data-menuanchor="sankey" class="nav-item"><a class="nav-link" href="#sankey">Weather Impact</a></li>
+            <li data-menuanchor="crashcalendar" class="nav-item"><a class="nav-link" href="#crashcalendar">Crashcalendar</a></li>
             <li data-menuanchor="linemap" class="nav-item"><a class="nav-link" href="#linemap">Intersections</a></li>
             <li data-menuanchor="forcegraph" class="nav-item"><a class="nav-link" href="#forcegraph">Street Explorer</a></li>
-            <li data-menuanchor="crashcalendar" class="nav-item"><a class="nav-link" href="#crashcalendar">Crashcalendar</a></li>
             <li data-menuanchor="screencast" class="nav-item"><a class="nav-link" href="#screencast">Screencast</a></li>
             <li data-menuanchor="processbook" class="nav-item"><a class="nav-link" href="#processbook">Process Book</a>
             </li>
@@ -313,7 +313,7 @@
                 <div class="row">&nbsp;</div>
 
                 <div class="row">
-                    <div id="chart" class="col-md-12 bg-content-white" style="background-color: rgba(255, 255, 255, 0.8);"></div>
+                    <div id="sankey-diagram" class="col-md-12 bg-content-white" style="background-color: rgba(255, 255, 255, 0.8);"></div>
                 </div>
 
             </div>
@@ -326,7 +326,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 bg-content-white">
-                <h1>Linemap</h1>
+                <h1>Crashcalendar</h1>
             </div>
         </div>
     </div>
@@ -337,7 +337,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 bg-content-white">
-                <h1>Forcegraph</h1>
+                <h1>Linemap</h1>
             </div>
         </div>
     </div>
@@ -348,7 +348,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 bg-content-white">
-                <h1>Crashcalendar</h1>
+                <h1>Forcegraph</h1>
             </div>
         </div>
     </div>
@@ -416,7 +416,7 @@
         $("nav.navbar-fixed-top").autoHidingNavbar('setDisableAutohide', false);
         $.fn.fullpage({
             slidesColor: ['#428BCA', '#5CB85C', '#5BC0DE', '#F0AD4E', '#FF530D', '#FFFFFF'], // Bootstrap
-            anchors: ['home', 'visuals', 'crashboard', 'sankey', 'linemap', 'forcegraph', 'crashcalendar', 'screencast', 'processbook'],
+            anchors: ['home', 'visuals', 'crashboard', 'sankey', 'crashcalendar', 'linemap', 'forcegraph', 'screencast', 'processbook'],
             menu: '#menu'
             //sectionsColor: ['#C63D0F', '#1BBC9B', '#7E8F7C'],
             //navigation: true,

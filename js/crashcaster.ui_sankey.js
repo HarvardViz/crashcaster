@@ -343,7 +343,7 @@ crashcaster.ui_sankey = (function (cc$, $, d3) {
         color = d3.scale.category10();
 
     // append the svg canvas to the page
-    var svg = d3.select("#chart").append("svg")
+    var svg = d3.select("#sankey-diagram").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")

@@ -18,6 +18,27 @@ crashcaster.model = (function () {
         console.log(v);
     };
 
+    var weatherImages = [
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""},
+        {condition: "", url: "", cite: ""}
+    ];
 
     function color(opacity) {
         var opacity = (opacity == undefined) ? 1.0 : parseFloat(opacity);

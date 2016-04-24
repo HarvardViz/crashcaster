@@ -68,7 +68,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     }
 
-    function setWeatherConditionsTo(condition) {
+    function setWeatherConditionsTo(condition, useActualCondition) {
 
         //console.log("WU_CONDITION=" + condition);
         var condition = getWuMappedCondition(condition);
@@ -77,10 +77,9 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         var conditions = ["clear", "rain", "fog", "snow"];
 
         // Setup the current conditions
-        var icon = cc$.weather.current.current_observation.icon;
+        var actualCondition = icon = heatmap = cc$.weather.current.current_observation.icon;
         var label = cc$.weather.current.current_observation.weather;
-        var heatmap = cc$.weather.current.current_observation.icon;
-        var buttonHtml = '<button onclick="cc$.ui_forecast.setWeatherConditionsTo(\''+ heatmap + '\')" id="btn_current_weather" type="button" class="btn btn-lg btn-info"><p class="wi wi-wu-' + icon + ' btn-type-weather-current"></p><p class="weather-current">' + label + '</p></button>'
+        var buttonHtml = '<button onclick="cc$.ui_forecast.setWeatherConditionsTo(\''+ heatmap + '\', true)" id="btn_current_weather" type="button" class="btn btn-lg btn-info"><p class="wi wi-wu-' + icon + ' btn-type-weather-current"></p><p class="weather-current">' + label + '</p></button>'
 
         // Set the current conditions big button to use for resetting the crashcast
         d3.select("#current-weather").html(buttonHtml);
@@ -96,10 +95,18 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
                 console.log("Painting a " + condition + " forecast");
                 cc$.heatmap.clear();
 
+
+                if(useActualCondition){
+                    setBackgroundImage(actualCondition);
+                } else {
+                    setBackgroundImage(condition);
+                }
+
                 break;
             case "rain":
                 console.log("Painting a " + condition + " forecast");
                 cc$.heatmap.rain();
+
 
                 break;
             case "fog":
@@ -116,6 +123,16 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
                 console.log("Painting a DEFAULT forecast");
                 cc$.heatmap.clear();
         }
+
+    }
+
+    function setBackgroundImage(condition) {
+
+        imageUrl = "img/bg-rain.jpg";
+
+        $('#section0').css('background-image', 'url(' + imageUrl + ')');
+
+        // Must add citation for each image
 
     }
 
