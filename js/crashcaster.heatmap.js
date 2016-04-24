@@ -40,6 +40,7 @@ crashcaster.heatmap = (function (cc$, d3) {
 // This example requires the Visualization library. Include the libraries=visualization
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization">
+
     var map, heatmap;
     var Lat1 = 42.373616;
     var Long1 = -71.109734;
@@ -76,6 +77,13 @@ crashcaster.heatmap = (function (cc$, d3) {
     var txtWeather = "lower";
     var txtDay;
     var forecastAccidents;
+    //Calculations Crashstistics
+    var selectTravelType = "Auto";
+    var selectWeather = "Good";
+    var crashtisticsText;
+    var todaysWeather;
+    var filterTotal;
+    var accidentsDailyAvg=4.31;
 
 
     d3.json("http://api.wunderground.com/api/053fc50550431c69/forecast10day/q/MA/Cambridge.json", function(json) {
@@ -275,13 +283,6 @@ crashcaster.heatmap = (function (cc$, d3) {
         }
     });
 
-    //Calculations Crashstistics
-    var selectTravelType = "Auto";
-    var selectWeather = "Good";
-    var crashtisticsText;
-    var todaysWeather;
-    var filterTotal;
-    var accidentsDailyAvg=0;
 
 
 
