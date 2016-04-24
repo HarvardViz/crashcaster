@@ -9,22 +9,104 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     function init() {
         echo("initialize crashcaster.ui_forecast");
-        READY_STATE._current = READY_STATE.LOADED;
+        updateHourly()
+        run();
+
     }
 
     function run() {
         echo("running crashcaster.ui_forecast");
         console.log("Current weather condition is " + cc$.weather.current.current_observation.icon);
+
+        setWeatherConditionsTo(cc$.weather.current.current_observation.icon);
+
         showLocation();
         updateClock();
         timedUpdate();
-        updateHourly()
+
     }
 
     function echo(v) {
         console.log(v);
     };
 
+    function setWeatherConditionsTo(c) {
+
+        console.log("WU_CONDITION=" + c);
+        var condition = getWuMappedCondition(c);
+        console.log("MAPPED CONDITION=" + condition);
+
+        // Setup the current conditions
+        var icon = cc$.weather.current.current_observation.icon;
+        var label = cc$.weather.current.current_observation.weather;
+        var heatmap = cc$.weather.current.current_observation.icon;
+        var  buttonHtml = '<button onclick="cc$.heatmap.' + heatmap + '()" id="btn_current_weather" type="button" class="btn btn-lg btn-info"><p class="wi wi-wu-' + icon + ' btn-type-weather-current"></p><p class="weather-current">' + label + '</p></button>'
+
+        // Set the current conditions big button to use for resetting the crashcast
+        d3.select("#current-weather").html(buttonHtml);
+
+        switch(condition) {
+            case "clear":
+                console.log("Painting a " + condition + " forecast");
+
+                cc$.heatmap.clear();
+
+                break;
+            case "rain":
+                console.log("Painting a " + condition + " forecast");
+                cc$.heatmap.rain();
+
+                break;
+            case "fog":
+                console.log("Painting a " + condition + " forecast");
+                cc$.heatmap.fog();
+
+                break;
+            case "snow":
+                console.log("Painting a " + condition + " forecast");
+                cc$.heatmap.snow();
+
+                break;
+            default:
+                cc$.heatmap.clear();
+        }
+
+    }
+
+    // Map the Weather Underground Conditions to our basic types
+    function getWuMappedCondition(c) {
+
+        var condition = "";
+
+        if (c=="clear" || c=="sunny" || c=="unknown" || c=="partlysunny" || c=="partlycloudy" || c=="mostlysunny" || c=="mostlycloudy" || c=="cloudy") {
+
+            condition = "clear";
+
+        }else if(c=="tstorms" || c=="rain" || c=="chancetstorms" || c=="chancerain"){
+
+            condition = "rain";
+
+        } else if(c=="fog" || c=="hazy") {
+
+            condition = "fog";
+
+        } else if(c=="snow" || c=="sleat" || c=="flurries" || c=="chancesnow" || c=="chancesleat" || c=="chanceflurries") {
+
+            condition = "snow";
+
+        } else {
+
+            condition = "sunny";
+
+        }
+
+        return condition;
+
+    }
+
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 
     // For future use to set various locations
     function showLocation() {
@@ -175,18 +257,8 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
                 t.select(".line").attr("d", line);
             }
 
-
-
-        // Parse numbers
-        function type(d) {
-            d.hour = +d.hour;
-            d.accidents = +d.accidents;
-            return d;
+        READY_STATE._current = READY_STATE.LOADED;
         }
-
-
-    }
-
 
 
     init();
@@ -199,7 +271,8 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         init: init,
         run: run,
         echo: echo,
-        data: data
+        data: data,
+        setWeatherConditionsTo: setWeatherConditionsTo
     };
 
 

@@ -84,7 +84,7 @@
                         <button onclick="cc$.heatmap.car()" id="btn_car" type="button"
                                 class="btn btn-default"><p
                                 class="fa fa-car btn-type-travel"></p>
-                            <p>Car</p></button>
+                            <p>Auto</p></button>
                         <button onclick="cc$.heatmap.bike()" id="btn_bike" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-bicycle btn-type-travel"></p>
@@ -102,7 +102,16 @@
                 <div class="row">
                     &nbsp;
                 </div>
-                <div class="row ">
+                <div class="row">
+                    <h4 class="textbox-heading">Crashtistics</h4>
+                    <p id="stats" class="textbox text-center">
+                        <span id="crashtxt"> Accident Type: Auto, Weather: Good, Accidents/year: 852.25</span>
+                    </p>
+                </div>
+                <div class="row">
+                    &nbsp;
+                </div>
+                <div class="row bg-content">
                     <h4 class="textbox-heading" style="padding: 0 0 0 0;">Accidents Forecast Today</h4>
                     <p id="forecast-count" class="textbox-forecast-count">
                         46
@@ -118,36 +127,26 @@
                     <h4 class="textbox-heading">Current Weather</h4>
 
 
-                        <button onclick="cc$.heatmap.rain()" id="btn_rain" type="button" class="btn btn-lg btn-info"><p
-                                class="wi wi-wu-chancerain btn-type-weather-current"></p><p class="weather-current">Rain</p></button>
+                    <div id="current-weather" class=""></div>
 
                     <div>&nbsp;</div>
 
                     <div class="btn-group" role="group" aria-label="Weather selection">
                         <button onclick="cc$.heatmap.rain()" id="btn_rain" type="button" class="btn btn-default"><p
-                                class="wi wi-wu-chancerain btn-type-weather"></p>
+                                class="wi wi-wu-rain btn-type-weather"></p>
                             <p>Rain</p></button>
                         <button onclick="cc$.heatmap.snow()" id="btn_snow" type="button"
                                 class="btn btn-secondary"><p
-                                class="wi wi-day-snow btn-type-weather"></p>
+                                class="wi wi-wu-snow btn-type-weather"></p>
                             <p>Snow</p></button>
                         <button onclick="cc$.heatmap.fog()" id="btn_fog" type="button" class="btn btn-secondary"><p
-                                class="wi wi-day-fog btn-type-weather"></p>
+                                class="wi wi-fog btn-type-weather"></p>
                             <p>Fog&nbsp;</p></button>
-                        <button onclick="cc$.heatmap.sunny()" id="btn_sun" type="button" class="btn btn-secondary"><p
-                                class="wi wi-day-sunny btn-type-weather"></p>
+                        <button onclick="cc$.heatmap.clear()" id="btn_sun" type="button" class="btn btn-secondary"><p
+                                class="wi wi-wu-clear btn-type-weather"></p>
                             <p>Clear</p></button>
 
                     </div>
-                </div>
-                <div class="row">
-                    &nbsp;
-                </div>
-                <div class="row">
-                    <h4 class="textbox-heading">Crashtistics</h4>
-                    <p id="stats" class="textbox text-center">
-                        <span id="crashtxt"> Accident Type: Auto, Weather: Good, Accidents/year: 852.25</span>
-                    </p>
                 </div>
                 <div class="row">
                     &nbsp;

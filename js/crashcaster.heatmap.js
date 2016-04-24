@@ -182,7 +182,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
-    function sunny() {
+    function clear() {
         Lat1 = 42.373616;
         Long1 = -71.109734;
         zoom1= 13;
@@ -340,7 +340,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         rain: rain,
         snow: snow,
         fog: fog,
-        sunny: sunny,
+        clear: clear,
         car: car,
         bike: bike,
         bicycle: bicycle,
