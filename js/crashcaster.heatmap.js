@@ -70,6 +70,8 @@ crashcaster.heatmap = (function (cc$, d3) {
         zoom1= 13;
         selectTravelType = "Auto";
         initMap();
+        document.getElementById("crashtxt").innerHTML = crashtisticsText;
+
     }
 
     function bike() {
@@ -78,6 +80,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         zoom1= 13;
         selectTravelType = "Bike";
         initMap();
+        document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
     function bicycle() {
@@ -86,6 +89,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         zoom1= 13;
         selectTravelType = "Bicycle";
         initMap();
+        document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
     function walk() {
@@ -94,6 +98,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         zoom1= 13;
         selectTravelType = "Pedestrian";
         initMap();
+        document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
 
@@ -104,6 +109,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         zoom1= 13;
         selectWeather = "Rain";
         initMap();
+        document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
     function snow() {
@@ -112,6 +118,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         zoom1= 13;
         selectWeather = "Snow";
         initMap();
+        document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
 
@@ -121,6 +128,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         zoom1= 13;
         selectWeather = "Fog";
         initMap();
+        document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
     function sunny() {
@@ -129,6 +137,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         zoom1= 13;
         selectWeather = "Good";
         initMap();
+        document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
     function overview() {
@@ -137,6 +146,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         zoom1= 13;
         selectWeather = "Good";
         initMap();
+        document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
 
@@ -208,34 +218,37 @@ crashcaster.heatmap = (function (cc$, d3) {
     });
 
     //Calculations Crashstistics
-    var autoTotal=0;
-    var bikeTotal;
-    var cycleTotal;
-    var walkTotal;
-    selectTravelType = "Auto";
-    selectWeather = "Good";
+    var selectTravelType = "Auto";
+    var selectWeather = "Good";
+    var crashtisticsText = "...";
+    var todaysWeather = "Good";
+    var filterTotal;
 
+    //Number of accidents in Today's Weather
     for(var i=0;i<accidentData.length;i++) {
-            if(travelType[i]=="Auto") {
-                autoTotal=autoTotal+1;
-            }
-        }
+                if(weatherCat[i]==todaysWeather) {
+                    if(travelType[i]==selectTravelType) {
+                    }
+                }
+    };
 
-    console.log(autoTotal);
 
     //Points for Heatmap
     function getPoints() {
         var array = [];
+        filterTotal=0;
         for(var i=0;i<accidentData.length;i++) {
-            if(Lat01[i]>0) {
                 if(travelType[i]==selectTravelType) {
                     if(weatherCat[i]==selectWeather) {
+                        filterTotal = filterTotal + 1;
+                        if(Lat01[i]>0) {
                         array.push(new google.maps.LatLng(Lat01[i], Long01[i]));
+                        }
+
                     }
                 }
-            }
-
-        }
+        };
+        crashtisticsText = "Accident Type: " + selectTravelType + ", Weather: " + selectWeather + ", Accidents/year: "+filterTotal/4;
         return array;
     }
 
