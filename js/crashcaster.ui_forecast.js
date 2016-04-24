@@ -82,9 +82,9 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         ];
 
 
-        var margin = {top: 0, right: 0, bottom: 0, left: 0},
+        var margin = {top: 5, right: 15, bottom: 15, left: 5},
             width = 960 - margin.left - margin.right,
-            height = 60 - margin.top - margin.bottom;
+            height = 70 - margin.top - margin.bottom;
 
         //var parse = d3.time.format("%b %Y").parse;
 
@@ -96,6 +96,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
         var xAxis = d3.svg.axis()
             .scale(x)
+            //.tickValues(['1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM'])
             .tickSize(-height);
 
         var yAxis = d3.svg.axis()

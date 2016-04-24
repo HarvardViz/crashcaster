@@ -192,38 +192,38 @@ p#title
 /* HOURLY ACCIDENTS
 * --------------------------------------- */
 
-svg {
-    font: 10px sans-serif;
+#hourly_graph svg {
+    font: 13px sans-serif;
 }
 
-path.line {
+#hourly_graph svg path.line {
     fill: none;
     stroke: #666;
     stroke-width: 1.5px;
 }
 
-path.area {
+#hourly_graph svg path.area {
     fill: #e7e7e7;
 }
 
-.axis {
+#hourly_graph svg .axis {
     shape-rendering: crispEdges;
 }
 
-.x.axis line {
+#hourly_graph svg .x.axis line {
     stroke: #fff;
 }
 
-.x.axis .minor {
+#hourly_graph svg .x.axis .minor {
     stroke-opacity: .5;
 }
 
-.x.axis path {
+#hourly_graph svg .x.axis path {
     display: none;
 }
 
-.y.axis line,
-.y.axis path {
+#hourly_graph svg .y.axis line,
+#hourly_graph svg .y.axis path {
     fill: none;
-    stroke: #000;
+    stroke: red;
 }
