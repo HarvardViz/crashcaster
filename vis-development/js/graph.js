@@ -181,6 +181,8 @@ function wrangleData(){
 
 function updateForceGraph() {
 
+	$("#forcegraph-title").text("Currently on " + streetFilter.toUpperCase() + " : " + streetNodes[0].totalAccidents + " total accidents");
+
 	// define place for graph elements corresponding only to selected street
 	var filteredLinks = [];
 	var filteredNodes = [];
@@ -190,7 +192,7 @@ function updateForceGraph() {
 
 		// Scale - circle radius - based on # accidents
 		var r = d3.scale.linear()
-			.range([5, 60])
+			.range([10, 60])
 			.domain([0, d3.max(streetNodes, function (d) {
 				return d.totalAccidents;
 			})]);
@@ -256,9 +258,7 @@ function updateForceGraph() {
 		// define new link properties for selected street/node
 		link_update.enter()
 			.insert("line")
-			.attr("class", "force-link")
-			.style("stroke", "blue")
-			.style("stroke-width", 1);
+			.attr("class", "force-link");
 
 
 		link_update.exit()
@@ -278,9 +278,7 @@ function updateForceGraph() {
 			.attr("class", "force-node");
 
 		node_update
-			.style("fill", function (d) {
-				if (d.key == streetFilter) return "blue"; else return "red";
-			})
+			.classed("force-selectedNode", function(d) { return d.key == streetFilter; })
 			.attr("r", function (d) {
 				return r(d.totalAccidents);
 			})
@@ -380,14 +378,9 @@ function updateForceGraph() {
 	// on click, update force graph data and elements, restart simulation.
 	function click(d) {
 
-		console.log("----------------------------");
-		console.log(d.key.toUpperCase());
-		console.log(streetFilter.toUpperCase());
-
-		console.log(streetNodes);
-
 		if (d.key.toUpperCase() != streetFilter.toUpperCase()) {
 			var coords = [];
+			var total=0;
 
 			//  run through full node list to locate matching intersections
 			//  search both ways streetFilter-d.key  and d.key-streetFilter
@@ -398,6 +391,8 @@ function updateForceGraph() {
 					n.values.forEach(function (v) {
 						if (v.key.toUpperCase() == d.key.toUpperCase()) {
 							coords = v.values[0].coordinates;
+
+							total += v.values.length;
 						}
 					});
 				}
@@ -407,17 +402,27 @@ function updateForceGraph() {
 				if (n.key.toUpperCase() == d.key.toUpperCase()) {
 					n.values.forEach(function (v) {
 						if (v.key.toUpperCase() == streetFilter.toUpperCase()) {
+
 							coords = v.values[0].coordinates;
+							total += v.values.length;
 						}
 					});
 				}
 			});
 
 			$("#streetview-title").text("Intersection of " + streetFilter.toUpperCase() + " & " + d.key.toUpperCase());
-			showStreetView(coords);
+
+			if (coords[0]!=0 && coords[1]!=0) showStreetView(coords);
+			else $("#streetview-title").text("Sorry, no street view available for this intersection");
+
+
+			$("#streetview-info").text(total + " total accidents at this intersection (2010-2014)");
+
 
 			// update graph to new street selection
 			streetFilter = d.key;
+			$("#forcegraph-title").text("Currently on " + streetFilter.toUpperCase() + " : " + d.totalAccidents + " total accidents");
+
 			start();
 		}
 	}
