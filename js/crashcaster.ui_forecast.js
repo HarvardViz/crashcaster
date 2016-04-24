@@ -128,7 +128,20 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     function setBackgroundImage(condition) {
 
-        imageUrl = "img/bg-rain.jpg";
+        var daynight = "day";
+        var now = moment();
+        var hour = now.format('HH');
+        if(hour < 6 && hour > 18){
+            daynight = "night";
+        }
+        
+        
+
+        console.log(cc$.model.weatherImages);
+        console.log(cc$.model.weatherImages["clear"]);
+        console.log(cc$.model.weatherImages["chanceflurries"]);
+
+        imageUrl = "img/weather-rain-day-0.jpg";
 
         $('#section0').css('background-image', 'url(' + imageUrl + ')');
 
@@ -142,25 +155,15 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         var condition = "";
 
         if (c=="clear" || c=="sunny" || c=="unknown" || c=="partlysunny" || c=="partlycloudy" || c=="mostlysunny" || c=="mostlycloudy" || c=="cloudy") {
-
             condition = "clear";
-
         }else if(c=="tstorms" || c=="rain" || c=="chancetstorms" || c=="chancerain"){
-
             condition = "rain";
-
         } else if(c=="fog" || c=="hazy") {
-
             condition = "fog";
-
         } else if(c=="snow" || c=="sleat" || c=="flurries" || c=="chancesnow" || c=="chancesleat" || c=="chanceflurries") {
-
             condition = "snow";
-
         } else {
-
             condition = "sunny";
-
         }
 
         return condition;
