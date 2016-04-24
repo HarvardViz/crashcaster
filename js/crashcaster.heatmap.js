@@ -80,6 +80,7 @@ crashcaster.heatmap = (function (cc$, d3) {
 
     d3.json("http://api.wunderground.com/api/053fc50550431c69/forecast10day/q/MA/Cambridge.json", function(json) {
         Weather = json.forecast.txt_forecast.forecastday[1].fcttext;
+        
 
         //Generate Forecast text
         if(Weather.indexOf("rain") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
@@ -101,9 +102,9 @@ crashcaster.heatmap = (function (cc$, d3) {
         if(todaysDay=="Saturday") {factorDay = modelSaturday; txtDay = "fewer"}
         timenow = json.forecast.txt_forecast.date;
         console.log(WeatherCategory);
-        document.getElementById("source").innerHTML = "(Source: Weather Underground. Last updated " + timenow + ")";
-        document.getElementById("weathertxt").innerHTML = "Today's weather forecast is " + WeatherCategory;
-        document.getElementById("predict1").innerHTML = "Based on today's weather alone, there is a " + Math.abs(factorWeather)*100 + "% "+ txtWeather + "  risk of accidents. ";
+        document.getElementById("source").innerHTML = "<br><sup class='citation'>1</sup> (Source: Weather Underground. Last updated " + timenow + ")";
+        document.getElementById("weathertxt").innerHTML = "Today's weather forecast is " + WeatherCategory + "<sup class='citation'>1</sup>.  ";
+        document.getElementById("predict1").innerHTML = "Based on today's weather alone, there is a " + Math.abs(factorWeather)*100 + "% "+ txtWeather + "  risk of accidents.  ";
         document.getElementById("predict2").innerHTML = "Historical data suggests, there have been " + Math.abs(factorDay)*100 + "% "+ txtDay +" accidents on a "+todaysDay+".";
         forecastAccidents = Math.round(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));
         document.getElementById("forecast-count").innerHTML = forecastAccidents;

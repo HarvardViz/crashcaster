@@ -188,6 +188,11 @@ p#title
     font-weight: bold;
 }
 
+.citation
+{
+    font-size: 10px;
+    color: #ededed;
+}
 
 /* HOURLY ACCIDENTS
 * --------------------------------------- */

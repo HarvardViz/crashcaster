@@ -9,7 +9,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     function init() {
         echo("initialize crashcaster.ui_forecast");
-        updateHourly()
+        updateHourlyChart()
         run();
 
     }
@@ -132,7 +132,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
     }
 
 
-    function updateHourly() {
+    function updateHourlyChart() {
 
 
         // Define the data
