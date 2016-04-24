@@ -45,19 +45,69 @@ crashcaster.heatmap = (function (cc$, d3) {
     var Long1 = -71.109734;
     var zoom1 = 13;
     var Weather = "not available";
+    var WeatherCategory = "Good";  // Rain/Snow/Fog/Good - By default is is good weather unless bad weather is detected
     var timenow = "not available";
     var today = new Date();
     var rad = 20;
+    var weekday = new Array(7);
+    weekday[0]=  "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+    var todaysDay = weekday[today.getDay()];
+    console.log(todaysDay);
+    //Forecasting model (based on calculations in data/cambridge_forecast_calculations_2010-2014.xlsx)
+    var modelSunday = -0.31;
+    var modelMonday = -0.01;
+    var modelTuesday = 0.06;
+    var modelWednesday = 0.09;
+    var modelThursday = 0.14;
+    var modelFriday = 0.16;
+    var modelSaturday = -0.13;
+    var modelFog = 0.11;
+    var modelGood  = -0.05;
+    var modelRain = 0.06;
+    var modelSnow = 0.05;
+    var factorWeather =  -0.05;
+    var factorDay = 0;
+    var txtWeather = "lower";
+    var txtDay;
+    var forecastAccidents;
+
 
     d3.json("http://api.wunderground.com/api/053fc50550431c69/forecast10day/q/MA/Cambridge.json", function(json) {
-        Weather = json.forecast.txt_forecast.forecastday[2].fcttext;
+        Weather = json.forecast.txt_forecast.forecastday[1].fcttext;
+
+        //Generate Forecast text
+        if(Weather.indexOf("rain") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
+        if(Weather.indexOf("Rain") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
+        if(Weather.indexOf("hail") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
+        if(Weather.indexOf("Hail") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
+        if(Weather.indexOf("thunderstorm") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
+        if(Weather.indexOf("Thunderstorm") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
+        if(Weather.indexOf("snow") > -1) {WeatherCategory = "Snow"; factorWeather = modelSnow; txtWeather = "higher";}
+        if(Weather.indexOf("Snow") > -1) {WeatherCategory = "Snow"; factorWeather = modelSnow; txtWeather = "higher";}
+        if(Weather.indexOf("fog") > -1) {WeatherCategory = "Fog";factorWeather = modelFog; txtWeather = "higher";}  //Assumed Fog is the worst as it imapcts visibility
+        if(Weather.indexOf("Fog") > -1) {WeatherCategory = "Fog";factorWeather = modelFog; txtWeather = "higher";}
+        if(todaysDay=="Sunday") {factorDay = modelSunday; txtDay = "fewer"}
+        if(todaysDay=="Monday") {factorDay = modelMonday; txtDay = "fewer"}
+        if(todaysDay=="Tuesday") {factorDay = modelTuesday; txtDay = "more"}
+        if(todaysDay=="Wednesday") {factorDay = modelWednesday; txtDay = "more"}
+        if(todaysDay=="Thursday") {factorDay = modelThursday; txtDay = "more"}
+        if(todaysDay=="Friday") {factorDay = modelFriday; txtDay = "more"}
+        if(todaysDay=="Saturday") {factorDay = modelSaturday; txtDay = "fewer"}
         timenow = json.forecast.txt_forecast.date;
-        console.log(timenow + " " + Weather);
+        console.log(WeatherCategory);
         document.getElementById("source").innerHTML = "(Source: Weather Underground. Last updated " + timenow + ")";
-        document.getElementById("weathertxt").innerHTML = "Today's weather forecast is " + Weather;
-        document.getElementById("predict1").innerHTML = "Based on the weather, today there is a higher risk near the Mass Ave intersection";
-        document.getElementById("predict2").innerHTML = "Historical data suggests, today there have been 50% higher accidents on a <day>/<month>";
-        ;
+        document.getElementById("weathertxt").innerHTML = "Today's weather forecast is " + WeatherCategory;
+        document.getElementById("predict1").innerHTML = "Based on today's weather alone, there is a " + Math.abs(factorWeather)*100 + "% "+ txtWeather + "  risk of accidents. ";
+        document.getElementById("predict2").innerHTML = "Historical data suggests, there have been " + Math.abs(factorDay)*100 + "% "+ txtDay +" accidents on a "+todaysDay+".";
+        forecastAccidents = Math.round(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));
+        document.getElementById("forecast-count").innerHTML = forecastAccidents;
+        console.log(forecastAccidents);
 
         // Addded to use the module pattern
         READY_STATE._current = READY_STATE.LOADED;
@@ -81,6 +131,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         selectTravelType = "Bike";
         initMap();
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
+        console.log(accidentsDailyAvg);
     }
 
     function bicycle() {
@@ -202,6 +253,8 @@ crashcaster.heatmap = (function (cc$, d3) {
     var Long01 =[];
     var travelType = [];
     var weatherCat = [];
+    var dayoftheWeek = [];
+    var datesofAccident = [];
 
     d3.csv("data/cambridge_accidents_weather_2010-2014.csv", function(error, csvData){
         if(!error){
@@ -209,6 +262,8 @@ crashcaster.heatmap = (function (cc$, d3) {
             accidentData.forEach(function(d) {
                 d.Latitude = +d.Latitude;
                 d.Longitude = +d.Longitude;
+                    dayoftheWeek.push(d['Day Of Week']);
+                    datesofAccident.push(d.Dates);
                     travelType.push(d.AccidentType);
                     weatherCat.push(d.Weather_Category);
                     Long01.push(d.Longitude);
@@ -223,6 +278,14 @@ crashcaster.heatmap = (function (cc$, d3) {
     var crashtisticsText = "...";
     var todaysWeather = "Good";
     var filterTotal;
+    var accidentsDailyAvg;
+
+
+
+
+    for(var i=0;i<accidentData.length;i++) {
+
+    };
 
     //Number of accidents in Today's Weather
     for(var i=0;i<accidentData.length;i++) {
@@ -237,6 +300,8 @@ crashcaster.heatmap = (function (cc$, d3) {
     function getPoints() {
         var array = [];
         filterTotal=0;
+        //Average accidents
+        accidentsDailyAvg = accidentData.length/(4*365); //since we have data for 2010-2014
         for(var i=0;i<accidentData.length;i++) {
                 if(travelType[i]==selectTravelType) {
                     if(weatherCat[i]==selectWeather) {
@@ -248,7 +313,8 @@ crashcaster.heatmap = (function (cc$, d3) {
                     }
                 }
         };
-        crashtisticsText = "Accident Type: " + selectTravelType + ", Weather: " + selectWeather + ", Accidents/year: "+filterTotal/4;
+        crashtisticsText = "Accident Type: " + selectTravelType + ", Weather: " + selectWeather + ", Accidents/year: "+filterTotal/5;
+
         return array;
     }
 
