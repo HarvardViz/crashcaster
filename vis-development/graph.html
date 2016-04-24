@@ -2,31 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Crashed - LineMap</title>
+    <title>CrashCaster: Street View Explorer</title>
 
     <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/graph.css" />
+
 </head>
 <body>
 
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
-            <h2>Explore Cambridge's road network</h2>
+            <h2>Street View Explorer:  Explore Cambridge's road network</h2>
+            <h4>Navigate your way through Cambridge's 30 most dangerous roads and try to spot what makes each intersection hazardous!</h4>
+            <h5>The graph below shows your current road and all the available connecting roads for you to explore.</h5>
+            <h5>As you connect to other roads you'll see views of your current intersection.</h5>
         </div>
 	</div>
 
+    <hr>
 
 	<div class="row">
-		<div class="col-md-5">
+		<div class="col-md-7">
+			<div id="forcegraph-title"></div>
+            <div id="forcegraph-subtitle"></div>
+            <div id="forcegraph"></div>
+		</div>
+        <div class="col-md-5">
             <div id="streetview-title"></div>
+            <div id="streetview-info"></div>
             <div id="streetview1"></div>
             <div id="streetview2"></div>
         </div>
-		<div class="col-md-7">
-			<div id="forcegraph-title"></div>
-			<div id="forcegraph"></div>
-		</div>
 	</div>
 
 </div>
@@ -35,9 +42,6 @@
     <script src="js/lib/jquery.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
     <script src="js/lib/d3.js"></script>
-    <script src="js/lib/d3.tip.js"></script>
-    <script src="js/lib/colorbrewer.js"></script>
-
 
     <script src="js/graph.js"></script>
 
