@@ -194,6 +194,7 @@ p#title
 
 #hourly_graph svg {
     font: 13px sans-serif;
+    color: #ededed;
 }
 
 #hourly_graph svg path.line {
