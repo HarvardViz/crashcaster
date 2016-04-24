@@ -244,6 +244,13 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             });
         this.svg.call(this.tip);
 
+        // Event to set the crossfilter settings.
+        $(document).on('accidents:crossfilter:set', function(e, config) {
+            vis.accidentsToggle.classed('active', config.mapView === undefined ? true : config.mapView === MapView.Accidents);
+            vis.neighborhoodsToggle.classed('active', config.mapView === undefined ? false : config.mapView === MapView.Neighborhoods);
+            vis._currentView = config.mapView === undefined ? MapView.Accidents : config.mapView;
+        });
+
         this.update();
     }
     AccidentMap.prototype = {
@@ -471,6 +478,19 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             .attr('class', 'fa fa-refresh');
         this.element.append('div')
             .attr('class', 'clearfix');
+
+        // Event to set the crossfilter settings.
+        $(document).on('accidents:crossfilter:set', function(e, config) {
+            for (var type of accidentTypes) {
+                _selected[ type ] = !config.accidentTypes ? true : config.accidentTypes.indexOf(type) !== -1;
+            }
+            filterOptions
+                .attr('class', function(d) { return _selected[ d ] ? 'active' : ''; });
+            fil.accidents.accidentType.filter(function(d) {
+                return _selected[ d ];
+            });
+            $.event.trigger({ type: 'accidents:crossfilter:update' });
+        });
     };
 
     }());
@@ -554,6 +574,24 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             .attr('class', 'fa fa-refresh');
         this.element.append('div')
             .attr('class', 'clearfix');
+
+        // Event to set the crossfilter settings.
+        $(document).on('accidents:crossfilter:set', function(e, config) {
+            for (var event of weatherEvents) {
+                _selected[ event ] = !config.weatherEvents ? true : config.weatherEvents.indexOf(event) !== -1;
+            }
+            filterOptions
+                .attr('class', function(d) { return _selected[ d ] ? 'active' : ''; });
+            fil.accidents.weather.filter(function(d) {
+                for (var event of Object.keys(_selected)) {
+                    if (_selected[ event ] && (event === 'None' ? d === '' : d.indexOf(event) !== -1)) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+            $.event.trigger({ type: 'accidents:crossfilter:update' });
+        });
     };
 
     }());
@@ -682,10 +720,10 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
                 $.event.trigger({ type: 'accidents:crossfilter:update' });
             });
 
-        this.chart.append('g')
+        var brushElement = this.chart.append('g')
             .attr('class', 'brush')
-            .call(this.brush)
-            .selectAll('rect')
+            .call(this.brush);
+        brushElement.selectAll('rect')
                 .attr('height', height);
 
         this.brushClip = this.chart.append('clipPath')
@@ -709,6 +747,17 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         this.yAxis_g = this.chart.append('g')
             .attr('class', 'axis y-axis')
             .attr('transform', 'translate(0, 0)');
+
+        // Event to set the crossfilter settings.
+        $(document).on('accidents:crossfilter:set', function(e, config) {
+            if (!config.yearRange) {
+                vis.brush.extent([ vis.startDate, vis.endDate ]);
+            }
+            else {
+                vis.brush.extent(config.yearRange);
+            }
+            vis.brush.event(brushElement);
+        });
 
         this.update();
     }
@@ -875,10 +924,10 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
                 $.event.trigger({ type: 'accidents:crossfilter:update' });
             });
 
-        this.chart.append('g')
+        var brushElement = this.chart.append('g')
             .attr('class', 'brush')
-            .call(this.brush)
-            .selectAll('rect')
+            .call(this.brush);
+        brushElement.selectAll('rect')
                 .attr('height', height);
 
         this.brushClip = this.chart.append('clipPath')
@@ -902,6 +951,17 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         this.yAxis_g = this.chart.append('g')
             .attr('class', 'axis y-axis')
             .attr('transform', 'translate(0, 0)');
+
+        // Event to set the crossfilter settings.
+        $(document).on('accidents:crossfilter:set', function(e, config) {
+            if (!config.monthRange) {
+                vis.brush.extent([ vis.startDate, vis.endDate ]);
+            }
+            else {
+                vis.brush.extent(config.monthRange);
+            }
+            vis.brush.event(brushElement);
+        });
 
         this.update();
     }
@@ -1068,10 +1128,10 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
                 $.event.trigger({ type: 'accidents:crossfilter:update' });
             });
 
-        this.chart.append('g')
+        var brushElement = this.chart.append('g')
             .attr('class', 'brush')
-            .call(this.brush)
-            .selectAll('rect')
+            .call(this.brush);
+        brushElement.selectAll('rect')
                 .attr('height', height);
 
         this.brushClip = this.chart.append('clipPath')
@@ -1095,6 +1155,17 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         this.yAxis_g = this.chart.append('g')
             .attr('class', 'axis y-axis')
             .attr('transform', 'translate(0, 0)');
+
+        // Event to set the crossfilter settings.
+        $(document).on('accidents:crossfilter:set', function(e, config) {
+            if (!config.dayRange) {
+                vis.brush.extent([ vis.startDate, vis.endDate ]);
+            }
+            else {
+                vis.brush.extent(config.dayRange);
+            }
+            vis.brush.event(brushElement);
+        });
 
         this.update();
     }
@@ -1261,10 +1332,10 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
                 $.event.trigger({ type: 'accidents:crossfilter:update' });
             });
 
-        this.chart.append('g')
+        var brushElement = this.chart.append('g')
             .attr('class', 'brush')
-            .call(this.brush)
-            .selectAll('rect')
+            .call(this.brush);
+        brushElement.selectAll('rect')
                 .attr('height', height);
 
         this.brushClip = this.chart.append('clipPath')
@@ -1283,6 +1354,17 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         this.yAxis_g = this.chart.append('g')
             .attr('class', 'axis y-axis')
             .attr('transform', 'translate(0, 0)');
+
+        // Event to set the crossfilter settings.
+        $(document).on('accidents:crossfilter:set', function(e, config) {
+            if (!config.hourRange) {
+                vis.brush.extent([ vis.startDate, vis.endDate ]);
+            }
+            else {
+                vis.brush.extent(config.hourRange);
+            }
+            vis.brush.event(brushElement);
+        });
 
         this.update();
     }
@@ -1343,6 +1425,15 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         this._currentStory = null;
 
         var stories = [{
+            config: {
+                accidentTypes: [ 'Auto' ],
+                weatherEvents: [ 'Rain' ],
+                mapView: 0,
+                yearRange: [ new Date(2014, 0, 1), new Date(2015, 0, 0, 0, 0, -1) ],
+                monthRange: [ new Date(2014, 0, 1), new Date(2014, 6, 0, 0, 0, -1) ],
+                dayRange: [ new Date(2014, 0, 6), new Date(2014, 0, 11, 0, 0, 0, -1) ],
+                hourRange: [ new Date(2014, 0, 1, 12), new Date(2014, 0, 1, 20) ]
+            },
             coordinates: [ -71.122, 42.378 ],
             title: 'Story 1'
         }, {
@@ -1396,6 +1487,9 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             feat.contentElement.html(html);
             feat.contentElement.style('opacity', 1);
 
+            // Set the crossfilter.
+            $.event.trigger('accidents:crossfilter:set', story.config || {});
+
             // Mark areas on the map if necessary.
             visualizations.accidentMap.clearAreaMarkers();
             if (story.coordinates) {
@@ -1409,6 +1503,9 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             // Clear the HTML from the element and hide it.
             feat.contentElement.html('');
             feat.contentElement.style('opacity', 0);
+
+            // Clear the crossfilter.
+            $.event.trigger('accidents:crossfilter:set', {});
 
             // Clear the area markers on the map.
             visualizations.accidentMap.clearAreaMarkers();

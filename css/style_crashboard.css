@@ -280,8 +280,6 @@
     bottom: 36px; left: 0;
     width: 300px;
     height: 185px;
-    font-size: 14px;
-    color: #666;
     text-align: left;
     background: #FFF;
     padding: 10px;
@@ -290,6 +288,11 @@
     overflow: hidden;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
+}
+
+#crashboard_storiesContent p {
+    font-size: 14px;
+    color: #666;
 }
 
 #crashboard_storiesContent h3 {
