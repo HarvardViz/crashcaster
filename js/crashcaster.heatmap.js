@@ -80,7 +80,7 @@ crashcaster.heatmap = (function (cc$, d3) {
 
     d3.json("http://api.wunderground.com/api/053fc50550431c69/forecast10day/q/MA/Cambridge.json", function(json) {
         Weather = json.forecast.txt_forecast.forecastday[1].fcttext;
-        
+
 
         //Generate Forecast text
         if(Weather.indexOf("rain") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
@@ -115,7 +115,7 @@ crashcaster.heatmap = (function (cc$, d3) {
     });
 
 
-    function car() {
+    function auto() {
         Lat1 = 42.373616;
         Long1 = -71.109734;
         zoom1= 13;
@@ -132,10 +132,10 @@ crashcaster.heatmap = (function (cc$, d3) {
         selectTravelType = "Bike";
         initMap();
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
-        console.log(accidentsDailyAvg);
+        //console.log(accidentsDailyAvg);
     }
 
-    function bicycle() {
+    function cycle() {
         Lat1 = 42.373616;
         Long1 = -71.109734;
         zoom1= 13;
@@ -342,9 +342,9 @@ crashcaster.heatmap = (function (cc$, d3) {
         snow: snow,
         fog: fog,
         clear: clear,
-        car: car,
+        auto: auto,
         bike: bike,
-        bicycle: bicycle,
+        cycle: cycle,
         walk: walk,
         overview: overview
     };

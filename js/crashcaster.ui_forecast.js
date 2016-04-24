@@ -18,10 +18,12 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         echo("running crashcaster.ui_forecast");
         console.log("Current weather condition is " + cc$.weather.current.current_observation.icon);
 
-        setWeatherConditionsTo(cc$.weather.current.current_observation.icon);
-
         showLocation();
         updateClock();
+
+        setWeatherConditionsTo(cc$.weather.current.current_observation.icon);
+        setTravelTypeTo("auto");
+
         timedUpdate();
 
     }
@@ -30,25 +32,68 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         console.log(v);
     };
 
-    function setWeatherConditionsTo(c) {
+    function setTravelTypeTo(travelType) {
 
-        console.log("WU_CONDITION=" + c);
-        var condition = getWuMappedCondition(c);
-        console.log("MAPPED CONDITION=" + condition);
+        var travelTypes = ["auto", "bike", "cycle", "walk"];
+
+        // Reset the button states
+        travelTypes.forEach(resetButtonState);
+        var btn_id = '#btn_' + travelType;
+        $(btn_id).addClass('btn-danger');
+
+        switch(travelType) {
+            case "auto":
+                console.log("Painting a " + travelType + " forecast");
+                cc$.heatmap.auto();
+
+                break;
+            case "bike":
+                console.log("Painting a " + travelType + " forecast");
+                cc$.heatmap.bike();
+
+                break;
+            case "cycle":
+                console.log("Painting a " + travelType + " forecast");
+                cc$.heatmap.cycle();
+
+                break;
+            case "walk":
+                console.log("Painting a " + travelType + " forecast");
+                cc$.heatmap.walk();
+                break;
+            default:
+                console.log("Painting a DEFAULT forecast");
+                cc$.heatmap.auto();
+        }
+
+    }
+
+    function setWeatherConditionsTo(condition) {
+
+        //console.log("WU_CONDITION=" + condition);
+        var condition = getWuMappedCondition(condition);
+        //console.log("MAPPED CONDITION=" + condition);
+
+        var conditions = ["clear", "rain", "fog", "snow"];
 
         // Setup the current conditions
         var icon = cc$.weather.current.current_observation.icon;
         var label = cc$.weather.current.current_observation.weather;
         var heatmap = cc$.weather.current.current_observation.icon;
-        var  buttonHtml = '<button onclick="cc$.heatmap.' + heatmap + '()" id="btn_current_weather" type="button" class="btn btn-lg btn-info"><p class="wi wi-wu-' + icon + ' btn-type-weather-current"></p><p class="weather-current">' + label + '</p></button>'
+        var buttonHtml = '<button onclick="cc$.ui_forecast.setWeatherConditionsTo(\''+ heatmap + '\')" id="btn_current_weather" type="button" class="btn btn-lg btn-info"><p class="wi wi-wu-' + icon + ' btn-type-weather-current"></p><p class="weather-current">' + label + '</p></button>'
 
         // Set the current conditions big button to use for resetting the crashcast
         d3.select("#current-weather").html(buttonHtml);
 
+        // Reset the button states
+        conditions.forEach(resetButtonState);
+        var btn_id = '#btn_' + condition;
+        $(btn_id).addClass('btn-danger');
+
+
         switch(condition) {
             case "clear":
                 console.log("Painting a " + condition + " forecast");
-
                 cc$.heatmap.clear();
 
                 break;
@@ -68,6 +113,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
                 break;
             default:
+                console.log("Painting a DEFAULT forecast");
                 cc$.heatmap.clear();
         }
 
@@ -102,6 +148,18 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
         return condition;
 
+    }
+
+    function resetButtonState(element, index, array) {
+
+        //console.log('e[' + index + '] = ' + element);
+
+        var btn_id = '#btn_' + element;
+
+        if( $(btn_id).hasClass('btn-danger') ) {
+            $(btn_id).removeClass('btn-danger');
+            $(btn_id).addClass('btn_secondary');
+        }
     }
 
     function capitalizeFirstLetter(string) {
@@ -272,7 +330,8 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         run: run,
         echo: echo,
         data: data,
-        setWeatherConditionsTo: setWeatherConditionsTo
+        setWeatherConditionsTo: setWeatherConditionsTo,
+        setTravelTypeTo: setTravelTypeTo
     };
 
 

@@ -70,7 +70,7 @@
                 <div class="row">
                     <div class="">
                         <h3 class="center white text-shadow"><span
-                                id="current-location">Crashcast - Cambridge, MA</span></h3>
+                                id="current-location">Cambridge, MA</span></h3>
                         <h4 id="current-datetime" class="textbox-heading" style="font-size:13px; padding: 0 0 0 0;"></h4>
                     </div>
                 </div>
@@ -81,19 +81,19 @@
                     <h4 class="textbox-heading">Travel Type</h4>
 
                     <div class="btn-group" role="group" aria-label="Travel Type">
-                        <button onclick="cc$.heatmap.car()" id="btn_car" type="button"
-                                class="btn btn-default"><p
+                        <button onclick="cc$.ui_forecast.setTravelTypeTo('auto')" id="btn_auto" type="button"
+                                class="btn btn-secondary"><p
                                 class="fa fa-car btn-type-travel"></p>
                             <p>Auto</p></button>
-                        <button onclick="cc$.heatmap.bike()" id="btn_bike" type="button"
+                        <button onclick="cc$.ui_forecast.setTravelTypeTo('bike')" id="btn_bike" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-bicycle btn-type-travel"></p>
                             <p>Bike</p></button>
-                        <button onclick="cc$.heatmap.bicycle()" id="btn_motorcycle" type="button"
+                        <button onclick="cc$.ui_forecast.setTravelTypeTo('cycle')" id="btn_cycle" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-motorcycle btn-type-travel"></p>
                             <p>Cycle</p></button>
-                        <button onclick="cc$.heatmap.walk()" id="btn_pedestrian" type="button"
+                        <button onclick="cc$.ui_forecast.setTravelTypeTo('walk')" id="btn_walk" type="button"
                                 class="btn btn-secondary"><p
                                 class="fa fa-male btn-type-travel"></p>
                             <p>Walk</p></button>
@@ -130,17 +130,16 @@
                     <div>&nbsp;</div>
 
                     <div class="btn-group" role="group" aria-label="Weather selection">
-                        <button onclick="cc$.heatmap.rain()" id="btn_rain" type="button" class="btn btn-default"><p
+                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('rain')" id="btn_rain" type="button" class="btn btn-secondary"><p
                                 class="wi wi-wu-rain btn-type-weather"></p>
                             <p>Rain</p></button>
-                        <button onclick="cc$.heatmap.snow()" id="btn_snow" type="button"
-                                class="btn btn-secondary"><p
+                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('snow')" id="btn_snow" type="button" class="btn btn-secondary"><p
                                 class="wi wi-wu-snow btn-type-weather"></p>
                             <p>Snow</p></button>
-                        <button onclick="cc$.heatmap.fog()" id="btn_fog" type="button" class="btn btn-secondary"><p
+                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('fog')" id="btn_fog" type="button" class="btn btn-secondary"><p
                                 class="wi wi-fog btn-type-weather"></p>
                             <p>Fog&nbsp;</p></button>
-                        <button onclick="cc$.heatmap.clear()" id="btn_sun" type="button" class="btn btn-secondary"><p
+                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('clear')" id="btn_clear" type="button" class="btn btn-secondary"><p
                                 class="wi wi-wu-clear btn-type-weather"></p>
                             <p>Clear</p></button>
 
