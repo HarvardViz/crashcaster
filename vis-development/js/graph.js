@@ -33,15 +33,6 @@ var force = d3.layout.force()
 	//.gravity(.3)
 	.linkDistance(100);
 
-/*
-// Initialize tooltip
-var forceTip = d3.tip()
-	.attr("class", "d3-tip")
-	.offset([-10, 0])
-	.html(function(d) { return d.key + "<br>" + d.numIntersections + " Intersections<br>" + d.totalAccidents + " Accidents"; });
-
-*/
-
 
 
 
@@ -52,15 +43,16 @@ var widthStreetImage = 450;
 var heightStreetImage = 150;
 
 
+
+
 //  html streetview image
 var streetImage1 = d3.selectAll("#streetview1")
 	.append("svg")
 	.attr("width", widthStreetImage)
-	.attr("height", heightStreetImage)
-	//.attr("transform", "translate(" + marginLinemap.left + ", " + 0 + ")")
+	.attr("height", heightStreetImage*2)
 	.append("image")
 	.attr("width", widthStreetImage)
-	.attr("height", heightStreetImage);
+	.attr("height", heightStreetImage*2);
 
 
 //  html streetview image
@@ -68,7 +60,6 @@ var streetImage2 = d3.selectAll("#streetview2")
 	.append("svg")
 	.attr("width", widthStreetImage)
 	.attr("height", heightStreetImage)
-	//.attr("transform", "translate(" + marginLinemap.left +  widthStreetImage + ", " + 0 + ")")
 	.append("image")
 	.attr("width", widthStreetImage)
 	.attr("height", heightStreetImage);
@@ -163,7 +154,7 @@ function wrangleData(){
 		}
 	}
 
-	// save date to nodes Array for force graph
+	// save data to nodes Array for force graph
 	streetNodes = filteredAccidentData;
 
 	updateForceGraph();
@@ -181,28 +172,33 @@ function wrangleData(){
 
 function updateForceGraph() {
 
+
+	// populate streetview image
+	streetImage1
+		.attr("xlink:href", "img/harvardsquare.jpg")
+		.attr("width", widthStreetImage)
+		.attr("height", heightStreetImage*2);
+
 	$("#forcegraph-title").text("Currently on " + streetFilter.toUpperCase() + " : " + streetNodes[0].totalAccidents + " total accidents");
 
 	// define place for graph elements corresponding only to selected street
 	var filteredLinks = [];
 	var filteredNodes = [];
 
-	start();  // function to add/update/remove nodes from graph whenever a new node is selected
+
+	// ---  function to add/update/remove nodes from graph whenever a new node is selected
+	start();
 	function start() {
 
-		// Scale - circle radius - based on # accidents
-		var r = d3.scale.linear()
-			.range([10, 60])
-			.domain([0, d3.max(streetNodes, function (d) {
-				return d.totalAccidents;
-			})]);
 
+		/*	---  PHASED OUT ---
 		// Scale - line width - based on # accidents
 		var w = d3.scale.linear()
-			.range([1, 5])
+			.range([2, 6])
 			.domain([0, d3.max(streetNodes, function (d) {
 				return d.totalAccidents;
 			})]);
+			*/
 
 
 		// set array of links to streets that intersect to the selected street
@@ -219,6 +215,12 @@ function updateForceGraph() {
 			return match;
 		});
 
+		// Scale - circle radius - based on # accidents
+		var r = d3.scale.linear()
+			.range([10, 60])
+			.domain([0, d3.max(streetNodes, function (d) {
+				return d.totalAccidents;
+			})]);
 
 		// set source/target index values to position in current filtered array
 		filteredLinks.forEach(function (l) {
@@ -410,6 +412,8 @@ function updateForceGraph() {
 				}
 			});
 
+
+
 			$("#streetview-title").text("Intersection of " + streetFilter.toUpperCase() + " & " + d.key.toUpperCase());
 
 			if (coords[0]!=0 && coords[1]!=0) showStreetView(coords);
@@ -470,9 +474,17 @@ function showStreetView(coords) {
 		"&key=" + api;
 
 
+	//  reset SVG/image dimensions for street view after showing start image
+	d3.selectAll("#streetview1").select("svg")
+		.attr("width", widthStreetImage)
+		.attr("height", heightStreetImage)
+
+
 	// populate streetview image
 	streetImage1
-		.attr("xlink:href", url);
+		.attr("xlink:href", url)
+		.attr("width", widthStreetImage)
+		.attr("height", heightStreetImage);
 
 	// populate streetview image
 	streetImage2
