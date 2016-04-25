@@ -175,7 +175,7 @@ function updateForceGraph() {
 
 	// populate streetview image
 	streetImage1
-		.attr("xlink:href", "img/harvardsquare.jpg")
+		.attr("xlink:href", "img/harvardsquare.JPG")
 		.attr("width", widthStreetImage)
 		.attr("height", heightStreetImage*2);
 
