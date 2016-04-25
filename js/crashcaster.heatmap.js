@@ -113,8 +113,8 @@ crashcaster.heatmap = (function (cc$, d3) {
         timenow = json.forecast.txt_forecast.date;
         //console.log(WeatherCategory);
         document.getElementById("source").innerHTML = "<br><sup class='citation'>1</sup> (Source: Weather Underground. Last updated " + timenow + ")";
-        document.getElementById("weathertxt").innerHTML = "Today's weather forecast is " + WeatherCategory.toLowerCase() + "<sup class='citation'>1</sup>.  ";
-        document.getElementById("predict1").innerHTML = "Based on today's weather alone, there is a " + Math.abs(factorWeather)*100 + "% "+ txtWeather + "  risk of accidents.  ";
+        document.getElementById("weathertxt").innerHTML = "";
+        document.getElementById("predict1").innerHTML = "Based on today's weather <sup class='citation'>1</sup> alone, there is a " + Math.abs(factorWeather)*100 + "% "+ txtWeather + "  risk of accidents.  ";
         document.getElementById("predict2").innerHTML = "Historical data suggests, there have been " + Math.abs(factorDay)*100 + "% "+ txtDay +" accidents on a "+todaysDay+".";
 
 
@@ -231,21 +231,33 @@ crashcaster.heatmap = (function (cc$, d3) {
             disableDefaultUI: true
         });
 
-        story1();
+       story(42.360154,-71.094882,"Most dangerous intersection",
+            '<div>'+
+            '<h5>Most dangerous intersection</h5>'+
+            '<div>This intersection can be one of the most dangerous for those ' +
+            'unfamiliar with the area to do poor signal timing and a confusing configuration. ' +
+            'Watch out for MBTA buses making a U-turn from Aberdeen Ave, as they will cross ' +
+            'over other lanes in order to make the wide circle necessary to avoid power lines.  ' +
+            'Driver frustration due to long wait times is known ' +
+            'to be a factor in accidents here. </br> Read Next Story <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></div>'+
+            '</div>');
 
-        function story1()
+
+        story(42.375274,-71.14584,"High Traffic and poor visibility",
+            '<div>'+
+            '<h5>High Traffic and poor visibility</h5>'+
+            '<div>High traffic volume and poor visibility contribute ' +
+            'to this intersection being the most dangerous in Cambridge and ranked as one of ' +
+            'the worst in Massachusetts. Use extra caution and follow ' +
+            'traffic rules if you are travelling through this intersection by bike, as a high number of ' +
+            'bicycle accidents tend to occur here due to poor visibility and cyclists ' +
+            'ignoring traffic rules.</div>'+
+            '</div>');
+
+        function story(latStory, longStory, titleText, contentString)
         {
-            var storyLoc = {lat: 42.360154, lng: -71.094882};
-            var contentString = '<div>'+
-                '<h5 id="firstHeading" class="firstHeading">Most dangerous intersection</h5>'+
-                '<div>'+'High traffic volume and poor visibility contribute ' +
-                'to this intersection being the most dangerous in Cambridge and ranked as one of ' +
-                'the worst in Massachusetts. Use extra caution and follow ' +
-                'traffic rules if you are travelling through this intersection by bike, as a high number of ' +
-                'bicycle accidents tend to occur here due to poor visibility and cyclists ' +
-                'ignoring traffic rules.'+
-                '</div>'+
-                '</div>';
+            var storyLoc = {lat: latStory, lng: longStory};
+
             var infowindow = new google.maps.InfoWindow({
                 content: contentString
             });
@@ -253,7 +265,7 @@ crashcaster.heatmap = (function (cc$, d3) {
             var marker = new google.maps.Marker({
                 position: storyLoc,
                 map: map,
-                title: 'Story 01'
+                title: titleText
             });
             marker.addListener('click', function() {
                 infowindow.open(map, marker);
@@ -316,15 +328,18 @@ crashcaster.heatmap = (function (cc$, d3) {
         if(!error){
             accidentData = csvData;
             accidentData.forEach(function(d) {
-                //console.log(d['Date Time']);
                 d.Latitude = +d.Latitude;
                 d.Longitude = +d.Longitude;
+                d.accidentHour = parseInt(d.accidentHour);
+                console.log(d.accidentHour);
                     dayoftheWeek.push(d['Day Of Week']);
                     datesofAccident.push(d.Dates);
                     travelType.push(d.AccidentType);
                     weatherCat.push(d.Weather_Category);
                     Long01.push(d.Longitude);
                     Lat01.push(d.Latitude);
+
+
             });
         }
     });
