@@ -25,14 +25,16 @@ crashcaster.model = (function () {
 
     // Clear variations
     weatherImages["clear"] = [
-        {daytime: true, url: "img/weather-clear-day-0.jpg", cite: "cite"},
-        {daytime: true, url: "img/weather-clear-day-1.jpg", cite: "cite"},
-        {daytime: true, url: "img/weather-clear-day-2.jpg", cite: "cite"},
-        {daytime: true, url: "img/weather-clear-day-3.jpg", cite: "cite"},
-        {daytime: false, url: "img/weather-clear-night-0.jpg", cite: "cite"},
-        {daytime: false, url: "img/weather-clear-night-1.jpg", cite: "cite"},
-        {daytime: false, url: "img/weather-clear-night-2.jpg", cite: "cite"},
-        {daytime: false, url: "img/weather-clear-night-3.jpg", cite: "cite"}];
+        {daytime: true, url: "img/weather-clear-day-0.jpg", cite: ""},
+        {daytime: true, url: "img/weather-clear-day-1.jpg", cite: ""},
+        {daytime: true, url: "img/weather-clear-day-2.jpg", cite: ""},
+        {daytime: true, url: "img/weather-clear-day-3.jpg", cite: ""},
+        {daytime: true, url: "img/weather-clear-day-4.jpg", cite: "7-themes -- 7039003-summer-road"},
+        {daytime: false, url: "img/weather-clear-night-0.jpg", cite: ""},
+        {daytime: false, url: "img/weather-clear-night-1.jpg", cite: ""},
+        {daytime: false, url: "img/weather-clear-night-2.jpg", cite: ""},
+        {daytime: false, url: "img/weather-clear-night-3.jpg", cite: ""},
+        {daytime: false, url: "img/weather-clear-night-4.jpg", cite: "all4desktop.com - #336754"}];
 
     weatherImages["sunny"] = weatherImages["clear"];
     weatherImages["mostlysunny"] = weatherImages["clear"];
@@ -40,8 +42,11 @@ crashcaster.model = (function () {
 
     // Cloudy
     weatherImages["cloudy"] = [
-        {daytime: true, url: "img/weather-cloudy-day-0.jpg", cite: "cite"},
-        {daytime: true, url: "img/weather-cloudy-day-1.jpg", cite: "cite"}];
+        {daytime: true, url: "img/weather-cloudy-day-0.jpg", cite: ""},
+        {daytime: true, url: "img/weather-cloudy-day-1.jpg", cite: ""},
+        {daytime: true, url: "img/weather-cloudy-day-1.jpg", cite: ""},
+        {daytime: true, url: "img/weather-cloudy-day-2.jpg", cite: "7-themes.com -- #6830458"},
+        {daytime: false, url: "img/weather-cloudy-night-0.jpg", cite: "7-themes.com -- #6850701"},];
 
     weatherImages["mostlycloudy"] = weatherImages["cloudy"];
     weatherImages["partlycloudy"] = weatherImages["cloudy"];
@@ -49,25 +54,30 @@ crashcaster.model = (function () {
 
     // Rain variations
     weatherImages["rain"] = [
-        {daytime: true, url: "img/weather-rain-day-0.jpg", cite: "cite"},
-        {daytime: true, url: "img/weather-rain-day-1.jpg", cite: "cite"},
-        {daytime: true, url: "img/weather-rain-day-2.jpg", cite: "cite"},
-        {daytime: true, url: "img/weather-rain-day-3.jpg", cite: "cite"},
-        {daytime: false, url: "img/weather-rain-night-0.jpg", cite: "cite"}];
+        {daytime: true, url: "img/weather-rain-day-0.jpg", cite: ""},
+        {daytime: true, url: "img/weather-rain-day-1.jpg", cite: "onehdwallpaper.com -- Rainy-Night-Desktop-Wallpapers"},
+        {daytime: true, url: "img/weather-rain-day-2.jpg", cite: ""},
+        {daytime: true, url: "img/weather-rain-day-3.jpg", cite: ""},
+        {daytime: false, url: "img/weather-rain-night-0.jpg", cite: "wallpapercomputer.com -- rain-wallpaper-desktop-windows-hd"},
+        {daytime: false, url: "img/weather-rain-night-1.jpg", cite: "livehdwallpaper.com -- Abstract-Rainy-Night-Wallpaper"},
+        {daytime: false, url: "img/weather-rain-night-2.jpg", cite: "newtopwallpapers.com -- Rainy-Night-Desktop-Free-Wallpaper"},
+        {daytime: false, url: "img/weather-rain-night-3.jpg", cite: "artsfon.com -- #48302"}];
 
     weatherImages["chancerain"] = weatherImages["rain"];
 
     weatherImages["tstorms"] = [
-        {daytime: true, url: "url", cite: "cite"},
-        {daytime: false, url: "url", cite: "cite"}];
+        {daytime: true, url: "img/weather-tstorms-day-0.jpg", cite: "Lighting-Thunder-Wallpaper-Laptop-Backgrounds-54812"},
+        {daytime: false, url: "img/weather-tstorms-night-0.jpg", cite: "wallpaperscraft.com -- #48426"},
+        {daytime: false, url: "img/weather-tstorms-night-1.jpg", cite: "hdwallpaperfun.com -- Thunder Weather Wallpaper"}];
 
     weatherImages["chancetstorms"] = weatherImages["tstorms"];
 
 
     // Snow variations
     weatherImages["snow"] = [
-        {daytime: true, url: "url", cite: "cite"},
-        {daytime: false, url: "url", cite: "cite"}];
+        {daytime: true, url: "img/weather-snow-day-0.jpg", cite: "7-themes -- #7041083"},
+        {daytime: true, url: "img/weather-snow-day-1.jpg", cite: "7-themes -- #7040593"},
+        {daytime: false, url: "img/weather-snow-night-0.jpg", cite: "7-themes -- #6994228"}];
 
     weatherImages["flurries"] = weatherImages["snow"];
     weatherImages["chanceflurries"] = weatherImages["snow"];
@@ -77,10 +87,10 @@ crashcaster.model = (function () {
 
     // Fog variations
     weatherImages["hazy"] = [
-        {daytime: true, url: "url", cite: "cite"},
-        {daytime: false, url: "url", cite: "cite"}];
+        {daytime: true, url: "img/weather-fog-day-0.jpg", cite: "1freewallpapers.com -- road-leading-to-the-fog"},
+        {daytime: false, url: "img/weather-fog-night-0.jpg", cite: "hdwallpapers.im -- foggy_night_in_a_palace_courtyard"}];
 
-
+    weatherImages["fog"] = weatherImages["hazy"];
 
 
     function color(opacity) {

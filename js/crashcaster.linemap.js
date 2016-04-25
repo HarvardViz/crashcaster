@@ -172,8 +172,8 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
             if(!error){
                 accidentData = jsonData;
 
-                console.log("loadData() - accidentData");
-                console.log(accidentData);
+                //console.log("loadData() - accidentData");
+                //console.log(accidentData);
 
                 wrangleData();
             }
@@ -250,8 +250,8 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
 
     function filterLinemapData() {
 
-        console.log("filterData() - streetFilter");
-        console.log(streetFilter);
+        //console.log("filterData() - streetFilter");
+        //console.log(streetFilter);
 
         var tempArray = [];	// placeholder for array returned by filter
 
@@ -275,8 +275,8 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
             });
 
 
-        console.log("filterData() - filteredObject  -  pre filter");
-        console.log(filteredObject.values);
+        //console.log("filterData() - filteredObject  -  pre filter");
+        //console.log(filteredObject.values);
 
 
         /*
