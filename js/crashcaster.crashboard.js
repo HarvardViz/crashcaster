@@ -26,7 +26,6 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
 
     // Add ANYTHING that needs happen when this plugin/module is initialized
     function init() {
-        READY_STATE._current = READY_STATE.NOT_STARTED;
         echo("initialize " + plugin_name);
         loadData();
     }
@@ -61,8 +60,6 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
     // Private method: fetch the weather data
     function loadData() {
 
-        READY_STATE._current = READY_STATE.LOADING;
-
         queue()
             .defer(d3.json, 'data/BOUNDARY_CityBoundary.geojson')
             .defer(d3.json, 'data/BOUNDARY_Neighborhoods.geojson')
@@ -71,6 +68,8 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             .defer(d3.json, 'data/cambridge_weather_2010-2014.json')
             .defer(d3.json, 'data/cambridge_citations_2010-2014.json')
             .await(processData);
+
+        READY_STATE._current = READY_STATE.LOADING;
     }
 
     function processData(err, boundary, neighborhoods, roads, accidents, weather, citations) {

@@ -144,6 +144,7 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
         "crashcaster.ui_sankey",
         "crashcaster.forcegraph",
         "crashcaster.linemap",
+        "crashcaster.crashcalendar",
         "crashcaster.crashboard"
     ], $, d3, moment);
 
