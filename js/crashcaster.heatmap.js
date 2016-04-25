@@ -12,6 +12,7 @@ crashcaster.heatmap = (function (cc$, d3) {
     function init() {
         echo("initialize crashcaster.heatmap");
 
+
         //For Production comment while testing
         var url = "https://maps.googleapis.com/maps/api/js?key=AIzaSyByBr_9yXPbMOYg3HbL31yOVRAxEXvbtGM&libraries=visualization&callback=crashcaster.heatmap.initMap";
         //For Testing on local PC - comment for Production
@@ -22,8 +23,10 @@ crashcaster.heatmap = (function (cc$, d3) {
 
     // Once the module is ready via init(), add anything that needs to be run here
     function run() {
-        echo("running crashcaster.heatmap");
-
+        echo("RUNNING crashcaster.heatmap");
+        updatePrediction();
+        // Addded to use the module pattern
+        READY_STATE._current = READY_STATE.LOADED;
     }
 
     function echo(s) {
@@ -86,41 +89,104 @@ crashcaster.heatmap = (function (cc$, d3) {
     var todaysWeather;
     var filterTotal;
 
+    function updatePrediction() {
+
+        d3.json("http://api.wunderground.com/api/053fc50550431c69/forecast10day/q/MA/Cambridge.json", function (json) {
+            Weather = json.forecast.txt_forecast.forecastday[1].fcttext;
 
 
-    d3.json("http://api.wunderground.com/api/053fc50550431c69/forecast10day/q/MA/Cambridge.json", function(json) {
-        Weather = json.forecast.txt_forecast.forecastday[1].fcttext;
+            //Generate Forecast text
+            if (Weather.indexOf("rain") > -1) {
+                WeatherCategory = "Rain";
+                factorWeather = modelRain;
+                txtWeather = "higher";
+            }
+            if (Weather.indexOf("Rain") > -1) {
+                WeatherCategory = "Rain";
+                factorWeather = modelRain;
+                txtWeather = "higher";
+            }
+            if (Weather.indexOf("hail") > -1) {
+                WeatherCategory = "Rain";
+                factorWeather = modelRain;
+                txtWeather = "higher";
+            }
+            if (Weather.indexOf("Hail") > -1) {
+                WeatherCategory = "Rain";
+                factorWeather = modelRain;
+                txtWeather = "higher";
+            }
+            if (Weather.indexOf("thunderstorm") > -1) {
+                WeatherCategory = "Rain";
+                factorWeather = modelRain;
+                txtWeather = "higher";
+            }
+            if (Weather.indexOf("Thunderstorm") > -1) {
+                WeatherCategory = "Rain";
+                factorWeather = modelRain;
+                txtWeather = "higher";
+            }
+            if (Weather.indexOf("snow") > -1) {
+                WeatherCategory = "Snow";
+                factorWeather = modelSnow;
+                txtWeather = "higher";
+            }
+            if (Weather.indexOf("Snow") > -1) {
+                WeatherCategory = "Snow";
+                factorWeather = modelSnow;
+                txtWeather = "higher";
+            }
+            if (Weather.indexOf("fog") > -1) {
+                WeatherCategory = "Fog";
+                factorWeather = modelFog;
+                txtWeather = "higher";
+            }  //Assumed Fog is the worst as it imapcts visibility
+            if (Weather.indexOf("Fog") > -1) {
+                WeatherCategory = "Fog";
+                factorWeather = modelFog;
+                txtWeather = "higher";
+            }
+            if (todaysDay == "Sunday") {
+                factorDay = modelSunday;
+                txtDay = "fewer"
+            }
+            if (todaysDay == "Monday") {
+                factorDay = modelMonday;
+                txtDay = "fewer"
+            }
+            if (todaysDay == "Tuesday") {
+                factorDay = modelTuesday;
+                txtDay = "more"
+            }
+            if (todaysDay == "Wednesday") {
+                factorDay = modelWednesday;
+                txtDay = "more"
+            }
+            if (todaysDay == "Thursday") {
+                factorDay = modelThursday;
+                txtDay = "more"
+            }
+            if (todaysDay == "Friday") {
+                factorDay = modelFriday;
+                txtDay = "more"
+            }
+            if (todaysDay == "Saturday") {
+                factorDay = modelSaturday;
+                txtDay = "fewer"
+            }
+            timenow = json.forecast.txt_forecast.date;
+            //console.log(WeatherCategory);
+            document.getElementById("source").innerHTML = "<br><sup class='citation'>1</sup> (Source: Weather Underground. Last updated " + timenow + ")";
+            document.getElementById("weathertxt").innerHTML = "";
+            document.getElementById("predict1").innerHTML = "Based on today's weather <sup class='citation'>1</sup> alone, there is a " + Math.abs(factorWeather) * 100 + "% " + txtWeather + "  risk of accidents.  ";
+            document.getElementById("predict2").innerHTML = "Historical data suggests, there have been " + Math.abs(factorDay) * 100 + "% " + txtDay + " accidents on a " + todaysDay + ".";
+
+            updateAccidentData();
 
 
-        //Generate Forecast text
-        if(Weather.indexOf("rain") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
-        if(Weather.indexOf("Rain") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
-        if(Weather.indexOf("hail") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
-        if(Weather.indexOf("Hail") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
-        if(Weather.indexOf("thunderstorm") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
-        if(Weather.indexOf("Thunderstorm") > -1) {WeatherCategory = "Rain"; factorWeather = modelRain; txtWeather = "higher";}
-        if(Weather.indexOf("snow") > -1) {WeatherCategory = "Snow"; factorWeather = modelSnow; txtWeather = "higher";}
-        if(Weather.indexOf("Snow") > -1) {WeatherCategory = "Snow"; factorWeather = modelSnow; txtWeather = "higher";}
-        if(Weather.indexOf("fog") > -1) {WeatherCategory = "Fog";factorWeather = modelFog; txtWeather = "higher";}  //Assumed Fog is the worst as it imapcts visibility
-        if(Weather.indexOf("Fog") > -1) {WeatherCategory = "Fog";factorWeather = modelFog; txtWeather = "higher";}
-        if(todaysDay=="Sunday") {factorDay = modelSunday; txtDay = "fewer"}
-        if(todaysDay=="Monday") {factorDay = modelMonday; txtDay = "fewer"}
-        if(todaysDay=="Tuesday") {factorDay = modelTuesday; txtDay = "more"}
-        if(todaysDay=="Wednesday") {factorDay = modelWednesday; txtDay = "more"}
-        if(todaysDay=="Thursday") {factorDay = modelThursday; txtDay = "more"}
-        if(todaysDay=="Friday") {factorDay = modelFriday; txtDay = "more"}
-        if(todaysDay=="Saturday") {factorDay = modelSaturday; txtDay = "fewer"}
-        timenow = json.forecast.txt_forecast.date;
-        //console.log(WeatherCategory);
-        document.getElementById("source").innerHTML = "<br><sup class='citation'>1</sup> (Source: Weather Underground. Last updated " + timenow + ")";
-        document.getElementById("weathertxt").innerHTML = "";
-        document.getElementById("predict1").innerHTML = "Based on today's weather <sup class='citation'>1</sup> alone, there is a " + Math.abs(factorWeather)*100 + "% "+ txtWeather + "  risk of accidents.  ";
-        document.getElementById("predict2").innerHTML = "Historical data suggests, there have been " + Math.abs(factorDay)*100 + "% "+ txtDay +" accidents on a "+todaysDay+".";
+        });
 
-
-        // Addded to use the module pattern
-        READY_STATE._current = READY_STATE.LOADED;
-    });
+    };
 
 
     function auto() {
@@ -315,23 +381,25 @@ crashcaster.heatmap = (function (cc$, d3) {
     }
 
 
-    var accidentData=[];
-    var Lat01 = [];
-    var Long01 =[];
-    var travelType = [];
-    var weatherCat = [];
-    var dayoftheWeek = [];
-    var datesofAccident = [];
-    var dataHours = [];
 
+        var accidentData = [];
+        var Lat01 = [];
+        var Long01 = [];
+        var travelType = [];
+        var weatherCat = [];
+        var dayoftheWeek = [];
+        var datesofAccident = [];
+        var dataHours = [];
 
-    d3.csv("data/cambridge_accidents_weather_2010-2014.csv", function(error, csvData){
-        if(!error){
-            accidentData = csvData;
-            accidentData.forEach(function(d) {
-                d.Latitude = +d.Latitude;
-                d.Longitude = +d.Longitude;
-                d.accidentHour = parseInt(d.accidentHour);
+    function updateAccidentData() {
+
+        d3.csv("data/cambridge_accidents_weather_2010-2014.csv", function (error, csvData) {
+            if (!error) {
+                accidentData = csvData;
+                accidentData.forEach(function (d) {
+                    d.Latitude = +d.Latitude;
+                    d.Longitude = +d.Longitude;
+                    d.accidentHour = parseInt(d.accidentHour);
 
                     dayoftheWeek.push(d['Day Of Week']);
                     datesofAccident.push(d.Dates);
@@ -342,12 +410,13 @@ crashcaster.heatmap = (function (cc$, d3) {
                     dataHours.push(d.accidentHour);
 
 
-            });
+                });
 
-        }
-    });
+            }
 
+        });
 
+    }
 
 
     var accidentsHourly;
@@ -411,7 +480,9 @@ crashcaster.heatmap = (function (cc$, d3) {
         bike: bike,
         cycle: cycle,
         walk: walk,
-        overview: overview
+        overview: overview,
+        accidentsDailyAvg: accidentsDailyAvg,
+        accidentsHourly: accidentsHourly
     };
 
 

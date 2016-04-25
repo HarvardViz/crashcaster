@@ -9,13 +9,13 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     function init() {
         echo("initialize crashcaster.ui_forecast");
-        updateHourlyChart()
+        updateHourlyChart();
         run();
 
     }
 
     function run() {
-        echo("running crashcaster.ui_forecast");
+        echo("RUNNING crashcaster.ui_forecast");
         console.log("Current weather condition is " + cc$.weather.current.current_observation.icon);
 
         showLocation();
@@ -243,37 +243,37 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     function updateHourlyChart() {
 
-
+        
         // Define the data
         var data = [
-            {hour: 0, accidents: 2},
-            {hour: 1, accidents: 0},
-            {hour: 2, accidents: 0},
-            {hour: 3, accidents: 1},
-            {hour: 4, accidents: 0},
-            {hour: 5, accidents: 1},
-            {hour: 6, accidents: 3},
-            {hour: 7, accidents: 4},
-            {hour: 8, accidents: 3},
-            {hour: 9, accidents: 3},
-            {hour: 10, accidents: 1},
-            {hour: 11, accidents: 2},
-            {hour: 12, accidents: 5},
-            {hour: 13, accidents: 2},
-            {hour: 14, accidents: 1},
-            {hour: 15, accidents: 1},
-            {hour: 16, accidents: 3},
-            {hour: 17, accidents: 1},
-            {hour: 18, accidents: 4},
-            {hour: 19, accidents: 3},
-            {hour: 20, accidents: 4},
-            {hour: 21, accidents: 2},
-            {hour: 22, accidents: 0},
-            {hour: 23, accidents: 0}
+            {hour: 0, accidents: 190},
+            {hour: 1, accidents: 41},
+            {hour: 2, accidents: 61},
+            {hour: 3, accidents: 23},
+            {hour: 4, accidents: 4},
+            {hour: 5, accidents: 17},
+            {hour: 6, accidents: 73},
+            {hour: 7, accidents: 101},
+            {hour: 8, accidents: 258},
+            {hour: 9, accidents: 249},
+            {hour: 10, accidents: 149},
+            {hour: 11, accidents: 213},
+            {hour: 12, accidents: 265},
+            {hour: 13, accidents: 190},
+            {hour: 14, accidents: 227},
+            {hour: 15, accidents: 258},
+            {hour: 16, accidents: 161},
+            {hour: 17, accidents: 209},
+            {hour: 18, accidents: 229},
+            {hour: 19, accidents: 107},
+            {hour: 20, accidents: 116},
+            {hour: 21, accidents: 118},
+            {hour: 22, accidents: 80},
+            {hour: 23, accidents: 70}
         ];
 
 
-        var margin = {top: 5, right: 15, bottom: 15, left: 5},
+        var margin = {top: 5, right: 5, bottom: 5, left: 5},
             width = 960 - margin.left - margin.right,
             height = 70 - margin.top - margin.bottom;
 
