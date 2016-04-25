@@ -1,5 +1,7 @@
 crashcaster.heatmap = (function (cc$, d3) {
 
+    //Reference[1]: https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap
+    //Reference[2]: W3 Schools
 
     var plugin_name = "crashcaster.heatmap";
     var plugin_version = "0.0.1";
@@ -49,7 +51,7 @@ crashcaster.heatmap = (function (cc$, d3) {
     var WeatherCategory = "Good";  // Rain/Snow/Fog/Good - By default is is good weather unless bad weather is detected
     var timenow = "not available";
     var today = new Date();
-    var rad = 20;
+    var rad = 0;
     var weekday = new Array(7);
     weekday[0]=  "Sunday";
     weekday[1] = "Monday";
@@ -83,7 +85,7 @@ crashcaster.heatmap = (function (cc$, d3) {
     var crashtisticsText;
     var todaysWeather;
     var filterTotal;
-    var accidentsDailyAvg=4.31;
+
 
 
     d3.json("http://api.wunderground.com/api/053fc50550431c69/forecast10day/q/MA/Cambridge.json", function(json) {
@@ -114,9 +116,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         document.getElementById("weathertxt").innerHTML = "Today's weather forecast is " + WeatherCategory.toLowerCase() + "<sup class='citation'>1</sup>.  ";
         document.getElementById("predict1").innerHTML = "Based on today's weather alone, there is a " + Math.abs(factorWeather)*100 + "% "+ txtWeather + "  risk of accidents.  ";
         document.getElementById("predict2").innerHTML = "Historical data suggests, there have been " + Math.abs(factorDay)*100 + "% "+ txtDay +" accidents on a "+todaysDay+".";
-        forecastAccidents = Math.round(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));
-        document.getElementById("forecast-count").innerHTML = forecastAccidents;
-        //console.log(forecastAccidents);
+
 
         // Addded to use the module pattern
         READY_STATE._current = READY_STATE.LOADED;
@@ -124,88 +124,96 @@ crashcaster.heatmap = (function (cc$, d3) {
 
 
     function auto() {
-        Lat1 = 42.373616;
-        Long1 = -71.109734;
-        zoom1= 13;
+        heatmap.setMap(null);
         selectTravelType = "Auto";
-        initMap();
+        heatmap = new google.maps.visualization.HeatmapLayer({
+                data: getPoints(),
+                map: map
+        });
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
-
     }
 
     function bike() {
-        Lat1 = 42.373616;
-        Long1 = -71.109734;
-        zoom1= 13;
+        heatmap.setMap(null);
         selectTravelType = "Bike";
-        initMap();
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map
+        });
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
-        //console.log(accidentsDailyAvg);
     }
 
     function cycle() {
-        Lat1 = 42.373616;
-        Long1 = -71.109734;
-        zoom1= 13;
+        heatmap.setMap(null);
         selectTravelType = "Bicycle";
-        initMap();
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map
+        });
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
     function walk() {
-        Lat1 = 42.373616;
-        Long1 = -71.109734;
-        zoom1= 13;
+        heatmap.setMap(null);
         selectTravelType = "Pedestrian";
-        initMap();
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map
+        });
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
 
 
     function rain() {
-        Lat1 = 42.373616;
-        Long1 = -71.109734;
-        zoom1= 13;
+        heatmap.setMap(null);
         selectWeather = "Rain";
-        initMap();
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map
+        });
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
     function snow() {
-        Lat1 = 42.373616;
-        Long1 = -71.109734;
-        zoom1= 13;
+        heatmap.setMap(null);
         selectWeather = "Snow";
-        initMap();
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map
+        });
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
 
     function fog() {
-        Lat1 = 42.373616;
-        Long1 = -71.109734;
-        zoom1= 13;
+        heatmap.setMap(null);
         selectWeather = "Fog";
-        initMap();
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map
+        });
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
     function clear() {
-        Lat1 = 42.373616;
-        Long1 = -71.109734;
-        zoom1= 13;
+        heatmap.setMap(null);
         selectWeather = "Good";
-        initMap();
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map
+        });
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
     function overview() {
-        Lat1 = 42.373616;
-        Long1 = -71.109734;
-        zoom1= 13;
-        selectWeather = "Good";
-        initMap();
+        heatmap.setMap(null);
+        selectTravelType = "Auto"; //Default is Auto accidents
+        selectWeather = WeatherCategory; //Default is today's weather
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map
+        });
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
@@ -214,12 +222,16 @@ crashcaster.heatmap = (function (cc$, d3) {
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: zoom1,
             maxZoom: 20,
-            minZoom: 0,
+            minZoom: 13,
             center: {lat: Lat1, lng: Long1},
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-            disableDefaultUI: true
+            disableDefaultUI: true,
+            
+
 
         });
+
+
 
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: getPoints(),
@@ -231,24 +243,20 @@ crashcaster.heatmap = (function (cc$, d3) {
         var trafficLayer = new google.maps.TrafficLayer();
         trafficLayer.setMap(map);
 
-        var styles = [
-            {
-                featureType: "road",
-                elementType: "geometry",
-                stylers: [
-                    { lightness: 100 },
-                    { visibility: "off" }
-                ]
-            },{
-                featureType: "road",
-                elementType: "labels",
-                stylers: [
-                    { visibility: "on" }
-                ]
-            }
+        var styles = [ {
+            "featureType": "road.local",
+            "stylers":
+                [ { "gamma": 2.29 },
+                { "weight": 1 },
+                { "saturation": -88 },
+                { "lightness": -18 },
+                { "visibility": "simplified" } ] }
         ];
 
         map.setOptions({styles: styles});
+
+
+
     }
 
 
@@ -270,7 +278,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         if(!error){
             accidentData = csvData;
             accidentData.forEach(function(d) {
-                console.log(d['Date Time']);
+                //console.log(d['Date Time']);
                 d.Latitude = +d.Latitude;
                 d.Longitude = +d.Longitude;
                     dayoftheWeek.push(d['Day Of Week']);
@@ -293,8 +301,6 @@ crashcaster.heatmap = (function (cc$, d3) {
     function getPoints() {
         var array = [];
         filterTotal=0;
-        //Average accidents
-        accidentsDailyAvg = accidentData.length/(4*365); //since we have data for 2010-2014
         for(var i=0;i<accidentData.length;i++) {
                 if(travelType[i]==selectTravelType) {
                     if(weatherCat[i]==selectWeather) {
@@ -310,6 +316,15 @@ crashcaster.heatmap = (function (cc$, d3) {
 
         return array;
     }
+
+    var accidentsDailyAvg=4.31; //basd on calculations in data/cambridge_forecast_calculations_2010-2014.xlsx
+    console.log(accidentsDailyAvg);
+    console.log(factorWeather);
+    console.log(factorDay);
+
+    forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));
+    document.getElementById("forecast-count").innerHTML = forecastAccidents;
+    //console.log(forecastAccidents);
 
     /* END KARTIK'S HEATMAP CODE */
 
