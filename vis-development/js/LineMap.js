@@ -246,6 +246,7 @@ function filterLinemapData() {
 	console.log("filterData() - filteredObject  -  pre filter");
 	console.log(filteredObject.values);
 
+
 	/*
 
 	 // we only want <=20 worst intersections on the linemap..  find the worst 20, then sort by position on road
@@ -256,17 +257,13 @@ function filterLinemapData() {
 	 console.log("filterData() - filteredObject  -  post filter");
 	 console.log(filteredObject);
 
-
 	 filteredObject.values = filteredObject.values.filter(function(d, i){
 	 return (i <=20);
 	 });
 
-	 // we only want <=20 worst intersections on the linemap..  find the worst 20, then sort by position on road
 	 filteredObject.values.sort(function(a, b) {
 	 return a.distanceFromReference - b.distanceFromReference;
 	 });
-
-
 
 	 */
 
@@ -379,6 +376,7 @@ function updateBarChart(){
 		.attr("y", function(d) { return yBar(d.totalAccidents); })
 		.attr("width", xBar.rangeBand())
 		.attr("height", function(d) { return heightBarChart - yBar(d.totalAccidents); })
+		.classed("barchart-selectedBar", function(d) { return d.key.toUpperCase() == streetFilter.toUpperCase(); })
 		.on("mouseover", barchartTip.show)
 		.on("mouseout", barchartTip.hide);
 
