@@ -372,7 +372,8 @@ crashcaster.heatmap = (function (cc$, d3) {
         };
 
         crashtisticsText = "Accident Type: " + selectTravelType + ", Weather: " + selectWeather + ", Accidents/year: "+filterTotal/5;
-        //console.log(accidentsHourly);
+        console.log("var accidentsHourly");
+        console.log(accidentsHourly);
         return array;
     }
 
@@ -412,8 +413,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         bike: bike,
         cycle: cycle,
         walk: walk,
-        overview: overview,
-        accidentsHourly: accidentsHourly
+        overview: overview
     };
 
 
