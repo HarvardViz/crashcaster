@@ -322,7 +322,8 @@ crashcaster.heatmap = (function (cc$, d3) {
     var weatherCat = [];
     var dayoftheWeek = [];
     var datesofAccident = [];
-    var accidentsHourly =[];
+    var dataHours = [];
+
 
     d3.csv("data/cambridge_accidents_weather_2010-2014.csv", function(error, csvData){
         if(!error){
@@ -331,16 +332,18 @@ crashcaster.heatmap = (function (cc$, d3) {
                 d.Latitude = +d.Latitude;
                 d.Longitude = +d.Longitude;
                 d.accidentHour = parseInt(d.accidentHour);
-                console.log(d.accidentHour);
+
                     dayoftheWeek.push(d['Day Of Week']);
                     datesofAccident.push(d.Dates);
                     travelType.push(d.AccidentType);
                     weatherCat.push(d.Weather_Category);
                     Long01.push(d.Longitude);
                     Lat01.push(d.Latitude);
+                    dataHours.push(d.accidentHour);
 
 
             });
+
         }
     });
 
@@ -354,10 +357,12 @@ crashcaster.heatmap = (function (cc$, d3) {
     function getPoints() {
         var array = [];
         filterTotal=0;
+        var accidentsHourly =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         for(var i=0;i<accidentData.length;i++) {
                 if(travelType[i]==selectTravelType) {
                     if(weatherCat[i]==selectWeather) {
                         filterTotal = filterTotal + 1;
+                        accidentsHourly[dataHours[i]]++;
                         if(Lat01[i]>0) {
                         array.push(new google.maps.LatLng(Lat01[i], Long01[i]));
                         }
@@ -365,8 +370,9 @@ crashcaster.heatmap = (function (cc$, d3) {
                     }
                 }
         };
-        crashtisticsText = "Accident Type: " + selectTravelType + ", Weather: " + selectWeather + ", Accidents/year: "+filterTotal/5;
 
+        crashtisticsText = "Accident Type: " + selectTravelType + ", Weather: " + selectWeather + ", Accidents/year: "+filterTotal/5;
+        //console.log(accidentsHourly);
         return array;
     }
 
@@ -406,7 +412,8 @@ crashcaster.heatmap = (function (cc$, d3) {
         bike: bike,
         cycle: cycle,
         walk: walk,
-        overview: overview
+        overview: overview,
+        accidentsHourly: accidentsHourly
     };
 
 
