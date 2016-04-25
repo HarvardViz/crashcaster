@@ -7,21 +7,23 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     var data = {};
 
-    function init() {
-        echo("initialize crashcaster.ui_forecast");
+    function init(origin) {
+        echo("initialize crashcaster.ui_forecast" + ((origin)? " FROM " + origin:""));
         updateHourlyChart();
-        run();
+        //run();
 
+        READY_STATE._current = READY_STATE.LOADED;
     }
 
-    function run() {
-        echo("RUNNING crashcaster.ui_forecast");
+    function run(origin) {
+        echo("RUNNING crashcaster.ui_forecast" + ((origin)? " FROM " + origin:""));
         console.log("Current weather condition is " + cc$.weather.current.current_observation.icon);
 
         showLocation();
         updateClock();
         setTravelTypeTo("auto");
         setWeatherConditionsTo(cc$.weather.current.current_observation.icon, true);
+
         timedUpdate();
 
     }
@@ -364,7 +366,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
                 t.select(".line").attr("d", line);
             }
 
-        READY_STATE._current = READY_STATE.LOADED;
+
         }
 
 

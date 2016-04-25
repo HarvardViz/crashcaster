@@ -200,7 +200,7 @@ p#title
 
 
 /* FORCE GRAPH
-* --------------------------------------- */
+ * --------------------------------------- */
 
 #streetview-title {
     font-weight: bold;
@@ -228,6 +228,64 @@ p#title
     stroke: #e41a1c;   /* dark blue */
     stroke-width: 3;
 }
+
+
+/* LINEMAP
+* --------------------------------------- */
+
+
+#linemap  {
+    text-align: center;
+}
+
+#linemap {
+    margin-top: 30px;
+}
+
+
+.linemap-heading {
+
+    text-align: center;
+}
+
+
+/*  Bar Chart */
+
+#barchart {
+    text-align: center;
+}
+
+.barchart-bar {
+    fill: #888 ;
+}
+
+.barchart-bar:hover {
+    fill: #333;
+}
+
+.barchart-selectedBar {
+    fill: #a50f15;
+}
+
+
+.barchart-xAxis path,
+.barchart-xAxis line {
+    fill: none;
+    stroke: #333;
+    shape-rendering: crispEdges;
+}
+
+.barchart-yAxis path,
+.barchart-yAxis line {
+    fill: none;
+    stroke: #333;
+    shape-rendering: crispEdges;
+}
+
+.barchart-xAxis .barchart-yAxis path {
+    display: none;
+}
+
 
 
 /* HOURLY ACCIDENTS

@@ -9,23 +9,32 @@ crashcaster.heatmap = (function (cc$, d3) {
 
 
     // Add ANYTHING that needs happen when this plugin/module is initialized
-    function init() {
-        echo("initialize crashcaster.heatmap");
+    function init(origin) {
+        echo("initialize crashcaster.heatmap" + ((origin)? " FROM " + origin:""));
 
 
         //For Production comment while testing
         var url = "https://maps.googleapis.com/maps/api/js?key=AIzaSyByBr_9yXPbMOYg3HbL31yOVRAxEXvbtGM&libraries=visualization&callback=crashcaster.heatmap.initMap";
         //For Testing on local PC - comment for Production
         //var url = "https://maps.googleapis.com/maps/api/js?&libraries=visualization&callback=crashcaster.heatmap.initMap";
-        var callback = run;
+        var callback = runFromGoogleMaps;
         cc$.loadScript(url, callback);
     }
 
+    // Just for tracking the call to run from Google Maps
+    function runFromGoogleMaps() {
+        run("googlemaps");
+    }
+
     // Once the module is ready via init(), add anything that needs to be run here
-    function run() {
-        echo("RUNNING crashcaster.heatmap");
+    function run(origin) {
+        echo("RUNNING crashcaster.heatmap" + ((origin)? " FROM " + origin:""));
         updatePrediction();
-        // Addded to use the module pattern
+
+        cc$.ui_forecast.setTravelTypeTo("auto");
+        cc$.ui_forecast.setWeatherConditionsTo(cc$.weather.current.current_observation.icon, true);
+        cc$.ui_forecast.run("heatmap.run");
+
         READY_STATE._current = READY_STATE.LOADED;
     }
 
@@ -376,11 +385,6 @@ crashcaster.heatmap = (function (cc$, d3) {
     }
 
 
-    function loadData() {
-
-    }
-
-
 
         var accidentData = [];
         var Lat01 = [];
@@ -451,7 +455,7 @@ crashcaster.heatmap = (function (cc$, d3) {
 
     forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));
     document.getElementById("forecast-count").innerHTML = forecastAccidents;
-    //console.log(forecastAccidents);
+    console.log(forecastAccidents);
 
     /* END KARTIK'S HEATMAP CODE */
 

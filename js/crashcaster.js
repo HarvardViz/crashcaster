@@ -112,9 +112,9 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
     function run() {
 
         // Run UI modules from here, once everything is loaded and initialized
-        my.ui_forecast.run();
-        //my.heatmap.run();
-        //my.crashboard.run();
+        my.ui_forecast.run("crashcaster.js");
+        my.heatmap.run();
+        my.crashboard.run();
     }
 
     function echo(v) {
@@ -139,11 +139,13 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
 })(crashcaster || {},
     [   "crashcaster.weather",
         "crashcaster.model",
-        "crashcaster.heatmap",
         "crashcaster.ui_forecast",
+        "crashcaster.heatmap",
         "crashcaster.ui_sankey",
         "crashcaster.forcegraph",
-        "crashcaster.crashboard"], $, d3, moment);
+        "crashcaster.linemap",
+        "crashcaster.crashboard"
+    ], $, d3, moment);
 
 
 
