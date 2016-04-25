@@ -750,7 +750,7 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         // Event to set the crossfilter settings.
         $(document).on('accidents:crossfilter:set', function(e, config) {
             if (!config.yearRange) {
-                vis.brush.extent([ vis.startDate, vis.endDate ]);
+                vis.brush.clear();
             }
             else {
                 vis.brush.extent(config.yearRange);
@@ -954,7 +954,7 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         // Event to set the crossfilter settings.
         $(document).on('accidents:crossfilter:set', function(e, config) {
             if (!config.monthRange) {
-                vis.brush.extent([ vis.startDate, vis.endDate ]);
+                vis.brush.clear();
             }
             else {
                 vis.brush.extent(config.monthRange);
@@ -1158,7 +1158,7 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         // Event to set the crossfilter settings.
         $(document).on('accidents:crossfilter:set', function(e, config) {
             if (!config.dayRange) {
-                vis.brush.extent([ vis.startDate, vis.endDate ]);
+                vis.brush.clear();
             }
             else {
                 vis.brush.extent(config.dayRange);
@@ -1357,7 +1357,7 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         // Event to set the crossfilter settings.
         $(document).on('accidents:crossfilter:set', function(e, config) {
             if (!config.hourRange) {
-                vis.brush.extent([ vis.startDate, vis.endDate ]);
+                vis.brush.clear();
             }
             else {
                 vis.brush.extent(config.hourRange);
