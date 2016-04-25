@@ -71,16 +71,7 @@
 
         <div class="row">
             <div class="col-md-3 bg-content">
-                <div class="row">
-                    <div class="">
-                        <h3 class="center white text-shadow"><span
-                                id="current-location">Cambridge, MA</span></h3>
-                        <h4 id="current-datetime" class="textbox-heading" style="font-size:13px; padding: 0 0 0 0;"></h4>
-                    </div>
-                </div>
-                <div class="row">
-                    <hr class="textbox-hr">
-                </div>
+
                 <div class="row bg-content-white" align="center">
                     <h4 class="textbox-heading">Travel Type</h4>
 
@@ -116,13 +107,13 @@
                     &nbsp;
                 </div>
                 <div class="row bg-content">
-                    <h4 class="textbox-heading" style="padding: 0 0 0 0;">Accidents Forecast Today</h4>
+                    <h4 class="textbox-heading" style="padding: 0 0 0 0;">Accidents Forecast</h4>
                     <p id="forecast-count" class="textbox-forecast-count">-</p>
                 </div>
             </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-5 bg-content">
-                <div id="map"></div>
+
+            <div class="col-md-6 bg-content">
+                <div id="map" class="" style="margin: 0 0 0 3em;"></div>
             </div>
             <div class="col-md-3 bg-content">
                 <div class="row bg-content-white" align="center">
@@ -133,7 +124,7 @@
 
                     <div>&nbsp;</div>
 
-                    <div><p id="forecast-text" class="textbox" style="text-align: center;">What if today is...</p></div>
+                    <div><p id="what-if" class="textbox" style="text-align: center;">What if today is...</p></div>
                     <div class="btn-group" role="group" aria-label="Weather selection">
                         <button onclick="cc$.ui_forecast.setWeatherConditionsTo('rain')" id="btn_rain" type="button" class="btn btn-secondary"><p
                                 class="wi wi-wu-rain btn-type-weather"></p>
@@ -166,16 +157,21 @@
             </div>
         </div>
 
-        <div class="row">
-            &nbsp;
+        <div class="row" style="padding: 0 0 0 0;">
+            <div class="bg-content-white" style="padding: 0 0 0 0;">
+                <h3 class="center white text-shadow"><span
+                        id="current-location">Cambridge, MA</span></h3>
+                <h4 id="current-datetime" class="textbox-heading" style="font-size:13px; padding: 0 0 0 0;"></h4>
+            </div>
         </div>
+
 
         <div class="row bg-content" style="padding: .5em .5em .5em .5em;">
             <div id="hourly_graph" class="bg-content-hourly"></div>
         </div>
 
         <div class="row">
-            <div class="col-md-12">Disclaimer: Please use your best judgement. Drive safe. Don't rely on Crashcaster for accurate information since it is currently only a class project at Harvard.</div>
+            <div id="citation" class="col-md-12">Disclaimer: Please use your best judgement. Drive safe. Don't rely on Crashcaster for accurate information since it is currently only a class project at Harvard.</div>
         </div>
 
     </div>

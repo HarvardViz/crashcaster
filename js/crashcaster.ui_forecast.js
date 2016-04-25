@@ -89,18 +89,17 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         var btn_id = '#btn_' + condition;
         $(btn_id).addClass('btn-danger');
 
+        if(useActualCondition){
+            setBackgroundImage(actualCondition);
+        } else {
+            setBackgroundImage(condition);
+        }
+
 
         switch(condition) {
             case "clear":
                 console.log("Painting a " + condition + " forecast");
                 cc$.heatmap.clear();
-
-
-                if(useActualCondition){
-                    setBackgroundImage(actualCondition);
-                } else {
-                    setBackgroundImage(condition);
-                }
 
                 break;
             case "rain":
@@ -128,25 +127,57 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     function setBackgroundImage(condition) {
 
-        var daynight = "day";
+        var daytime = true;
         var now = moment();
         var hour = now.format('HH');
         if(hour < 6 && hour > 18){
-            daynight = "night";
+            daytime = false;
         }
-        
-        
 
-        console.log(cc$.model.weatherImages);
-        console.log(cc$.model.weatherImages["clear"]);
-        console.log(cc$.model.weatherImages["chanceflurries"]);
+        //console.log(condition);
+        var imageList = getImageList(cc$.model.weatherImages[condition], daytime);
+        var image = getRandomImage(imageList);
+        
+        //console.log("image.url=" + image.url);
+        //console.log("image.cite=" + image.cite);
 
-        imageUrl = "img/weather-rain-day-0.jpg";
+        var imageUrl = image.url;  // "img/weather-rain-day-0.jpg";
+        var imageCite = image.cite;
 
         $('#section0').css('background-image', 'url(' + imageUrl + ')');
+        $('#section0').css('background-size', 'cover');
 
-        // Must add citation for each image
+        // TODO: Must add citation for each image to model `image.cite`
 
+    }
+
+    function getImageList(images, daytime) {
+
+        var imageList = [];
+
+        for(var image in images) {
+
+            // console.log("images." + image + " = " + images[image]);
+            if(images[image].daytime == daytime) {
+                //console.log("Image add " + images[image]);
+                imageList.push(images[image]);
+            }
+        }
+
+        //console.log("imageList");
+        //console.log(imageList);
+
+        return imageList;
+    }
+
+    function getRandomImage(imageList) {
+        var num = Math.floor(Math.random() * imageList.length);
+        var image = imageList[num];
+
+        //console.log("IMAGE=");
+        //console.log(image);
+
+        return image;
     }
 
     // Map the Weather Underground Conditions to our basic types

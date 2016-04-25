@@ -25,8 +25,14 @@ crashcaster.model = (function () {
 
     // Clear variations
     weatherImages["clear"] = [
-        {daytime: true, url: "url", cite: "cite"},
-        {daytime: false, url: "url", cite: "cite"}];
+        {daytime: true, url: "img/weather-clear-day-0.jpg", cite: "cite"},
+        {daytime: true, url: "img/weather-clear-day-1.jpg", cite: "cite"},
+        {daytime: true, url: "img/weather-clear-day-2.jpg", cite: "cite"},
+        {daytime: true, url: "img/weather-clear-day-3.jpg", cite: "cite"},
+        {daytime: false, url: "img/weather-clear-night-0.jpg", cite: "cite"},
+        {daytime: false, url: "img/weather-clear-night-1.jpg", cite: "cite"},
+        {daytime: false, url: "img/weather-clear-night-2.jpg", cite: "cite"},
+        {daytime: false, url: "img/weather-clear-night-3.jpg", cite: "cite"}];
 
     weatherImages["sunny"] = weatherImages["clear"];
     weatherImages["mostlysunny"] = weatherImages["clear"];
@@ -34,8 +40,8 @@ crashcaster.model = (function () {
 
     // Cloudy
     weatherImages["cloudy"] = [
-        {daytime: true, url: "url", cite: "cite"},
-        {daytime: false, url: "url", cite: "cite"}];
+        {daytime: true, url: "img/weather-cloudy-day-0.jpg", cite: "cite"},
+        {daytime: true, url: "img/weather-cloudy-day-1.jpg", cite: "cite"}];
 
     weatherImages["mostlycloudy"] = weatherImages["cloudy"];
     weatherImages["partlycloudy"] = weatherImages["cloudy"];
@@ -43,8 +49,11 @@ crashcaster.model = (function () {
 
     // Rain variations
     weatherImages["rain"] = [
-        {daytime: true, url: "url", cite: "cite"},
-        {daytime: false, url: "url", cite: "cite"}];
+        {daytime: true, url: "img/weather-rain-day-0.jpg", cite: "cite"},
+        {daytime: true, url: "img/weather-rain-day-1.jpg", cite: "cite"},
+        {daytime: true, url: "img/weather-rain-day-2.jpg", cite: "cite"},
+        {daytime: true, url: "img/weather-rain-day-3.jpg", cite: "cite"},
+        {daytime: false, url: "img/weather-rain-night-0.jpg", cite: "cite"}];
 
     weatherImages["chancerain"] = weatherImages["rain"];
 

@@ -7,6 +7,7 @@
 
 .section {
     text-align: center;
+    background-size: cover;
 }
 
 .slide {
