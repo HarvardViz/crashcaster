@@ -218,6 +218,9 @@ crashcaster.heatmap = (function (cc$, d3) {
     }
 
 
+
+
+
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: zoom1,
@@ -226,12 +229,47 @@ crashcaster.heatmap = (function (cc$, d3) {
             center: {lat: Lat1, lng: Long1},
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: true,
-            
-
-
         });
 
+        story1();
 
+        function story1()
+        {
+            var storyLoc = {lat: 42.360154, lng: -71.094882};
+            var contentString = '<div>'+
+                '<h5 id="firstHeading" class="firstHeading">Most dangerous intersection</h5>'+
+                '<div>'+'High traffic volume and poor visibility contribute ' +
+                'to this intersection being the most dangerous in Cambridge and ranked as one of ' +
+                'the worst in Massachusetts. Use extra caution and follow ' +
+                'traffic rules if you are travelling through this intersection by bike, as a high number of ' +
+                'bicycle accidents tend to occur here due to poor visibility and cyclists ' +
+                'ignoring traffic rules.'+
+                '</div>'+
+                '</div>';
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            var marker = new google.maps.Marker({
+                position: storyLoc,
+                map: map,
+                title: 'Story 01'
+            });
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+                map.setZoom(15);
+                map.setCenter(marker.getPosition());
+
+            });
+
+            infowindow.addListener('closeclick', function() {
+                map.setZoom(zoom1);
+                map.setCenter({lat: Lat1, lng: Long1});
+
+
+            });
+
+        }
 
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: getPoints(),
