@@ -54,9 +54,11 @@
             </li>
             <li data-menuanchor="crashboard" class="nav-item"><a class="nav-link" href="#crashboard">Crashboard</a></li>
             <li data-menuanchor="sankey" class="nav-item"><a class="nav-link" href="#sankey">Weather Impact</a></li>
-            <li data-menuanchor="crashcalendar" class="nav-item"><a class="nav-link" href="#crashcalendar">Crashcalendar</a></li>
+            <li data-menuanchor="crashcalendar" class="nav-item"><a class="nav-link"
+                                                                    href="#crashcalendar">Crashcalendar</a></li>
             <li data-menuanchor="linemap" class="nav-item"><a class="nav-link" href="#linemap">Intersections</a></li>
-            <li data-menuanchor="forcegraph" class="nav-item"><a class="nav-link" href="#forcegraph">Street Explorer</a></li>
+            <li data-menuanchor="streetexplorer" class="nav-item"><a class="nav-link" href="#streetexplorer">Street Explorer</a>
+            </li>
             <li data-menuanchor="screencast" class="nav-item"><a class="nav-link" href="#screencast">Screencast</a></li>
             <li data-menuanchor="processbook" class="nav-item"><a class="nav-link" href="#processbook">Process Book</a>
             </li>
@@ -126,16 +128,20 @@
 
                     <div><p id="what-if" class="textbox" style="text-align: center;">What if today is...</p></div>
                     <div class="btn-group" role="group" aria-label="Weather selection">
-                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('rain')" id="btn_rain" type="button" class="btn btn-secondary"><p
+                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('rain')" id="btn_rain" type="button"
+                                class="btn btn-secondary"><p
                                 class="wi wi-wu-rain btn-type-weather"></p>
                             <p>Rain</p></button>
-                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('snow')" id="btn_snow" type="button" class="btn btn-secondary"><p
+                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('snow')" id="btn_snow" type="button"
+                                class="btn btn-secondary"><p
                                 class="wi wi-wu-snow btn-type-weather"></p>
                             <p>Snow</p></button>
-                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('fog')" id="btn_fog" type="button" class="btn btn-secondary"><p
+                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('fog')" id="btn_fog" type="button"
+                                class="btn btn-secondary"><p
                                 class="wi wi-fog btn-type-weather"></p>
                             <p>Fog&nbsp;</p></button>
-                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('clear')" id="btn_clear" type="button" class="btn btn-secondary"><p
+                        <button onclick="cc$.ui_forecast.setWeatherConditionsTo('clear')" id="btn_clear" type="button"
+                                class="btn btn-secondary"><p
                                 class="wi wi-wu-clear btn-type-weather"></p>
                             <p>Clear</p></button>
 
@@ -150,7 +156,7 @@
                         <span id="weathertxt"></span>
                         <span id="predict1"></span>
                         <span id="predict2"></span>
-                        <p id="source" class="citation"></p>
+                    <p id="source" class="citation"></p>
                     </p>
                 </div>
 
@@ -171,7 +177,9 @@
         </div>
 
         <div class="row">
-            <div id="citation" class="col-md-12">Disclaimer: Please use your best judgement. Drive safe. Don't rely on Crashcaster for accurate information since it is currently only a class project at Harvard.</div>
+            <div id="citation" class="col-md-12">Disclaimer: Please use your best judgement. Drive safe. Don't rely on
+                Crashcaster for accurate information since it is currently only a class project at Harvard.
+            </div>
         </div>
 
     </div>
@@ -309,7 +317,8 @@
                 <div class="row">&nbsp;</div>
 
                 <div class="row">
-                    <div id="sankey-diagram" class="col-md-12 bg-content-white" style="background-color: rgba(255, 255, 255, 0.8);"></div>
+                    <div id="sankey-diagram" class="col-md-12 bg-content-white"
+                         style="background-color: rgba(255, 255, 255, 0.8);"></div>
                 </div>
 
             </div>
@@ -343,12 +352,33 @@
 <div class="section" id="section6">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 bg-content-white">
-                <h1>Forcegraph</h1>
+            <div class="col-md-12">
+                <h2>Street View Explorer:  Explore Cambridge's road network</h2>
+                <h4>Navigate your way through Cambridge's most dangerous roads and try to spot what makes each intersection hazardous!</h4>
+                <h5>The graph below shows your current road and all the available connecting roads for you to explore.</h5>
+                <h5>As you connect to other roads you'll see views of your current intersection.</h5>
             </div>
         </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-7">
+                <div id="forcegraph-title"></div>
+                <div id="forcegraph-subtitle"></div>
+                <div id="forcegraph"></div>
+            </div>
+            <div class="col-md-5">
+                <div id="streetview-title"></div>
+                <div id="streetview-info"></div>
+                <div id="streetview1"></div>
+                <div id="streetview2"></div>
+            </div>
+        </div>
+
     </div>
 </div>
+
 
 <div class="section" id="section7">
     <div class="container">
@@ -412,7 +442,7 @@
         $("nav.navbar-fixed-top").autoHidingNavbar('setDisableAutohide', false);
         $.fn.fullpage({
             slidesColor: ['#428BCA', '#5CB85C', '#5BC0DE', '#F0AD4E', '#FF530D', '#FFFFFF'], // Bootstrap
-            anchors: ['home', 'visuals', 'crashboard', 'sankey', 'crashcalendar', 'linemap', 'forcegraph', 'screencast', 'processbook'],
+            anchors: ['home', 'visuals', 'crashboard', 'sankey', 'crashcalendar', 'linemap', 'streetexplorer', 'screencast', 'processbook'],
             menu: '#menu'
             //sectionsColor: ['#C63D0F', '#1BBC9B', '#7E8F7C'],
             //navigation: true,

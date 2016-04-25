@@ -20,10 +20,8 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
         showLocation();
         updateClock();
-
-        setWeatherConditionsTo(cc$.weather.current.current_observation.icon);
         setTravelTypeTo("auto");
-
+        setWeatherConditionsTo(cc$.weather.current.current_observation.icon, true);
         timedUpdate();
 
     }

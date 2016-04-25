@@ -198,6 +198,38 @@ p#title
     color: #ededed;
 }
 
+
+/* FORCE GRAPH
+* --------------------------------------- */
+
+#streetview-title {
+    font-weight: bold;
+}
+
+
+#streetview-info {
+    font-weight: bold;
+}
+
+#forcegraph-title {
+    font-weight: bold;
+}
+
+
+.force-node {
+    fill: #377eb8;   /* dark blue */
+}
+
+.force-selectedNode {
+    fill: #e41a1c;  /* dark red */
+}
+
+.force-link {
+    stroke: #e41a1c;   /* dark blue */
+    stroke-width: 3;
+}
+
+
 /* HOURLY ACCIDENTS
 * --------------------------------------- */
 
