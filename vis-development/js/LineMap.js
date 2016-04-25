@@ -11,10 +11,10 @@ var filteredObject = {};
 /* linemap definitions */
 
 // SVG drawing area - linemap
-var marginLinemap = {top: 30, right: 100, bottom: 30, left: 100};
+var marginLinemap = {top: 50, right: 100, bottom: 30, left: 100};
 
 var widthLinemap = 900 - marginLinemap.left - marginLinemap.right,
-    heightLinemap = 60 - marginLinemap.top - marginLinemap.bottom;
+    heightLinemap = 100 - marginLinemap.top - marginLinemap.bottom;
 
 
 var svgLinemap = d3.select("#linemap").append("svg")
@@ -71,10 +71,10 @@ linemapTip.direction("s");
 /* barchart definitions */
 
 // SVG drawing area - barchart
-var marginBarchart = {top: 10, right: 100, bottom: 150, left: 100};
+var marginBarchart = {top: 20, right: 100, bottom: 150, left: 100};
 
 var widthBarChart = 900 - marginBarchart.left - marginBarchart.right,
-    heightBarChart = 350 - marginBarchart.top - marginBarchart.bottom;
+    heightBarChart = 400 - marginBarchart.top - marginBarchart.bottom;
 
 var svgBarChart = d3.select("#barchart").append("svg")
     .attr("width", widthBarChart + marginBarchart.left + marginBarchart.right)
@@ -313,7 +313,7 @@ function updateLineMap() {
         .attr("y1", 0)
 		.attr("x2", widthLinemap)
         .attr("y2", 0)
-		.style("stroke", "333")
+		.style("stroke", "#333")
 		.style("stroke-width", 1);
 	
 	
