@@ -350,14 +350,14 @@ crashcaster.heatmap = (function (cc$, d3) {
 
 
 
-
+    var accidentsHourly;
 
 
     //Points for Heatmap
     function getPoints() {
         var array = [];
         filterTotal=0;
-        var accidentsHourly =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+        accidentsHourly =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         for(var i=0;i<accidentData.length;i++) {
                 if(travelType[i]==selectTravelType) {
                     if(weatherCat[i]==selectWeather) {
@@ -378,9 +378,7 @@ crashcaster.heatmap = (function (cc$, d3) {
     }
 
     var accidentsDailyAvg=4.31; //basd on calculations in data/cambridge_forecast_calculations_2010-2014.xlsx
-    console.log(accidentsDailyAvg);
-    console.log(factorWeather);
-    console.log(factorDay);
+
 
     forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));
     document.getElementById("forecast-count").innerHTML = forecastAccidents;
