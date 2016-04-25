@@ -228,7 +228,7 @@ crashcaster.heatmap = (function (cc$, d3) {
             minZoom: 13,
             center: {lat: Lat1, lng: Long1},
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-            disableDefaultUI: true,
+            disableDefaultUI: true
         });
 
         story1();
