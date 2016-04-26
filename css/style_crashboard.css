@@ -117,6 +117,9 @@
 #crashboard_mapToggle ul li.active {
     opacity: 1.0;
 }
+#crashboard_storiesBar ul li.selectedStory {
+    background-color: #E6E6E6;
+}
 
 /*
  * Layout
@@ -181,7 +184,7 @@
 #crashboard_accidentMap svg circle.areaMarker {
     fill: none;
     stroke-width: 2px;
-    stroke: #4682B4;
+    stroke: #333;
 }
 
 /*
@@ -291,15 +294,20 @@
 }
 
 #crashboard_storiesContent p {
-    font-size: 14px;
+    font-size: 13px;
     color: #666;
+    margin: 0 0 8px;
+}
+
+#crashboard_storiesContent p strong {
+    color: #4682B4;
 }
 
 #crashboard_storiesContent h3 {
     font-weight: 600;
     font-size: 15px;
     color: #333;
-    margin-bottom: 4px;
+    margin: 0 0 8px;
 }
 
 /*

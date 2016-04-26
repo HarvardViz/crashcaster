@@ -253,7 +253,10 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         this.update();
     }
     AccidentMap.prototype = {
-
+        _expoEaseOut: function(t) {
+            t = Math.min(Math.max(t, 0), 1);
+            return -Math.pow(2, -10 * t) + 1;
+        },
         /**
          * Updates the map. This should be called any time data for the map is updated.
          */
@@ -264,7 +267,8 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             // Draw the accidents view.
             if (this._currentView === MapView.Accidents) {
 
-                var dataPointOpacity = 0.5 - ((data.length / 7813) * 0.4);
+                var minOpacity = 0.05, maxOpacity = 0.5;
+                var dataPointOpacity = maxOpacity - (this._expoEaseOut(data.length / 7813) * (maxOpacity - minOpacity));
                 var legendValues = [ 1, 2, 4, 8, 16, 32 ];
 
                 // Delete all existing neighborhoods.
@@ -279,7 +283,7 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
                     .attr('class', 'accident')
                     .attr('cx', function(d) { return projection(d.coordinates)[ 0 ]; })
                     .attr('cy', function(d) { return projection(d.coordinates)[ 1 ]; })
-                    .attr('r', 2);
+                    .attr('r', 5);
                 points
                     .attr('fill-opacity', dataPointOpacity);
                 points.exit().remove();
@@ -1426,31 +1430,46 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         var stories = [{
             config: {
                 accidentTypes: [ 'Auto' ],
-                weatherEvents: [ 'Rain' ],
-                mapView: 0,
-                yearRange: [ new Date(2014, 0, 1), new Date(2015, 0, 0, 0, 0, -1) ],
-                monthRange: [ new Date(2014, 0, 1), new Date(2014, 6, 0, 0, 0, -1) ],
-                dayRange: [ new Date(2014, 0, 6), new Date(2014, 0, 11, 0, 0, 0, -1) ],
-                hourRange: [ new Date(2014, 0, 1, 12), new Date(2014, 0, 1, 20) ]
+                mapView: 0
             },
-            coordinates: [ -71.122, 42.378 ],
-            title: 'Story 1'
+            coordinates: [ [ -71.145674, 42.3752872 ], [ -71.119163, 42.375191 ], [ -71.094914, 42.360155 ] ],
+            title: 'Dangerous Intersections',
+            content: '<p>Some of the most dangerous areas in Cambridge (for cars) are the intersection of <strong>Brattle St & Aberdeen Ave</strong>, the <strong>Harvard Square area</strong>, and the intersection of <strong>Mass Ave & Vassar St</strong>.</p><p>Explore the weather conditions and see how the data points change depending on the weather.</p>'
         }, {
-            coordinates: [ -71.112, 42.378 ],
-            title: 'Story 2'
+            config: {
+                accidentTypes: [ 'Bicycle' ],
+                mapView: 1
+            },
+            coordinates: [ [ -71.096440, 42.365583 ] ],
+            title: 'Bikers Beware',
+            content: '<p>There are a lot of bikers in Cambridge, and one of the most dangerous areas in Cambridge for bikers is the Mass Ave area heading down towards MIT, centered on <strong>The Port</strong>. Notice how accident counts go up during commute times.</p><p>Switch to the Accidents view and see how the bike accidents are distributed throughout the area.</p>'
         }, {
-            coordinates: [ -71.132, 42.378 ],
-            title: 'Story 3'
+            config: {
+                accidentTypes: [ 'Pedestrian' ],
+                mapView: 0,
+                weatherEvents: [ 'Fog', 'Rain', 'Thunderstorm', 'Snow', 'Hail' ]
+            },
+            coordinates: [ [ -71.119163, 42.375191 ], [ -71.104067, 42.365415 ] ],
+            title: 'Inclement Walking Conditions',
+            content: '<p>Being a pedestrian on the streets of Cambridge can be dangerous, as well. Walking around <strong>Harvard Square</strong> and <strong>Central Square</strong> in bad weather can be especially dangerous, especially in the middle of the week.</p>'
         }, {
-            coordinates: [ -71.142, 42.390 ],
-            title: 'Story 4'
+            config: {
+                accidentTypes: [ 'Pedestrian' ],
+                mapView: 0,
+                weatherEvents: [ 'None' ],
+                monthRange: [ new Date(2014, 5, 1), new Date(2014, 8, 0, 0, 0, -1) ],
+                hourRange: [ new Date(2014, 0, 1, 12), new Date(2014, 0, 1, 18) ]
+            },
+            coordinates: [ [ -71.119163, 42.375191 ] ],
+            title: 'A Summer Afternoon Stroll',
+            content: '<p>There aren\'t many pedestrian accidents during summer afternoons, and the ones that do occur happen around the typically dangerous areas, such as <strong>Harvard Square</strong>.</p>'
         }];
 
         // Setup bar element and label.
         this.barElement = d3.select('#' + this.barElementId);
         this.label = this.barElement.append('div')
             .attr('class', 'filter-label')
-            .text('Stories');
+            .text('Highlights');
 
         // Setup story buttons.
         var ul = this.barElement.append('ul');
@@ -1461,6 +1480,8 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             .attr('title', function(d) { return d.title; })
             .text(function(d, i) { return i + 1; })
             .on('click', function(d, i) {
+                storyButtons.classed('selectedStory', false);
+                this.classList.add('selectedStory');
                 openStory(i);
             });
         var closeButton = ul.append('li')
@@ -1478,9 +1499,7 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         function openStory(i) {
 
             var story = stories[ i ];
-            var html = '' +
-                '<h3>' + story.title + '</h3>' +
-                '<p>Lorem ipsum dolor sit amet.</p>';
+            var html = '<h3>' + story.title + '</h3>' + story.content;
 
             // Add the HTML to the element and show it.
             feat.contentElement.html(html);
@@ -1492,7 +1511,9 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             // Mark areas on the map if necessary.
             visualizations.accidentMap.clearAreaMarkers();
             if (story.coordinates) {
-                visualizations.accidentMap.showAreaMarker(story.coordinates);
+                for (c of story.coordinates) {
+                    visualizations.accidentMap.showAreaMarker(c);
+                }
             }
         }
 
@@ -1508,6 +1529,9 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
 
             // Clear the area markers on the map.
             visualizations.accidentMap.clearAreaMarkers();
+
+            // Unstyle the story buttons.
+            storyButtons.classed('selectedStory', false);
         }
     };
 
