@@ -72,6 +72,18 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         READY_STATE._current = READY_STATE.LOADING;
     }
 
+    function createNormalizedDate(dateString) {
+        var r = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z$/.exec(dateString);
+        var normalizedDate = new Date(
+            parseInt(r[ 1 ], 10),
+            parseInt(r[ 2 ], 10) - 1,
+            parseInt(r[ 3 ], 10),
+            parseInt(r[ 4 ], 10),
+            parseInt(r[ 5 ], 10),
+            parseInt(r[ 6 ], 10));
+        return normalizedDate;
+    }
+
     function processData(err, boundary, neighborhoods, roads, accidents, weather, citations) {
 
         if (err) { throw err; }
@@ -79,18 +91,22 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         // Convert date information.
         accidents.forEach(function(d, i) {
             d.id = i;
-            d.date = new Date(d.date);
+            d.date = createNormalizedDate(d.date);
         });
+        accidents = accidents.filter(function(d) {
+            return d.date.getFullYear() >= 2010 && d.date.getFullYear() <= 2014;
+        });
+
         // Create a weather lookup, by date.
         var _weatherLookup = {};
         weather.forEach(function(d) {
-            d.date = new Date(d.date);
-            d.sunrise = new Date(d.sunrise);
-            d.sunset = new Date(d.sunset);
-            _weatherLookup[ d3.time.format("%Y-%m-%d")(d.date) ] = d;
+            d.date = createNormalizedDate(d.date);
+            d.sunrise = createNormalizedDate(d.sunrise);
+            d.sunset = createNormalizedDate(d.sunset);
+            _weatherLookup[ d3.time.format('%Y-%m-%d')(d.date) ] = d;
         });
         citations.forEach(function(d) {
-            d.date = new Date(d.date);
+            d.date = createNormalizedDate(d.date);
         });
 
         // Initialize cross filtering for accidents.
@@ -99,7 +115,7 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
         accidents.accidentType  = accidents.dimension(function(d) { return d.accidentType; });
         accidents.accidentTypes = accidents.accidentType.group();
         accidents.weather       = accidents.dimension(function(d) {
-            var weatherData = _weatherLookup[ d3.time.format("%Y-%m-%d")(d.date) ];
+            var weatherData = _weatherLookup[ d3.time.format('%Y-%m-%d')(d.date) ];
             var result = [];
             if (weatherData.events.fog) { result.push('Fog'); }
             if (weatherData.events.rain) { result.push('Rain'); }
