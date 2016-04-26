@@ -45,6 +45,7 @@
     */
 }
 
+
 #section3 {
     background: -webkit-gradient(linear, top left, bottom left, from(#1b71a1), to(#1a3f63));
     background: -webkit-linear-gradient(#1b71a1, #1a3f63);
@@ -54,10 +55,11 @@
     */
 }
 
+
 #section4 {
-	background: -webkit-gradient(linear, top left, bottom left, from(#EDFFDB), to(#EEFFE8));
-	background: -webkit-linear-gradient(#EDFFDB, #EEFFE8);
-	background: linear-gradient(#EDFFDB, #EEFFE8);
+    background: -webkit-gradient(linear, top left, bottom left, from(#c7c8db), to(#543e8d));
+    background: -webkit-linear-gradient(#c7c8db, #543e8d);
+    background: linear-gradient(#c7c8db, #543e8d);
     /*
    background-image: url(../img/bg3.jpg);
    */
