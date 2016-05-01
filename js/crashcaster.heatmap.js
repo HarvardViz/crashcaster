@@ -431,7 +431,7 @@ crashcaster.heatmap = (function (cc$, d3) {
     var filterTotal=0;
     var allAccidents=0;
     var accidentsDailyAvg=3.52; //based on calculations in data/cambridge_forecast_calculations_2010-2014.xlsx
-
+    var peak_to_Avg = 2; //error factor
 
     //Points for Heatmap
     function getPoints() {
@@ -473,7 +473,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         if (selectWeather == "Fog") {factorWeather = modelFog;}
         if (selectWeather == "Good") {factorWeather = modelGood;}
 
-        forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));
+        forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay)*peak_to_Avg);
         document.getElementById("forecast-count").innerHTML = forecastAccidents;
 
         //console.log(filterTotal + " " + calcAuto + " " +calcBike + " " +calcCycle + " " +calcWalk + " " + allAccidents);
@@ -534,8 +534,7 @@ crashcaster.heatmap = (function (cc$, d3) {
              if (window.innerWidth >= 960) var shiftWidth = width / 2;
              if (window.innerWidth < 960) var shiftWidth = width / 3;
              return 'translate(' + shiftWidth + ',' + height / 2 + ')';
-         })
-
+         });
 
 
 
@@ -576,21 +575,7 @@ crashcaster.heatmap = (function (cc$, d3) {
                  this._current = d;
              });
 
-         // remove data not being used
-         //g.select("text.perc").exit().remove();
 
-         g.append("text.perc")
-             .attr("text-anchor", "middle")
-             .attr("font-size","15px")
-             .style("fill", "#fff")
-             .style("font-weight", "bold")
-             .text("Auto");
-
-
-
-         // remove data not being used
-         g.datum(data).selectAll("path")
-             .data(pie).exit().remove();
      }
 
      //render();
