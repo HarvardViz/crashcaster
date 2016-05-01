@@ -1,12 +1,31 @@
 /* Cal-HeatMap CSS */
 
-#cal-heatmap {
+#cal-heatmap-2010 {
 	margin-top: 20px;
+	margin-bottom: 5px;
+}
+#cal-heatmap-2011 {
+	margin-top: 20px;
+	margin-bottom: 5px;
+}
+#cal-heatmap-2012 {
+	margin-top: 20px;
+	margin-bottom: 5px;
+}
+
+#cal-heatmap-2013 {
+	margin-top: 20px;
+	margin-bottom: 5px;
+}
+
+#cal-heatmap-2014 {
+	margin-top: 20px;
+	margin-bottom: 5px;
 }
 
 .cal-heatmap-container {
 	display: block;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 .cal-heatmap-container .graph
@@ -63,42 +82,53 @@
 .cal-heatmap-container .q1
 {
 	background-color: #dae289;
-	fill: #dadaeb
+	fill: #dadaeb;
+	stroke: #ededed
 }
 
 .cal-heatmap-container .q2
 {
-	background-color: #cedb9c;
-	fill: #bcbddc
+	background-color: #dae289;
+//	background-color: #cedb9c;
+	fill: #bcbddc;
+	stroke: #ededed
 }
 
 .cal-heatmap-container .q3
 {
-	background-color: #b5cf6b;
-	fill: #9e9ac8
+	background-color: #dae289;
+//	background-color: #b5cf6b;
+	fill: #9e9ac8;
+	stroke: #ededed
 }
 
 .cal-heatmap-container .q4
 {
-	background-color: #637939;
-	fill: #807dba
+	background-color: #dae289;
+//	background-color: #637939;
+	fill: #807dba;
+	stroke: #ededed
 }
 
 .cal-heatmap-container .q5
 {
-	background-color: #3b6427;
-	fill: #6a51a3
+	background-color: #dae289;
+//	background-color: #3b6427;
+	fill: #6a51a3;
+	stroke: #ededed
 }
 
 .cal-heatmap-container .q6
 {
 	background-color: #3b6427;
-	fill: #4a1486
+	fill: #4a1486;
+	stroke: #ededed
 }
 
 .cal-heatmap-container rect.highlight
 {
-	stroke:#444;
+	//stroke:#fdae6b;
+	stroke: #333;
 	stroke-width:1
 }
 
@@ -109,12 +139,12 @@
 
 .cal-heatmap-container rect.now
 {
-	stroke: red
+	stroke: green;
 }
 
 .cal-heatmap-container text.now
 {
-	fill: red;
+	fill: green;
 	font-weight: 800
 }
 
@@ -153,4 +183,89 @@
 	margin-left: -6px;
     border-width: 6px 6px 0;
     border-top-color: #222;
+}
+
+
+
+
+
+#lean_overlay {
+	position: fixed;
+	z-index:100;
+	top: 0px;
+	left: 0px;
+	height:100%;
+	width:100%;
+	/*background: #000;*/
+	display: none;
+}
+
+.modal_close {
+	margin: 5px;
+}
+
+#cal-story1 {
+	margin-right: 50px;
+	width: 600px;
+	padding: 30px;
+	display: none;
+	background: #FFF;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+	-webkit-box-shadow: 0 0 4px rgba(0,0,0,0.7);
+	-moz-box-shadow: 0 0px 4px rgba(0,0,0,0.7);
+}
+#cal-story2 {
+	width: 600px;
+	padding: 30px;
+	display: none;
+	background: #FFF;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+	-webkit-box-shadow: 0 0 4px rgba(0,0,0,0.7);
+	-moz-box-shadow: 0 0px 4px rgba(0,0,0,0.7);
+}
+#cal-story3 {
+	width: 600px;
+	padding: 30px;
+	display: none;
+	background: #FFF;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+	-webkit-box-shadow: 0 0 4px rgba(0,0,0,0.7);
+	-moz-box-shadow: 0 0px 4px rgba(0,0,0,0.7);
+}
+#cal-story4 {
+	width: 600px;
+	padding: 30px;
+	display: none;
+	background: #FFF;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+	-webkit-box-shadow: 0 0 4px rgba(0,0,0,0.7);
+	-moz-box-shadow: 0 0px 4px rgba(0,0,0,0.7);
+}
+
+.y_2011.m_1 .domain-background {
+	fill: red;
+	fill-opacity: 0.0 ;
+}
+
+.cal-story-content {
+	font-size: 1.2em;
+	color: #222;
+}
+
+.cal-story-icon {
+	font-size: 1.6em;
+	color: #222;
+	margin: 5px;
 }
