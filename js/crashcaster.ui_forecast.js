@@ -43,26 +43,26 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
         switch(travelType) {
             case "auto":
-                console.log("Painting a " + travelType + " forecast");
+                //console.log("Painting a " + travelType + " forecast");
                 cc$.heatmap.auto();
 
                 break;
             case "bike":
-                console.log("Painting a " + travelType + " forecast");
+                //console.log("Painting a " + travelType + " forecast");
                 cc$.heatmap.bike();
 
                 break;
             case "cycle":
-                console.log("Painting a " + travelType + " forecast");
+                //console.log("Painting a " + travelType + " forecast");
                 cc$.heatmap.cycle();
 
                 break;
             case "walk":
-                console.log("Painting a " + travelType + " forecast");
+                //console.log("Painting a " + travelType + " forecast");
                 cc$.heatmap.walk();
                 break;
             default:
-                console.log("Painting a DEFAULT forecast");
+                //console.log("Painting a DEFAULT forecast");
                 cc$.heatmap.auto();
         }
 
@@ -98,28 +98,28 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
         switch(condition) {
             case "clear":
-                console.log("Painting a " + condition + " forecast");
+                //console.log("Painting a " + condition + " forecast");
                 cc$.heatmap.clear();
 
                 break;
             case "rain":
-                console.log("Painting a " + condition + " forecast");
+                //console.log("Painting a " + condition + " forecast");
                 cc$.heatmap.rain();
 
 
                 break;
             case "fog":
-                console.log("Painting a " + condition + " forecast");
+                //console.log("Painting a " + condition + " forecast");
                 cc$.heatmap.fog();
 
                 break;
             case "snow":
-                console.log("Painting a " + condition + " forecast");
+                //console.log("Painting a " + condition + " forecast");
                 cc$.heatmap.snow();
 
                 break;
             default:
-                console.log("Painting a DEFAULT forecast");
+                //console.log("Painting a DEFAULT forecast");
                 cc$.heatmap.clear();
         }
 
@@ -245,17 +245,17 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     // Build the basic graph
 
-    var margin = {top: 5, right: 50, bottom: 25, left: 5},
-        width = 960 - margin.left - margin.right,
-        height = 80 - margin.top - margin.bottom;
+    var margin = {top: 5, right: 50, bottom: 25, left: 20},
+        width = 1090 - margin.left - margin.right,
+        height = 100 - margin.top - margin.bottom;
 
-    //var parse = d3.time.format("%b %Y").parse;
+    var hours = ['12PM', '1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM'];
 
     //var x = d3.scale.linear()
     //    .range([0, width]);
 
     var x = d3.scale.ordinal()
-        .domain(['1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM'])
+        .domain(hours)
         .rangePoints([0, width]);
 
     var y = d3.scale.linear()
@@ -263,9 +263,9 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     var xAxis = d3.svg.axis()
         .scale(x)
-        //.tickValues(['1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM'])
         .tickSize(-height)
-        .orient("bottom");
+        .orient("bottom")
+        .ticks(24);
 
     var yAxis = d3.svg.axis()
         .scale(y)
@@ -274,13 +274,13 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     var area = d3.svg.area()
         .interpolate("monotone")
-        .x(function(d,i) { return x(i+1); })
+        .x(function(d,i) { return x(i); })
         .y0(height)
         .y1(function(d) { return y(d); });
 
     var line = d3.svg.line()
         .interpolate("monotone")
-        .x(function(d,i) { return x(i+1); })
+        .x(function(d,i) { return x(i); })
         .y(function(d) { return y(d); });
 
 
@@ -301,8 +301,8 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
     function updateHourlyChart(accidentsHourly) {
 
-        console.log("ACCIDENTS HOURLY");
-        console.log(accidentsHourly);
+        // console.log("ACCIDENTS HOURLY");
+        // console.log(accidentsHourly);
 
         if(!accidentsHourly) {
             return;
@@ -329,7 +329,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         var lineGraph = svg.selectAll(".line").attr("d", line);
 
             // Compute the minimum and maximum hour
-            x.domain(d3.range(1, 25));
+            x.domain(d3.range(0, 24));
             y.domain([0, d3.max(data, function(d) { return d; })]).nice();
 
 
@@ -357,10 +357,17 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
                 .attr("d", line);
 
             svg.append("text")
-                .attr("x", width - 6)
-                .attr("y", height - 6)
+                .attr("x", 155)
+                .attr("y", 10)
+                .attr("class", "textbox-heading")
                 .style("text-anchor", "end")
-                .text("Accidents by hour");
+                .style("stroke", "#fff")
+                //.style("font-size", "13px")
+                //.style("font-weight", "100")
+                .text("Total Accidents by Hour");
+
+            svg.selectAll(".x.axis text")
+                .text(function(d,i) { return hours[i]; });
 
 
 

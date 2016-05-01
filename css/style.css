@@ -342,7 +342,7 @@ p#title
 * --------------------------------------- */
 
 #hourly_graph svg {
-    background-color: #fff;
+    background-color: #000;
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
@@ -354,12 +354,13 @@ p#title
 
 #hourly_graph svg path.line {
     fill: none;
-    stroke: #666;
-    stroke-width: 1.5px;
+    stroke: #fff;
+    stroke-width: 2.5px;
 }
 
 #hourly_graph svg path.area {
-    fill: #e7e7e7;
+    fill:  rgba(70, 172, 206, 1);  /* #46acce; */
+
 }
 
 #hourly_graph svg .axis {
@@ -367,7 +368,7 @@ p#title
 }
 
 #hourly_graph svg .x.axis line {
-    stroke: #fff;
+    stroke: #000;
 }
 
 #hourly_graph svg .x.axis .minor {
@@ -381,5 +382,17 @@ p#title
 #hourly_graph svg .y.axis line,
 #hourly_graph svg .y.axis path {
     fill: none;
-    stroke: red;
+    stroke: #fff;
+}
+
+#hourly_graph svg .y.axis text {
+    fill: none;
+    stroke: #b7b7b7;
+    font-weight: 100;
+}
+
+#hourly_graph svg .x.axis text {
+    fill: none;
+    stroke: #b7b7b7;
+    font-weight: 100;
 }
