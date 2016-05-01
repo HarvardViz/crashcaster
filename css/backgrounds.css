@@ -91,9 +91,9 @@
 }
 
 #section8 {
-    background: -webkit-gradient(linear, top left, bottom left, from(#fefefe), to(#c0c0c0));
-    background: -webkit-linear-gradient(#fefefe, #c0c0c0);
-    background: linear-gradient(#fefefe, #c0c0c0);
+    background: -webkit-gradient(linear, top left, bottom left, from(#1b71a1), to(#1a3f63));
+    background: -webkit-linear-gradient(#1b71a1, #1a3f63);
+    background: linear-gradient(#1b71a1, #1a3f63);
     /*
    background-image: url(../img/bg3.jpg);
    */
