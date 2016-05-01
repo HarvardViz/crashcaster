@@ -95,7 +95,9 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             d.date = createNormalizedDate(d.date);
         });
         accidents = accidents.filter(function(d) {
-            return d.date.getFullYear() >= 2010 && d.date.getFullYear() <= 2014;
+            var dateRangeCheck = d.date.getFullYear() >= 2010 && d.date.getFullYear() <= 2014;
+            var midnightCheck = (d.date.getHours() + d.date.getMinutes() + d.date.getSeconds()) !== 0;
+            return dateRangeCheck && midnightCheck;
         });
 
         // Create a weather lookup, by date.
@@ -153,7 +155,14 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             visualizations.hourChart.update();
         });
 
-
+        // Enable the 
+        var aboutModal = $('#crashboardAboutModal');
+        aboutModal.find('.crashboardButton')
+            .addClass('active')
+            .text('Start Exploring')
+            .on('click', function() {
+                aboutModal.fadeOut(300);
+            });
     }
 
     //----------------------------------------------------------------------------------------------
@@ -284,9 +293,18 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             // Draw the accidents view.
             if (this._currentView === MapView.Accidents) {
 
-                var minOpacity = 0.05, maxOpacity = 0.5;
+                var minOpacity = 0.05, maxOpacity = 0.3;
                 var dataPointOpacity = maxOpacity - (this._expoEaseOut(data.length / 7813) * (maxOpacity - minOpacity));
-                var legendValues = [ 1, 2, 4, 8, 16, 32 ];
+                var legendValues;
+                if (dataPointOpacity <= 0.13) {
+                    legendValues = [ 1, 2, 4, 8, 16, 32 ];
+                }
+                else if (dataPointOpacity <= 0.21) {
+                    legendValues = [ 1, 2, 4, 8, 12, 16 ];
+                }
+                else {
+                    legendValues = [ 1, 2, 3, 4, 5, 6 ];
+                }
 
                 // Delete all existing neighborhoods.
                 this.chart.selectAll('path.neighborhood').remove();
@@ -328,8 +346,9 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
                     .attr('class', 'accidentLabel')
                     .attr('x', function(d, i) { return i * 21; })
                     .attr('y', 20)
-                    .text(function(d) { return d; })
                     .attr('text-anchor', 'middle');
+                legendLabels
+                    .text(function(d) { return d; });
                 legendLabels.exit().remove();
             }
             // Draw the neighborhoods view.

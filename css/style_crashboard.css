@@ -158,11 +158,11 @@
 }
 
 #crashboard_accidentMap svg .accidentMapLegend rect.neighborhoodLegend {
-    fill: #4682B4;
+    fill: #4A1486;
 }
 
 #crashboard_accidentMap svg path.neighborhood {
-    fill: #4682B4;
+    fill: #4A1486;
 }
 #crashboard_accidentMap svg path.neighborhood:hover {
     stroke-width: 1px;
@@ -170,15 +170,15 @@
 }
 
 #crashboard_accidentMap svg path.boundary {
-    fill: #CCC;
+    fill: #FAFAFA;
 }
 
 #crashboard_accidentMap svg path.road {
-    fill: #EEE;
+    fill: #CCC;
 }
 
 #crashboard_accidentMap svg circle.accident {
-    fill: #4682B4;
+    fill: #4A1486;
 }
 
 #crashboard_accidentMap svg circle.areaMarker {
@@ -241,7 +241,8 @@
 #crashboard_monthChart svg .fg path.area,
 #crashboard_dayChart svg .fg path.area,
 #crashboard_hourChart svg .fg path.area {
-    fill: #A3C1DA;
+    fill: #4A1486;
+    fill-opacity: 0.2;
 }
 
 #crashboard_yearChart svg .bg path.line,
@@ -258,7 +259,7 @@
 #crashboard_dayChart svg .fg path.line,
 #crashboard_hourChart svg .fg path.line {
     stroke-width: 1;
-    stroke: #4682B4;
+    stroke: #4A1486;
     fill: none;
 }
 
@@ -266,7 +267,7 @@
 #crashboard_monthChart svg .brush .extent,
 #crashboard_dayChart svg .brush .extent,
 #crashboard_hourChart svg .brush .extent {
-    fill: #4682B4;
+    fill: #4A1486;
     fill-opacity: 0.1;
 }
 
@@ -300,7 +301,7 @@
 }
 
 #crashboard_storiesContent p strong {
-    color: #4682B4;
+    color: #4A1486;
 }
 
 #crashboard_storiesContent h3 {
@@ -346,4 +347,67 @@
     margin: -1px 0 0 0;
     top: 100%;
     left: 0;
+}
+
+/*
+ * About Modal
+ */
+
+#crashboardAboutModal {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: rgba(0, 0, 0, 0.3);
+    transition: opacity 0.3s ease-in-out;
+}
+
+#crashboardAboutModal .crashboardAboutContent {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 300px;
+    height: 215px;
+    text-align: center;
+    background: #FFF;
+    padding: 16px;
+    border-radius: 3px;
+    border: 1px solid #CCC;
+    margin-top: -100px;
+    margin-left: -150px;
+    overflow: hidden;
+}
+
+#crashboardAboutModal .crashboardTitle {
+    font-weight: 800;
+    font-size: 16px;
+    color: #111;
+    text-transform: uppercase;
+}
+
+#crashboardAboutModal .crashboardLabel {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 0.9em;
+    color: #888;
+    text-transform: none;
+}
+
+#crashboardAboutModal p {
+    font-size: 13px;
+    color: #555;
+    margin-top: 8px;
+}
+
+#crashboardAboutModal .crashboardButton {
+    height: 24px;
+    font-size: 13px;
+    line-height: 24px;
+    color: #FAFAFA;
+    background: #4A1486;
+    border-radius: 4px;
+    margin-top: 8px;
+    opacity: 0.4;
+}
+
+#crashboardAboutModal .crashboardButton.active {
+    opacity: 1;
+    cursor: pointer;
 }
