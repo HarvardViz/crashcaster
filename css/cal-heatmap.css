@@ -1,25 +1,25 @@
 /* Cal-HeatMap CSS */
 
 #cal-heatmap-2010 {
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-bottom: 5px;
 }
 #cal-heatmap-2011 {
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-bottom: 5px;
 }
 #cal-heatmap-2012 {
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-bottom: 5px;
 }
 
 #cal-heatmap-2013 {
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-bottom: 5px;
 }
 
 #cal-heatmap-2014 {
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-bottom: 5px;
 }
 
@@ -70,60 +70,60 @@
 }
 
 
-/*Remove comment to apply this style to date with value equal to 0*/
-.q0
+/*Remove comment to apply this style to date with value equal to 0
+.cal-heatmap-container .q0
+{
+	background-color: #fff;
+	fill: #fff;
+	stroke: #ededed
+}
+*/
+
+.cal-heatmap-container .q1
 {
 	background-color: #fff;
 	fill: #fff;
 	stroke: #ededed
 }
 
-
-.cal-heatmap-container .q1
-{
-	background-color: #dae289;
-	fill: #dadaeb;
-	stroke: #ededed
-}
-
 .cal-heatmap-container .q2
 {
-	background-color: #dae289;
-//	background-color: #cedb9c;
-	fill: #bcbddc;
+	background-color: #fee5d9;
+	fill: #fee5d9;
 	stroke: #ededed
 }
 
 .cal-heatmap-container .q3
 {
-	background-color: #dae289;
-//	background-color: #b5cf6b;
-	fill: #9e9ac8;
+	background-color: #fcae91;
+	fill: #fcae91;
 	stroke: #ededed
 }
 
 .cal-heatmap-container .q4
 {
-	background-color: #dae289;
-//	background-color: #637939;
-	fill: #807dba;
+	background-color: #fb6a4a;
+	fill: #fb6a4a;
 	stroke: #ededed
 }
 
 .cal-heatmap-container .q5
 {
-	background-color: #dae289;
-//	background-color: #3b6427;
-	fill: #6a51a3;
+	background-color: #de2d26;
+	fill: #de2d26;
 	stroke: #ededed
 }
 
 .cal-heatmap-container .q6
 {
-	background-color: #3b6427;
-	fill: #4a1486;
+	background-color: #a50f15;
+	fill: #a50f15;
 	stroke: #ededed
 }
+
+
+
+
 
 .cal-heatmap-container rect.highlight
 {
@@ -230,7 +230,7 @@
 	-moz-box-shadow: 0 0px 4px rgba(0,0,0,0.7);
 }
 #cal-story3 {
-	width: 600px;
+	width: 400px;
 	padding: 30px;
 	display: none;
 	background: #FFF;
@@ -254,10 +254,41 @@
 	-moz-box-shadow: 0 0px 4px rgba(0,0,0,0.7);
 }
 
+/* story 1 highlight */
 .y_2011.m_1 .domain-background {
-	fill: red;
+	fill: green;
 	fill-opacity: 0.0 ;
 }
+
+/* story 2 highlight*/
+.y_2012.m_11 .domain-background {
+	fill: green;
+	fill-opacity: 0.0 ;
+}
+
+/* story 3 highlight */
+.y_2010.m_10 .domain-background {
+	fill: green;
+	fill-opacity: 0.0 ;
+}
+.y_2011.m_10 .domain-background {
+	fill: green;
+	fill-opacity: 0.0 ;
+}
+.y_2012.m_10 .domain-background {
+	fill: green;
+	fill-opacity: 0.0 ;
+}
+.y_2013.m_10 .domain-background {
+	fill: green;
+	fill-opacity: 0.0 ;
+}
+.y_2014.m_10 .domain-background {
+	fill: green;
+	fill-opacity: 0.0 ;
+}
+
+
 
 .cal-story-content {
 	font-size: 1.2em;

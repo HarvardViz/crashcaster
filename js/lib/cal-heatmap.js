@@ -223,9 +223,9 @@ var CalHeatMap = function() {
 
 		// Formatting of the title displayed when hovering a legend cell
 		legendTitleFormat: {
-			lower: "less than {min} {name}",
+			lower: "{min} {name} or less",
 			inner: "between {down} and {up} {name}",
-			upper: "more than {max} {name}"
+			upper: "greater than {max} {name}"
 		},
 
 		// Animation duration, in ms
