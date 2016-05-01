@@ -342,8 +342,14 @@ p#title
 * --------------------------------------- */
 
 #hourly_graph svg {
-    font: 13px sans-serif;
+    background-color: #fff;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    font-size: 10px;
     color: #ededed;
+    padding: 0 0 0 0;
+    margin: 10px;
 }
 
 #hourly_graph svg path.line {

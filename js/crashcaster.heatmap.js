@@ -31,11 +31,10 @@ crashcaster.heatmap = (function (cc$, d3) {
         echo("RUNNING crashcaster.heatmap" + ((origin)? " FROM " + origin:""));
         updatePrediction();
 
-        cc$.ui_forecast.setTravelTypeTo("auto");
-        cc$.ui_forecast.setWeatherConditionsTo(cc$.weather.current.current_observation.icon, true);
-        cc$.ui_forecast.run("heatmap.run");
+        //cc$.ui_forecast.setTravelTypeTo("auto");
+        //cc$.ui_forecast.setWeatherConditionsTo(cc$.weather.current.current_observation.icon, true);
+        //cc$.ui_forecast.run("heatmap.run");
 
-        READY_STATE._current = READY_STATE.LOADED;
     }
 
     function echo(s) {
@@ -380,7 +379,7 @@ crashcaster.heatmap = (function (cc$, d3) {
 
         map.setOptions({styles: styles});
 
-
+        READY_STATE._current = READY_STATE.LOADED;
 
     }
 
@@ -418,12 +417,14 @@ crashcaster.heatmap = (function (cc$, d3) {
 
             }
 
+
+
         });
 
     }
 
 
-    var accidentsHourly;
+    var accidentsHourly = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     var calcAuto=0;
     var calcWalk=0;
     var calcBike=0;
@@ -460,21 +461,22 @@ crashcaster.heatmap = (function (cc$, d3) {
                 }
         };
 
-
         crashtisticsText = "Historically, there have been " + Math.round(filterTotal/5) + " " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase();
         console.log(selectTravelType);
         if (selectWeather=='Good') {crashtisticsText = crashtisticsText + " weather"};
 
         //drawdonut(calcAuto,  calcBike, calcCycle, calcWalk);
         render();
-        //console.log("var accidentsHourly");
-        //console.log(accidentsHourly);
+
+        // Update the hourly Chart data
+        if(cc$.ui_forecast) {
+            cc$.ui_forecast.updateHourlyChart(accidentsHourly);
+        }
+
         return array;
     }
 
     var accidentsDailyAvg=4.31; //based on calculations in data/cambridge_forecast_calculations_2010-2014.xlsx
-
-
 
 
     forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));

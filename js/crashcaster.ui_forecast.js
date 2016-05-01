@@ -88,7 +88,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         conditions.forEach(resetButtonState);
         var btn_id = '#btn_' + condition;
         $(btn_id).addClass('btn-danger');
-        
+
         if(useActualCondition){
             setBackgroundImage(actualCondition);
         } else {
@@ -242,73 +242,78 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
     }
 
 
-    function updateHourlyChart() {
 
-        
-        // Define the data
-        var data = [
-            {hour: 0, accidents: 190},
-            {hour: 1, accidents: 41},
-            {hour: 2, accidents: 61},
-            {hour: 3, accidents: 23},
-            {hour: 4, accidents: 4},
-            {hour: 5, accidents: 17},
-            {hour: 6, accidents: 73},
-            {hour: 7, accidents: 101},
-            {hour: 8, accidents: 258},
-            {hour: 9, accidents: 249},
-            {hour: 10, accidents: 149},
-            {hour: 11, accidents: 213},
-            {hour: 12, accidents: 265},
-            {hour: 13, accidents: 190},
-            {hour: 14, accidents: 227},
-            {hour: 15, accidents: 258},
-            {hour: 16, accidents: 161},
-            {hour: 17, accidents: 209},
-            {hour: 18, accidents: 229},
-            {hour: 19, accidents: 107},
-            {hour: 20, accidents: 116},
-            {hour: 21, accidents: 118},
-            {hour: 22, accidents: 80},
-            {hour: 23, accidents: 70}
-        ];
+    // Build the basic graph
 
+    var margin = {top: 5, right: 50, bottom: 25, left: 5},
+        width = 960 - margin.left - margin.right,
+        height = 80 - margin.top - margin.bottom;
 
-        var margin = {top: 5, right: 5, bottom: 5, left: 5},
-            width = 960 - margin.left - margin.right,
-            height = 70 - margin.top - margin.bottom;
+    //var parse = d3.time.format("%b %Y").parse;
 
-        //var parse = d3.time.format("%b %Y").parse;
+    //var x = d3.scale.linear()
+    //    .range([0, width]);
 
-        var x = d3.scale.linear()
-            .range([0, width]);
+    var x = d3.scale.ordinal()
+        .domain(['1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM'])
+        .rangePoints([0, width]);
 
-        var y = d3.scale.linear()
-            .range([height, 0]);
+    var y = d3.scale.linear()
+        .range([height, 0]);
 
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            //.tickValues(['1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM'])
-            .tickSize(-height);
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        //.tickValues(['1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM'])
+        .tickSize(-height)
+        .orient("bottom");
 
-        var yAxis = d3.svg.axis()
-            .scale(y)
-            .ticks(4)
-            .orient("right");
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .ticks(4)
+        .orient("right");
 
-        var area = d3.svg.area()
-            .interpolate("monotone")
-            .x(function(d) { return x(d.hour); })
-            .y0(height)
-            .y1(function(d) { return y(d.accidents); });
+    var area = d3.svg.area()
+        .interpolate("monotone")
+        .x(function(d,i) { return x(i+1); })
+        .y0(height)
+        .y1(function(d) { return y(d); });
 
-        var line = d3.svg.line()
-            .interpolate("monotone")
-            .x(function(d) { return x(d.hour); })
-            .y(function(d) { return y(d.accidents); });
+    var line = d3.svg.line()
+        .interpolate("monotone")
+        .x(function(d,i) { return x(i+1); })
+        .y(function(d) { return y(d); });
 
 
-        var svg = d3.select("#hourly_graph").append("svg")
+    var svg = d3.select("#hourly_graph").append("svg")
+        .attr("class", "hourly_graph_svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("clipPath")
+        .attr("id", "clip")
+        .append("rect")
+        .attr("width", width)
+        .attr("height", height);
+
+
+
+    function updateHourlyChart(accidentsHourly) {
+
+        console.log("ACCIDENTS HOURLY");
+        console.log(accidentsHourly);
+
+        if(!accidentsHourly) {
+            return;
+        }
+
+        var data = accidentsHourly; //[190, 41, 61, 23, 4, 17, 73, 101, 258, 249, 149, 213, 265, 190, 227, 258, 161, 209, 229, 107, 116, 118, 80, 70];
+
+        $(".hourly_graph_svg").remove();
+
+        svg = d3.select("#hourly_graph").append("svg")
+            .attr("class", "hourly_graph_svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
@@ -320,14 +325,16 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
             .attr("width", width)
             .attr("height", height);
 
+        var areaGraph = svg.selectAll(".area").attr("d", area);
+        var lineGraph = svg.selectAll(".line").attr("d", line);
 
             // Compute the minimum and maximum hour
-            x.domain([data[0].hour, data[data.length - 1].hour]);
-            y.domain([0, d3.max(data, function(d) { return d.accidents; })]).nice();
+            x.domain(d3.range(1, 25));
+            y.domain([0, d3.max(data, function(d) { return d; })]).nice();
 
-            svg
-                .datum(data)
-                .on("click", click);
+
+            svg.datum(data);
+
 
             svg.append("path")
                 .attr("class", "area")
@@ -353,22 +360,11 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
                 .attr("x", width - 6)
                 .attr("y", height - 6)
                 .style("text-anchor", "end")
-                .text("Hourly Accident Prediction");
-
-            // On click, update the x-axis.
-            function click() {
-                var n = data.length - 1,
-                    i = Math.floor(Math.random() * n / 2),
-                    j = i + Math.floor(Math.random() * n / 2) + 1;
-                x.domain([data[i].hour, data[j].hour]);
-                var t = svg.transition().duration(750);
-                t.select(".x.axis").call(xAxis);
-                t.select(".area").attr("d", area);
-                t.select(".line").attr("d", line);
-            }
+                .text("Accidents by hour");
 
 
-        }
+
+    }
 
 
     init();
@@ -383,7 +379,8 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         echo: echo,
         data: data,
         setWeatherConditionsTo: setWeatherConditionsTo,
-        setTravelTypeTo: setTravelTypeTo
+        setTravelTypeTo: setTravelTypeTo,
+        updateHourlyChart: updateHourlyChart
     };
 
 
