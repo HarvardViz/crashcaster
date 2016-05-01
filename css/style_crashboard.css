@@ -87,8 +87,8 @@
 #crashboard_weatherFilter ul li.reset,
 #crashboard_mapToggle ul li.reset {
     color: #FFF;
-    background-color: #D9534F;
-    border-color: #D9534F;
+    background-color: #444;
+    border-color: #444;
     opacity: 1.0;
 }
 #crashboard_storiesBar ul li.reset:hover,
@@ -158,11 +158,11 @@
 }
 
 #crashboard_accidentMap svg .accidentMapLegend rect.neighborhoodLegend {
-    fill: #4A1486;
+    fill: #E52929;
 }
 
 #crashboard_accidentMap svg path.neighborhood {
-    fill: #4A1486;
+    fill: #E52929;
 }
 #crashboard_accidentMap svg path.neighborhood:hover {
     stroke-width: 1px;
@@ -178,7 +178,7 @@
 }
 
 #crashboard_accidentMap svg circle.accident {
-    fill: #4A1486;
+    fill: #E52929;
 }
 
 #crashboard_accidentMap svg circle.areaMarker {
@@ -241,7 +241,7 @@
 #crashboard_monthChart svg .fg path.area,
 #crashboard_dayChart svg .fg path.area,
 #crashboard_hourChart svg .fg path.area {
-    fill: #4A1486;
+    fill: #E52929;
     fill-opacity: 0.2;
 }
 
@@ -259,7 +259,7 @@
 #crashboard_dayChart svg .fg path.line,
 #crashboard_hourChart svg .fg path.line {
     stroke-width: 1;
-    stroke: #4A1486;
+    stroke: #E52929;
     fill: none;
 }
 
@@ -267,7 +267,7 @@
 #crashboard_monthChart svg .brush .extent,
 #crashboard_dayChart svg .brush .extent,
 #crashboard_hourChart svg .brush .extent {
-    fill: #4A1486;
+    fill: #E52929;
     fill-opacity: 0.1;
 }
 
@@ -301,7 +301,7 @@
 }
 
 #crashboard_storiesContent p strong {
-    color: #4A1486;
+    color: #E52929;
 }
 
 #crashboard_storiesContent h3 {
@@ -401,7 +401,7 @@
     font-size: 13px;
     line-height: 24px;
     color: #FAFAFA;
-    background: #4A1486;
+    background: #E52929;
     border-radius: 4px;
     margin-top: 8px;
     opacity: 0.4;
