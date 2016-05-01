@@ -225,7 +225,7 @@ crashcaster.heatmap = (function (cc$, d3) {
             data: getPoints(),
             map: map
         });
-        document.getElementById("crashtxt").innerHTML = crashtisticsText;
+       document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
     function walk() {
@@ -289,7 +289,7 @@ crashcaster.heatmap = (function (cc$, d3) {
             data: getPoints(),
             map: map
         });
-        document.getElementById("crashtxt").innerHTML = crashtisticsText;
+       document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
 
@@ -424,16 +424,32 @@ crashcaster.heatmap = (function (cc$, d3) {
 
 
     var accidentsHourly;
-
+    var calcAuto=0;
+    var calcWalk=0;
+    var calcBike=0;
+    var calcCycle=0;
+    var filterTotal=0;
+    var allAccidents=0;
 
     //Points for Heatmap
     function getPoints() {
         var array = [];
         filterTotal=0;
+        allAccidents=0;
+        calcAuto=0;
+        calcWalk=0;
+        calcBike=0;
+        calcCycle=0;
         accidentsHourly =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         for(var i=0;i<accidentData.length;i++) {
-                if(travelType[i]==selectTravelType) {
-                    if(weatherCat[i]==selectWeather) {
+                if(weatherCat[i]==selectWeather) {
+                    if(travelType[i]=="Auto") {calcAuto = calcAuto+1;};
+                    if(travelType[i]=="Bike") {calcBike = calcBike+1;};
+                    if(travelType[i]=="Bicycle") {calcCycle = calcCycle+1;};
+                    if(travelType[i]=="Pedestrian") {calcWalk = calcWalk+1;};
+                    allAccidents = allAccidents + 1;
+
+                    if(travelType[i]==selectTravelType) {
                         filterTotal = filterTotal + 1;
                         accidentsHourly[dataHours[i]]++;
                         if(Lat01[i]>0) {
@@ -444,13 +460,21 @@ crashcaster.heatmap = (function (cc$, d3) {
                 }
         };
 
-        crashtisticsText = "Accident Type: " + selectTravelType + ", Weather: " + selectWeather + ", Accidents/year: "+filterTotal/5;
-        console.log("var accidentsHourly");
-        console.log(accidentsHourly);
+
+        crashtisticsText = "Historically, there have been " + Math.round(filterTotal/5) + " " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase();
+        console.log(selectTravelType);
+        if (selectWeather=='Good') {crashtisticsText = crashtisticsText + " weather"};
+
+        //drawdonut(calcAuto,  calcBike, calcCycle, calcWalk);
+        render();
+        //console.log("var accidentsHourly");
+        //console.log(accidentsHourly);
         return array;
     }
 
-    var accidentsDailyAvg=4.31; //basd on calculations in data/cambridge_forecast_calculations_2010-2014.xlsx
+    var accidentsDailyAvg=4.31; //based on calculations in data/cambridge_forecast_calculations_2010-2014.xlsx
+
+
 
 
     forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));
@@ -459,7 +483,100 @@ crashcaster.heatmap = (function (cc$, d3) {
 
     /* END KARTIK'S HEATMAP CODE */
 
+    /* START Donut chart Reference: Adaptive Pie Chart Scaling by Jon Sadka URL http://bl.ocks.org/jonsadka/fa05f8d53d4e8b5f262e */
 
+     var width = 100,
+         height = 100;
+
+     var color = ["#d9534f","#fff"];//d3.scale.category20();
+
+// draw and append the container
+     var svg = d3.select("#crashgraph").append("svg")
+         .attr("width", width).attr("height", height);
+
+// set the thickness of the inner and outer radii
+     var min = Math.min(width, height);
+     var oRadius = min / 2 * 0.9;
+     var iRadius = min / 2 * 0.6;
+
+// construct default pie laoyut
+     var pie = d3.layout.pie().value(function (d) {
+         return d;
+     }).sort(null);
+
+// construct arc generator
+     var arc = d3.svg.arc()
+         .outerRadius(oRadius)
+         .innerRadius(iRadius);
+
+// creates the pie chart container
+     var g = svg.append('g')
+     var g = svg.append('g')
+         .attr('transform', function () {
+             if (window.innerWidth >= 960) var shiftWidth = width / 2;
+             if (window.innerWidth < 960) var shiftWidth = width / 3;
+             return 'translate(' + shiftWidth + ',' + height / 2 + ')';
+         })
+
+// generate random data
+     var data = [filterTotal, calcAuto+calcBike+calcCycle+calcWalk-filterTotal];
+
+// enter data and draw pie chart
+     var path = g.datum(data).selectAll("path")
+         .data(pie)
+         .enter().append("path")
+         .attr("class", "piechart")
+         .attr("fill", function (d, i) {
+             return color[i];
+         })
+         .attr("d", arc)
+         .attr("opacity",0.9)
+         .each(function (d) {
+             this._current = d;
+         });
+
+     function render() {
+         // generate new random data
+         data = [filterTotal, calcAuto+calcBike+calcCycle+calcWalk-filterTotal];
+         // add transition to new path
+         g.datum(data).selectAll("path").data(pie).transition().duration(1000).attrTween("d", arcTween);
+
+         // add any new paths
+         g.datum(data).selectAll("path")
+             .data(pie)
+             .enter().append("path")
+             .attr("class", "piechart")
+             .attr("fill", function (d, i) {
+                 return color[i];
+             })
+             .attr("opacity",0.9)
+             .attr("d", arc)
+             .each(function (d) {
+                 this._current = d;
+             });
+
+         // remove data not being used
+         g.datum(data).selectAll("path")
+             .data(pie).exit().remove();
+     }
+
+     //render();
+     setInterval(render, 2000);
+
+
+// Store the displayed angles in _current.
+// Then, interpolate from _current to the new angles.
+// During the transition, _current is updated in-place by d3.interpolate.
+     function arcTween(a) {
+         var i = d3.interpolate(this._current, a);
+         this._current = i(0);
+         return function (t) {
+             return arc(i(t));
+         };
+     }
+
+
+    /* END Donut chart Reference: Adaptive Pie Chart Scaling by Jon Sadka URL http://bl.ocks.org/jonsadka/fa05f8d53d4e8b5f262e */
 
 
     // Call the initialization function by default for this module or call it from elsewhere, e.g.
