@@ -120,6 +120,16 @@
     color: #333;
 }
 
+.bg-content-crashcaster {
+    background-color: rgba(0, 0, 0, 0.6);
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    /* padding: 1px 14px -12px 8px; */
+    padding: .5em 1.7em .5em 1.7em;
+    color: #333;
+}
+
 .bg-content-hourly {
     background-color: rgba(0, 0, 0, 0.5);
     -webkit-border-radius: 7px;
