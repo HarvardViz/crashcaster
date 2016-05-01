@@ -35,6 +35,7 @@ crashcaster.heatmap = (function (cc$, d3) {
         //cc$.ui_forecast.setWeatherConditionsTo(cc$.weather.current.current_observation.icon, true);
         //cc$.ui_forecast.run("heatmap.run");
 
+        READY_STATE._current = READY_STATE.LOADED;
     }
 
     function echo(s) {
@@ -201,8 +202,8 @@ crashcaster.heatmap = (function (cc$, d3) {
         heatmap.setMap(null);
         selectTravelType = "Auto";
         heatmap = new google.maps.visualization.HeatmapLayer({
-                data: getPoints(),
-                map: map
+            data: getPoints(),
+            map: map
         });
         document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
@@ -224,7 +225,7 @@ crashcaster.heatmap = (function (cc$, d3) {
             data: getPoints(),
             map: map
         });
-       document.getElementById("crashtxt").innerHTML = crashtisticsText;
+        document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
     function walk() {
@@ -288,7 +289,7 @@ crashcaster.heatmap = (function (cc$, d3) {
             data: getPoints(),
             map: map
         });
-       document.getElementById("crashtxt").innerHTML = crashtisticsText;
+        document.getElementById("crashtxt").innerHTML = crashtisticsText;
     }
 
 
@@ -305,7 +306,7 @@ crashcaster.heatmap = (function (cc$, d3) {
             disableDefaultUI: true
         });
 
-       story(42.360154,-71.094882,"Most dangerous intersection",
+        story(42.360154,-71.094882,"Most dangerous intersection",
             '<div>'+
             '<h5>Most dangerous intersection</h5>'+
             '<div>This intersection can be one of the most dangerous for those ' +
@@ -371,28 +372,28 @@ crashcaster.heatmap = (function (cc$, d3) {
             "featureType": "road.local",
             "stylers":
                 [ { "gamma": 2.29 },
-                { "weight": 1 },
-                { "saturation": -88 },
-                { "lightness": -18 },
-                { "visibility": "simplified" } ] }
+                    { "weight": 1 },
+                    { "saturation": -88 },
+                    { "lightness": -18 },
+                    { "visibility": "simplified" } ] }
         ];
 
         map.setOptions({styles: styles});
 
-        READY_STATE._current = READY_STATE.LOADED;
+
 
     }
 
 
 
-        var accidentData = [];
-        var Lat01 = [];
-        var Long01 = [];
-        var travelType = [];
-        var weatherCat = [];
-        var dayoftheWeek = [];
-        var datesofAccident = [];
-        var dataHours = [];
+    var accidentData = [];
+    var Lat01 = [];
+    var Long01 = [];
+    var travelType = [];
+    var weatherCat = [];
+    var dayoftheWeek = [];
+    var datesofAccident = [];
+    var dataHours = [];
 
     function updateAccidentData() {
 
@@ -417,20 +418,20 @@ crashcaster.heatmap = (function (cc$, d3) {
 
             }
 
-
-
         });
 
     }
 
 
-    var accidentsHourly = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    var accidentsHourly;
     var calcAuto=0;
     var calcWalk=0;
     var calcBike=0;
     var calcCycle=0;
     var filterTotal=0;
     var allAccidents=0;
+    var accidentsDailyAvg=3.52; //based on calculations in data/cambridge_forecast_calculations_2010-2014.xlsx
+    var peak_to_Avg = 2; //error factor
 
     //Points for Heatmap
     function getPoints() {
@@ -443,139 +444,158 @@ crashcaster.heatmap = (function (cc$, d3) {
         calcCycle=0;
         accidentsHourly =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         for(var i=0;i<accidentData.length;i++) {
-                if(weatherCat[i]==selectWeather) {
-                    if(travelType[i]=="Auto") {calcAuto = calcAuto+1;};
-                    if(travelType[i]=="Bike") {calcBike = calcBike+1;};
-                    if(travelType[i]=="Bicycle") {calcCycle = calcCycle+1;};
-                    if(travelType[i]=="Pedestrian") {calcWalk = calcWalk+1;};
-                    allAccidents = allAccidents + 1;
-
-                    if(travelType[i]==selectTravelType) {
-                        filterTotal = filterTotal + 1;
-                        accidentsHourly[dataHours[i]]++;
-                        if(Lat01[i]>0) {
+            if(weatherCat[i]==selectWeather) {
+                if(travelType[i]=="Auto") {calcAuto = calcAuto+1;};
+                if(travelType[i]=="Bike") {calcBike = calcBike+1;};
+                if(travelType[i]=="Bicycle") {calcCycle = calcCycle+1;};
+                if(travelType[i]=="Pedestrian") {calcWalk = calcWalk+1;};
+                allAccidents = allAccidents + 1;
+                if(travelType[i]==selectTravelType) {
+                    filterTotal = filterTotal + 1;
+                    accidentsHourly[dataHours[i]]++;
+                    if(Lat01[i]>0) {
                         array.push(new google.maps.LatLng(Lat01[i], Long01[i]));
-                        }
-
                     }
+
                 }
+            }
         };
 
-        crashtisticsText = "Historically, there have been " + Math.round(filterTotal/5) + " " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase();
-        console.log(selectTravelType);
-        if (selectWeather=='Good') {crashtisticsText = crashtisticsText + " weather"};
 
-        //drawdonut(calcAuto,  calcBike, calcCycle, calcWalk);
-        render();
+        if(selectTravelType=="Auto") {calcAuto = calcAuto+1;accidentsDailyAvg = 3.52};
+        if(selectTravelType=="Bike") {calcBike = calcBike+1;accidentsDailyAvg = 0.5};
+        if(selectTravelType=="Bicycle") {calcCycle = calcCycle+1;accidentsDailyAvg = 0.02};
+        if(selectTravelType=="Pedestrian") {calcWalk = calcWalk+1;accidentsDailyAvg = 0.28};
+
+        //Generate Factors
+        if (selectWeather == "Rain") {factorWeather = modelRain;}
+        if (selectWeather == "Snow") {factorWeather = modelSnow;}
+        if (selectWeather == "Fog") {factorWeather = modelFog;}
+        if (selectWeather == "Good") {factorWeather = modelGood;}
+
+        forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay)*peak_to_Avg);
+        document.getElementById("forecast-count").innerHTML = forecastAccidents;
+
+        //console.log(filterTotal + " " + calcAuto + " " +calcBike + " " +calcCycle + " " +calcWalk + " " + allAccidents);
+
+        console.log(selectTravelType);
+        if (selectWeather=='Good') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + " weather is " + Math.round(filterTotal/5);}
+        if (selectWeather=='Fog') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "gy weather is " + Math.round(filterTotal/5);}
+        if (selectWeather=='Rain') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.round(filterTotal/5);};
+        if (selectWeather=='Snow') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.round(filterTotal/5);};
+
+        render(selectTravelType);
 
         // Update the hourly Chart data
         if(cc$.ui_forecast) {
             cc$.ui_forecast.updateHourlyChart(accidentsHourly);
         }
 
+
+
         return array;
     }
 
-    var accidentsDailyAvg=4.31; //based on calculations in data/cambridge_forecast_calculations_2010-2014.xlsx
 
 
-    forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));
-    document.getElementById("forecast-count").innerHTML = forecastAccidents;
-    console.log(forecastAccidents);
+
+
+
+
 
     /* END KARTIK'S HEATMAP CODE */
 
     /* START Donut chart Reference: Adaptive Pie Chart Scaling by Jon Sadka URL http://bl.ocks.org/jonsadka/fa05f8d53d4e8b5f262e */
 
-     var width = 100,
-         height = 100;
+    var width = 80,
+        height = 80;
 
-     var color = ["#d9534f","#fff"];//d3.scale.category20();
+    var color = ["#d9534f","#fff"];//d3.scale.category20();
 
 // draw and append the container
-     var svg = d3.select("#crashgraph").append("svg")
-         .attr("width", width).attr("height", height);
+    var svg = d3.select("#crashgraph").append("svg")
+        .attr("width", width).attr("height", height);
 
 // set the thickness of the inner and outer radii
-     var min = Math.min(width, height);
-     var oRadius = min / 2 * 0.9;
-     var iRadius = min / 2 * 0.6;
+    var min = Math.min(width, height);
+    var oRadius = min / 2 * 0.9;
+    var iRadius = min / 2 * 0.5;
 
 // construct default pie laoyut
-     var pie = d3.layout.pie().value(function (d) {
-         return d;
-     }).sort(null);
+    var pie = d3.layout.pie().value(function (d) {
+        return d;
+    }).sort(null);
 
 // construct arc generator
-     var arc = d3.svg.arc()
-         .outerRadius(oRadius)
-         .innerRadius(iRadius);
+    var arc = d3.svg.arc()
+        .outerRadius(oRadius)
+        .innerRadius(iRadius);
 
 // creates the pie chart container
-     var g = svg.append('g')
-     var g = svg.append('g')
-         .attr('transform', function () {
-             if (window.innerWidth >= 960) var shiftWidth = width / 2;
-             if (window.innerWidth < 960) var shiftWidth = width / 3;
-             return 'translate(' + shiftWidth + ',' + height / 2 + ')';
-         })
+    var g = svg.append('g');
+    var g = svg.append('g')
+        .attr('transform', function () {
+            if (window.innerWidth >= 960) var shiftWidth = width / 2;
+            if (window.innerWidth < 960) var shiftWidth = width / 3;
+            return 'translate(' + shiftWidth + ',' + height / 2 + ')';
+        });
 
-// generate random data
-     var data = [filterTotal, calcAuto+calcBike+calcCycle+calcWalk-filterTotal];
+
+
+// read data
+    var data = [filterTotal, calcAuto+calcBike+calcCycle+calcWalk-filterTotal];
 
 // enter data and draw pie chart
-     var path = g.datum(data).selectAll("path")
-         .data(pie)
-         .enter().append("path")
-         .attr("class", "piechart")
-         .attr("fill", function (d, i) {
-             return color[i];
-         })
-         .attr("d", arc)
-         .attr("opacity",0.9)
-         .each(function (d) {
-             this._current = d;
-         });
+    var path = g.datum(data).selectAll("path")
+        .data(pie)
+        .enter().append("path")
+        .attr("class", "piechart")
+        .attr("fill", function (d, i) {
+            return color[i];
+        })
+        .attr("d", arc)
+        .attr("opacity",0.9)
+        .each(function (d) {
+            this._current = d;
+        });
 
-     function render() {
-         // generate new random data
-         data = [filterTotal, calcAuto+calcBike+calcCycle+calcWalk-filterTotal];
-         // add transition to new path
-         g.datum(data).selectAll("path").data(pie).transition().duration(1000).attrTween("d", arcTween);
+    function render() {
+        // generate new random data
+        data = [filterTotal, calcAuto+calcBike+calcCycle+calcWalk-filterTotal];
+        // add transition to new path
+        g.datum(data).selectAll("path").data(pie).transition().duration(1000).attrTween("d", arcTween);
 
-         // add any new paths
-         g.datum(data).selectAll("path")
-             .data(pie)
-             .enter().append("path")
-             .attr("class", "piechart")
-             .attr("fill", function (d, i) {
-                 return color[i];
-             })
-             .attr("opacity",0.9)
-             .attr("d", arc)
-             .each(function (d) {
-                 this._current = d;
-             });
+        // add any new paths
+        g.datum(data).selectAll("path")
+            .data(pie)
+            .enter().append("path")
+            .attr("class", "piechart")
+            .attr("fill", function (d, i) {
+                return color[i];
+            })
+            .attr("opacity",0.9)
+            .attr("d", arc)
+            .each(function (d) {
+                this._current = d;
+            });
 
-         // remove data not being used
-         g.datum(data).selectAll("path")
-             .data(pie).exit().remove();
-     }
 
-     //render();
-     setInterval(render, 2000);
+    }
+
+    //render();
+    setInterval(render, 2000);
 
 
 // Store the displayed angles in _current.
 // Then, interpolate from _current to the new angles.
 // During the transition, _current is updated in-place by d3.interpolate.
-     function arcTween(a) {
-         var i = d3.interpolate(this._current, a);
-         this._current = i(0);
-         return function (t) {
-             return arc(i(t));
-         };
-     }
+    function arcTween(a) {
+        var i = d3.interpolate(this._current, a);
+        this._current = i(0);
+        return function (t) {
+            return arc(i(t));
+        };
+    }
 
 
     /* END Donut chart Reference: Adaptive Pie Chart Scaling by Jon Sadka URL http://bl.ocks.org/jonsadka/fa05f8d53d4e8b5f262e */
@@ -614,5 +634,4 @@ crashcaster.heatmap = (function (cc$, d3) {
 
 
 })(crashcaster, d3);
-
 
