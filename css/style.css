@@ -237,16 +237,12 @@ p#title
     font-weight: bold;
 }
 
-#disclaimer
-{
-    font-size: 13px;
-    color: #000;
-}
 
-#citation
+.citation
 {
-    font-size: 13px;
-    color: #000;
+    font-size: 10px;
+    color: #ededed;
+    text-align: right;
 }
 
 

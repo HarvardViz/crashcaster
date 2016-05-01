@@ -185,7 +185,7 @@ crashcaster.heatmap = (function (cc$, d3) {
             }
             timenow = json.forecast.txt_forecast.date;
             //console.log(WeatherCategory);
-            document.getElementById("source").innerHTML = "<br><sup class='citation'>1</sup> (Source: Weather Underground. Last updated " + timenow + ")";
+            document.getElementById("source").innerHTML = "<sup>1</sup> (Source: Weather Underground. Last updated " + timenow + ")";
             document.getElementById("weathertxt").innerHTML = "";
             document.getElementById("predict1").innerHTML = "Based on today's weather <sup class='citation'>1</sup> alone, there is a " + Math.abs(factorWeather) * 100 + "% " + txtWeather + "  risk of accidents.  ";
             document.getElementById("predict2").innerHTML = "Historical data suggests, there have been " + Math.abs(factorDay) * 100 + "% " + txtDay + " accidents on a " + todaysDay + ".";
