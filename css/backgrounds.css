@@ -54,13 +54,14 @@
 
 
 #section4 {
-    background: -webkit-gradient(linear, top left, bottom left, from(#ECD8D8), to(#E8DEDE));
-    background: -webkit-linear-gradient(#ECD8D8, #E8DEDE);
-    background: linear-gradient(#ECD8D8, #E8DEDE);
+    background: -webkit-gradient(linear, top left, bottom left, from(#fefefe), to(#c0c0c0));
+    background: -webkit-linear-gradient(#fefefe, #c0c0c0);
+    background: linear-gradient(#fefefe, #c0c0c0);
     /*
    background-image: url(../img/bg3.jpg);
    */
 }
+
 
 #section5 {
 	background: -webkit-gradient(linear, top left, bottom left, from(#EDFFDB), to(#EEFFE8));
