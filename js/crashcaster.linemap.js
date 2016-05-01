@@ -10,7 +10,7 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
     function init() {
         echo("initialize crashcaster.linemap");
         loadData();
-
+        READY_STATE._current = READY_STATE.LOADED;
     }
 
     // Once the module is ready via init(), add anything that needs to be run here

@@ -5,7 +5,7 @@ var crashcaster = cc$ = (function (my, modules, $, d3, moment) {
     var plugin_version = "0.0.1";
     var READY_STATE = {_current: -1, NOT_STARTED: 0, LOADING: 1, LOADED: 2};
     var moduleReadyStateTimeout = 10;
-    var moduleReadyStateMaxWaitTime = 5000;
+    var moduleReadyStateMaxWaitTime = 3000;
     var moduleReadyStateTimer = 0;
 
 

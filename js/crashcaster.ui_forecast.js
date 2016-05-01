@@ -88,7 +88,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         conditions.forEach(resetButtonState);
         var btn_id = '#btn_' + condition;
         $(btn_id).addClass('btn-danger');
-
+        
         if(useActualCondition){
             setBackgroundImage(actualCondition);
         } else {
@@ -148,6 +148,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
         $('#section0').css('background-size', 'cover');
 
         // TODO: Must add citation for each image to model `image.cite`
+        $('#citation').text("Image source: " + imageCite);
 
     }
 

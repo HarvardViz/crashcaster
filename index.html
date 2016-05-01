@@ -35,34 +35,48 @@
 </head>
 <body>
 
+
+<div class="collapse" id="collapsingNavbarDrawer">
+    <div class="bg-inverse" style="padding: 40px 20px 20px 20px;">
+        <hr>
+        <h4 class="drawer-text-heading">What can we do to save more lives in Cambridge?</h4>
+        <div class="drawer-text" style="padding-top: 8px;">That was the motivating question for our CS171 Visualization
+            project, Crashcaster.</div>
+        <div class="drawer-text" style="padding-top: 8px;">The truth is that traffic accidents are one of the leading
+            killers of Americans -- right up there with heart disease and cancer.  Crashcaster is about the collisions
+            between strangers’ lives, the impacts upon them, where they happen most often,
+            and how to avoid finding yourself at a serious, life-altering intersection on the streets of Cambridge.</div>
+        <div class="drawer-text" style="padding-top: 8px;">Using visualizations to create engagement and understanding
+            we thought could help with our goal.
+            We start our story in the future with our forecast, "Crashcaster".  We then invite you to explore the
+            historic data we used to create our predictive model via our dashboard, "Crashboard".  Finally, we unravel
+            the stories in the data that we found interesting while enabling you to explore for yourself in what we hope
+            are novel ways.</div>
+        <div class="drawer-text">&nbsp;</div>
+        <div class="drawer-text">Stay safe on the streets of Cambridge!</div>
+        <div class="drawer-text">Kyle Maguire, Rick Farmer, Kartik Trasi and Adam DiChiara</div>
+        <hr>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbarDrawer">
+            <span class="fa fa-close" style="font-size: .8em;"> Close</span>
+        </button>
+
+    </div>
+</div>
+
 <nav id="menu" class="navbar navbar-dark bg-inverse navbar-fixed-top" role="navigation">
-    <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="##navbar-collapse-1">
-        &#9776;
-    </button>
+
     <div class="collapse navbar-toggleable-xs" id="navbar-collapse-1">
         <a class="navbar-brand" href="index.html">CRASHCASTER</a>
         <ul class="nav navbar-nav">
-            <li data-menuanchor="home" class="nav-item"><a class="nav-link" href="#home">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li data-menuanchor="visuals" class="nav-item"><a class="nav-link" href="#visuals">Visual Tour</a></li>
-            <li data-menuanchor="visuals" class="nav-item dropdown"><a href="#visuals" class="nav-link dropdown-toggle"
-                                                                       data-toggle="dropdown"><b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li data-menuanchor="visuals1"><a class="dropdown-item" href="#visuals/1">Viz One</a></li>
-                    <li data-menuanchor="visuals2"><a class="dropdown-item" href="#visuals/2">Viz Two</a></li>
-                    <li data-menuanchor="visuals3"><a class="dropdown-item" href="#visuals/3">Viz Three</a></li>
-                </ul>
-            </li>
+            <li data-menuanchor="home" class="nav-item"><a class="nav-link" href="#home">Home</a></li>
             <li data-menuanchor="crashboard" class="nav-item"><a class="nav-link" href="#crashboard">Crashboard</a></li>
             <li data-menuanchor="sankey" class="nav-item"><a class="nav-link" href="#sankey">Weather Impact</a></li>
-            <li data-menuanchor="crashcalendar" class="nav-item"><a class="nav-link"
-                                                                    href="#crashcalendar">Crashcalendar</a></li>
+            <li data-menuanchor="crashcalendar" class="nav-item"><a class="nav-link" href="#crashcalendar">Crashcalendar</a></li>
             <li data-menuanchor="intersections" class="nav-item"><a class="nav-link" href="#intersections">Intersections</a></li>
-            <li data-menuanchor="streetexplorer" class="nav-item"><a class="nav-link" href="#streetexplorer">Street Explorer</a>
-            </li>
+            <li data-menuanchor="streetexplorer" class="nav-item"><a class="nav-link" href="#streetexplorer">Street Explorer</a></li>
             <li data-menuanchor="screencast" class="nav-item"><a class="nav-link" href="#screencast">Screencast</a></li>
-            <li data-menuanchor="processbook" class="nav-item"><a class="nav-link" href="#processbook">Process Book</a>
-            </li>
+            <li data-menuanchor="processbook" class="nav-item"><a class="nav-link" href="#processbook">Process Book</a></li>
+            <li data-menuanchor="about" class="nav-item" style="font-size: .8em;"><a class="nav-link navbar-toggler" data-toggle="collapse" data-target="#collapsingNavbarDrawer" href="#about"> <span class="fa fa-question-circle"></span></a></li>
         </ul>
     </div>
 </nav>
@@ -177,76 +191,16 @@
             <div id="hourly_graph" class="bg-content-hourly"></div>
         </div>
 
-        <div class="row">
-            <div id="citation" class="col-md-12">Disclaimer: Please use your best judgement. Drive safe. Don't rely on
-                Crashcaster for accurate information since it is currently only a class project at Harvard.
+        <div class="row bg-content-white">
+            <div id="citation" class="col-md-6">
+            </div>
+            <div id="disclaimer" class="col-md-6">Disclaimer: Don't rely on Crashcaster for accurate information.  Harvard class project only.
             </div>
         </div>
 
     </div>
 
 </div>
-
-
-<div class="section" id="section1">
-
-    <div class="slide" id="slide0">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 bg-content-white">
-                    <h1>Visual Tour</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="slide" id="slide1">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 bg-content-white">
-                    <h1>Viz 2</h1>
-                    <p><img src="img/1.png"
-                            alt="Viz 1"
-                            title="Viz 1"
-                            class="img-responsive"
-                            style="margin:auto;"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="slide" id="slide2">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 bg-content-white">
-                    <h1>Viz 2</h1>
-                    <p><img src="img/2.png"
-                            alt="Viz 2"
-                            title="Viz 2"
-                            class="img-responsive"
-                            style="margin:auto;"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="slide" id="slide3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 bg-content-white">
-                    <h1>Viz 3</h1>
-                    <p><img src="img/3.png"
-                            alt="Viz 3"
-                            title="Viz 3"
-                            class="img-responsive"
-                            style="margin:auto;"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
 
 <div class="section" id="section2">
 
@@ -469,12 +423,8 @@
         $("nav.navbar-fixed-top").autoHidingNavbar('setDisableAutohide', false);
         $.fn.fullpage({
             slidesColor: ['#428BCA', '#5CB85C', '#5BC0DE', '#F0AD4E', '#FF530D', '#FFFFFF'], // Bootstrap
-            anchors: ['home', 'visuals', 'crashboard', 'sankey', 'crashcalendar', 'intersections', 'streetexplorer', 'screencast', 'processbook'],
+            anchors: ['home', 'crashboard', 'sankey', 'crashcalendar', 'intersections', 'streetexplorer', 'screencast', 'processbook'],
             menu: '#menu'
-            //sectionsColor: ['#C63D0F', '#1BBC9B', '#7E8F7C'],
-            //navigation: true,
-            //navigationPosition: 'right',
-            //navigationTooltips: ['Home', 'Visuals', 'Crashboard', 'Screencast', 'Process Book']
         });
 
     });

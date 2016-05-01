@@ -9,6 +9,7 @@ crashcaster.crashcalendar = (function (cc$, $, d3) {
     function init() {
         echo("initialize crashcaster.crashcalendar");
         loadData();
+        READY_STATE._current = READY_STATE.LOADED;
     }
 
 
@@ -48,7 +49,6 @@ crashcaster.crashcalendar = (function (cc$, $, d3) {
                 createVis();
             }
 
-            READY_STATE._current = READY_STATE.LOADING;
         });
     }
 

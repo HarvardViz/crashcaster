@@ -27,6 +27,7 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
     // Add ANYTHING that needs happen when this plugin/module is initialized
     function init() {
         echo("initialize " + plugin_name);
+        READY_STATE._current = READY_STATE.LOADED;
         loadData();
     }
 
@@ -69,7 +70,7 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             .defer(d3.json, 'data/cambridge_citations_2010-2014.json')
             .await(processData);
 
-        READY_STATE._current = READY_STATE.LOADING;
+
     }
 
     function createNormalizedDate(dateString) {
@@ -152,7 +153,7 @@ crashcaster.crashboard = (function (cc$, $, queue, d3, crashboard) {
             visualizations.hourChart.update();
         });
 
-        READY_STATE._current = READY_STATE.LOADED;
+
     }
 
     //----------------------------------------------------------------------------------------------

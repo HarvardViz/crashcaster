@@ -42,9 +42,9 @@ crashcaster.model = (function () {
 
     // Cloudy
     weatherImages["cloudy"] = [
-        {daytime: true, url: "img/weather-cloudy-day-0.jpg", cite: ""},
-        {daytime: true, url: "img/weather-cloudy-day-1.jpg", cite: ""},
-        {daytime: true, url: "img/weather-cloudy-day-1.jpg", cite: ""},
+        {daytime: true, url: "img/weather-cloudy-day-0.jpg", cite: "artsfon.com -- #54830"},
+        {daytime: true, url: "img/weather-cloudy-day-1.jpg", cite: "artsfon.com -- #45646"},
+        {daytime: true, url: "img/weather-cloudy-day-1.jpg", cite: "artsfon.com -- #97853"},
         {daytime: true, url: "img/weather-cloudy-day-2.jpg", cite: "7-themes.com -- #6830458"},
         {daytime: false, url: "img/weather-cloudy-night-0.jpg", cite: "7-themes.com -- #6850701"},];
 
@@ -54,10 +54,10 @@ crashcaster.model = (function () {
 
     // Rain variations
     weatherImages["rain"] = [
-        {daytime: true, url: "img/weather-rain-day-0.jpg", cite: ""},
+        {daytime: true, url: "img/weather-rain-day-0.jpg", cite: "wallpaperscraft.com -- #47424"},
         {daytime: true, url: "img/weather-rain-day-1.jpg", cite: "onehdwallpaper.com -- Rainy-Night-Desktop-Wallpapers"},
-        {daytime: true, url: "img/weather-rain-day-2.jpg", cite: ""},
-        {daytime: true, url: "img/weather-rain-day-3.jpg", cite: ""},
+        {daytime: true, url: "img/weather-rain-day-2.jpg", cite: "wallpaperscraft.com -- #45625"},
+        {daytime: true, url: "img/weather-rain-day-3.jpg", cite: "wallpaperscraft.com -- #48342"},
         {daytime: false, url: "img/weather-rain-night-0.jpg", cite: "wallpapercomputer.com -- rain-wallpaper-desktop-windows-hd"},
         {daytime: false, url: "img/weather-rain-night-1.jpg", cite: "livehdwallpaper.com -- Abstract-Rainy-Night-Wallpaper"},
         {daytime: false, url: "img/weather-rain-night-2.jpg", cite: "newtopwallpapers.com -- Rainy-Night-Desktop-Free-Wallpaper"},
