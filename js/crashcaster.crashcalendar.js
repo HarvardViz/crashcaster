@@ -67,30 +67,39 @@ crashcaster.crashcalendar = (function (cc$, $, d3) {
 
     // STORY 2
     // when story buttons clicked, popup story modal box
-    $("#cal-btn_story2").leanModal({ top: 200, overlay: 0.4, closeButton: ".modal_close" })
+    $("#cal-btn_story2").leanModal({ top: 100, overlay: 0.4, closeButton: ".modal_close" })
         .click(function (e) {
             // highlight featured month
-            $(".y_2011.m_2 .domain-background").css("fill-opacity", .2);
+            $(".y_2012.m_11 .domain-background").css("fill-opacity", .2);
         });
     $('.modal_close').click(function() {
         // remove featured month highlighting
-        $(".y_2011.m_2 .domain-background").css("fill-opacity", 0.0); });
+        $(".y_2012.m_11 .domain-background").css("fill-opacity", 0.0); });
 
     // STORY 3
     // when story buttons clicked, popup story modal box
-    $("#cal-btn_story3").leanModal({ top: 200, overlay: 0.4, closeButton: ".modal_close" })
+    $("#cal-btn_story3").leanModal({ top: 100, overlay: 0.4, closeButton: ".modal_close" })
         .click(function (e) {
             // highlight featured month
-            $(".y_2011.m_2 .domain-background").css("fill-opacity", .2);
+            $(".y_2010.m_10 .domain-background").css("fill-opacity", .2);
+            $(".y_2011.m_10 .domain-background").css("fill-opacity", .2);
+            $(".y_2012.m_10 .domain-background").css("fill-opacity", .2);
+            $(".y_2013.m_10 .domain-background").css("fill-opacity", .2);
+            $(".y_2014.m_10 .domain-background").css("fill-opacity", .2);
         });
     $('.modal_close').click(function() {
         // remove featured month highlighting
-        $(".y_2011.m_2 .domain-background").css("fill-opacity", 0.0); });
+        $(".y_2010.m_10 .domain-background").css("fill-opacity", 0);
+        $(".y_2011.m_10 .domain-background").css("fill-opacity", 0);
+        $(".y_2012.m_10 .domain-background").css("fill-opacity", 0);
+        $(".y_2013.m_10 .domain-background").css("fill-opacity", 0);
+        $(".y_2014.m_10 .domain-background").css("fill-opacity", 0);
+    });
 
-
+    /*
     // STORY 4
     // when story buttons clicked, popup story modal box
-    $("#cal-btn_story4").leanModal({ top: 200, overlay: 0.4, closeButton: ".modal_close" })
+    $("#cal-btn_story4").leanModal({ top: 100, overlay: 0.4, closeButton: ".modal_close" })
         .click(function (e) {
             // highlight featured month
             $(".y_2011.m_2 .domain-background").css("fill-opacity", .2);
@@ -99,6 +108,7 @@ crashcaster.crashcalendar = (function (cc$, $, d3) {
         // remove featured month highlighting
         $(".y_2011.m_2 .domain-background").css("fill-opacity", 0.0); });
 
+     */
 
     // define accident type highlight actions
     $('#cal-btn_auto').click(function() { highlight(highlightAuto); });
@@ -172,29 +182,56 @@ crashcaster.crashcalendar = (function (cc$, $, d3) {
 
         idTag = "#cal-heatmap-" + year;
 
-        // see cal-heatmap.com for library reference
-        vis.init({
-            data: calData,
-            dataType: "json",
-            start: new Date(year, 0, 1),
-            itemSelector: idTag,
-            itemName: ["Accident", "Accidents"],
-            domain: "month",
-            subDomain: "x_day",
-            range: 12,
-            weekStartOnMonday: false,
-            domainDynamicDimension: false,
-            domainGutter: 10,
-            domainLabelFormat: "%b-%Y",
-            considerMissingDataAsZero: true,
-            tooltip: true,
-            label: {
-                position: "top",
-                width: 60
-            },
-            legend: [3, 6, 9, 12, 15, 18, 21],     // levels for color scale
-            displayLegend: false
-        });
+        if (year < 2014) {  // do not show legend unless it is the last calendar year
+            // see cal-heatmap.com for library reference
+            vis.init({
+                data: calData,
+                dataType: "json",
+                start: new Date(year, 0, 1),
+                itemSelector: idTag,
+                itemName: ["Accident", "Accidents"],
+                domain: "month",
+                subDomain: "x_day",
+                range: 12,
+                weekStartOnMonday: false,
+                domainDynamicDimension: false,
+                domainGutter: 10,
+                domainLabelFormat: "%b-%Y",
+                considerMissingDataAsZero: true,
+                tooltip: true,
+                label: {
+                    position: "top",
+                    width: 60
+                },
+                legend: [1, 4, 8, 12, 16],     // levels for color scale
+                displayLegend: false
+            });
+        }
+        else {
+            // see cal-heatmap.com for library reference
+            vis.init({
+                data: calData,
+                dataType: "json",
+                start: new Date(year, 0, 1),
+                itemSelector: idTag,
+                itemName: ["Accident", "Accidents"],
+                domain: "month",
+                subDomain: "x_day",
+                range: 12,
+                weekStartOnMonday: false,
+                domainDynamicDimension: false,
+                domainGutter: 10,
+                domainLabelFormat: "%b-%Y",
+                considerMissingDataAsZero: true,
+                tooltip: true,
+                label: {
+                    position: "top",
+                    width: 60
+                },
+                legend: [1, 4, 8, 12, 16],     // levels for color scale
+                displayLegend: true
+            });
+        }
     }
 
 
