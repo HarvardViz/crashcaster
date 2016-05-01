@@ -430,6 +430,8 @@ crashcaster.heatmap = (function (cc$, d3) {
     var calcCycle=0;
     var filterTotal=0;
     var allAccidents=0;
+    var accidentsDailyAvg=3.52; //based on calculations in data/cambridge_forecast_calculations_2010-2014.xlsx
+
 
     //Points for Heatmap
     function getPoints() {
@@ -448,7 +450,6 @@ crashcaster.heatmap = (function (cc$, d3) {
                     if(travelType[i]=="Bicycle") {calcCycle = calcCycle+1;};
                     if(travelType[i]=="Pedestrian") {calcWalk = calcWalk+1;};
                     allAccidents = allAccidents + 1;
-
                     if(travelType[i]==selectTravelType) {
                         filterTotal = filterTotal + 1;
                         accidentsHourly[dataHours[i]]++;
@@ -461,32 +462,49 @@ crashcaster.heatmap = (function (cc$, d3) {
         };
 
 
-        crashtisticsText = "Historically, there have been " + Math.round(filterTotal/5) + " " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase();
-        console.log(selectTravelType);
-        if (selectWeather=='Good') {crashtisticsText = crashtisticsText + " weather"};
+        if(selectTravelType=="Auto") {calcAuto = calcAuto+1;accidentsDailyAvg = 3.52};
+        if(selectTravelType=="Bike") {calcBike = calcBike+1;accidentsDailyAvg = 0.5};
+        if(selectTravelType=="Bicycle") {calcCycle = calcCycle+1;accidentsDailyAvg = 0.02};
+        if(selectTravelType=="Pedestrian") {calcWalk = calcWalk+1;accidentsDailyAvg = 0.28};
 
-        //drawdonut(calcAuto,  calcBike, calcCycle, calcWalk);
-        render();
-        //console.log("var accidentsHourly");
-        //console.log(accidentsHourly);
+        //Generate Factors
+        if (selectWeather == "Rain") {factorWeather = modelRain;}
+        if (selectWeather == "Snow") {factorWeather = modelSnow;}
+        if (selectWeather == "Fog") {factorWeather = modelFog;}
+        if (selectWeather == "Good") {factorWeather = modelGood;}
+
+        forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));
+        document.getElementById("forecast-count").innerHTML = forecastAccidents;
+
+        //console.log(filterTotal + " " + calcAuto + " " +calcBike + " " +calcCycle + " " +calcWalk + " " + allAccidents);
+
+        console.log(selectTravelType);
+        if (selectWeather=='Good') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + " weather is " + Math.round(filterTotal/5);}
+        if (selectWeather=='Fog') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "gy weather is " + Math.round(filterTotal/5);}
+        if (selectWeather=='Rain') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.round(filterTotal/5);};
+        if (selectWeather=='Snow') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.round(filterTotal/5);};
+
+        render(selectTravelType);
+
+
+
+
         return array;
     }
 
-    var accidentsDailyAvg=4.31; //based on calculations in data/cambridge_forecast_calculations_2010-2014.xlsx
 
 
 
 
-    forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay));
-    document.getElementById("forecast-count").innerHTML = forecastAccidents;
-    console.log(forecastAccidents);
+
+
 
     /* END KARTIK'S HEATMAP CODE */
 
     /* START Donut chart Reference: Adaptive Pie Chart Scaling by Jon Sadka URL http://bl.ocks.org/jonsadka/fa05f8d53d4e8b5f262e */
 
-     var width = 100,
-         height = 100;
+     var width = 80,
+         height = 80;
 
      var color = ["#d9534f","#fff"];//d3.scale.category20();
 
@@ -497,7 +515,7 @@ crashcaster.heatmap = (function (cc$, d3) {
 // set the thickness of the inner and outer radii
      var min = Math.min(width, height);
      var oRadius = min / 2 * 0.9;
-     var iRadius = min / 2 * 0.6;
+     var iRadius = min / 2 * 0.5;
 
 // construct default pie laoyut
      var pie = d3.layout.pie().value(function (d) {
@@ -510,7 +528,7 @@ crashcaster.heatmap = (function (cc$, d3) {
          .innerRadius(iRadius);
 
 // creates the pie chart container
-     var g = svg.append('g')
+     var g = svg.append('g');
      var g = svg.append('g')
          .attr('transform', function () {
              if (window.innerWidth >= 960) var shiftWidth = width / 2;
@@ -518,7 +536,10 @@ crashcaster.heatmap = (function (cc$, d3) {
              return 'translate(' + shiftWidth + ',' + height / 2 + ')';
          })
 
-// generate random data
+
+
+
+// read data
      var data = [filterTotal, calcAuto+calcBike+calcCycle+calcWalk-filterTotal];
 
 // enter data and draw pie chart
@@ -554,6 +575,18 @@ crashcaster.heatmap = (function (cc$, d3) {
              .each(function (d) {
                  this._current = d;
              });
+
+         // remove data not being used
+         //g.select("text.perc").exit().remove();
+
+         g.append("text.perc")
+             .attr("text-anchor", "middle")
+             .attr("font-size","15px")
+             .style("fill", "#fff")
+             .style("font-weight", "bold")
+             .text("Auto");
+
+
 
          // remove data not being used
          g.datum(data).selectAll("path")
