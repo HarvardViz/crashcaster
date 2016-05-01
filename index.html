@@ -280,16 +280,94 @@
 
 
 <div class="section" id="section4">
+
     <div class="container">
         <div class="row">
-            <div class="col-md-12 bg-content-white">
-                <h1>Crashcalendar</h1>
+
+            <div class="col-md-6">
+                <div class="row" align="center">
+                    <div class="btn-group" role="group" aria-label="Noteworthy High Accident Dates">
+                        <button id="cal-btn_story1" type="button" value="story1" href="#cal-story1"
+                                class="btn btn-secondary"><p
+                                class="fa fa-newspaper-o btn-type-travel"></p>
+                            <p>1</p></button>
+                        <button id="cal-btn_story2" type="button" value="story2" href="#cal-story2"
+                                class="btn btn-secondary"><p
+                                class="fa fa-newspaper-o btn-type-travel"></p>
+                            <p>2</p></button>
+                        <button id="cal-btn_story3" type="button" value="story3" href="#cal-story3"
+                                class="btn btn-secondary"><p
+                                class="fa fa-newspaper-o btn-type-travel"></p>
+                            <p>3</p></button>
+                        <button id="cal-btn_story4" type="button" value="story4" href="#cal-story4"
+                                class="btn btn-secondary"><p
+                                class="fa fa-newspaper-o btn-type-travel"></p>
+                            <p>4</p></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row" align="center">
+                    <div class="btn-group" role="group" aria-label="Travel Type">
+                        <button id="cal-btn_auto" type="button" value="Auto" href="#test"
+                                class="btn btn-secondary"><p
+                                class="fa fa-car btn-type-travel"></p>
+                            <p>Auto</p></button>
+                        <button id="cal-btn_bicycle" type="button" value="Bicycle"
+                                class="btn btn-secondary"><p
+                                class="fa fa-bicycle btn-type-travel"></p>
+                            <p>Bike</p></button>
+                        <button id="cal-btn_pedestrian" type="button" value="Pedestrian"
+                                class="btn btn-secondary"><p
+                                class="fa fa-male btn-type-travel"></p>
+                            <p>Walk</p></button>
+                        <button id="cal-btn_parked" type="button" value="Parked Vehicle"
+                                class="btn btn-secondary"><p
+                                class="fa fa-arrow-circle-down btn-type-travel"></p>
+                            <p>Parked</p></button>
+                        <button id="cal-btn_refresh" type="button" value="none"
+                                class="btn btn-secondary"><p
+                                class="fa fa-refresh btn-type-travel"></p>
+                            <p>Refresh</p></button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="row">
+
             <div class="col-md-12 bg-content-white" style="background-color: rgba(255, 255, 255, 0.8);">
-                <div id="cal-heatmap"></div>
+                <div id="cal-heatmap-2010"></div>
+                <div id="cal-heatmap-2011"></div>
+                <div id="cal-heatmap-2012"></div>
+                <div id="cal-heatmap-2013"></div>
+                <div id="cal-heatmap-2014"></div>
+            </div>
+
+            <div id="cal-story1">
+                <p class="wi wi-wu-snow cal-story-icon"></p>
+                <p class="fa fa-car cal-story-icon"></p>
+                <p class="fa fa-male cal-story-icon"></p>
+                <p class="fa fa-arrow-circle-down cal-story-icon"></p>
+                <h3>Major Nor' Easter Hits Region</h3>
+                <br>
+                <p class="cal-story-content">In mid January, 2011, the northeast was hit by a severe snowstorm that dropped up to 18 inches of snow in the Cambridge area.  Many parked cars were damaged by fallen trees and limbs.  Schools and businesses were closed and most stayed off the roads during the storm, but in the aftermath many took to icy streets and suffered accidents due to the slippery conditions.  The worst day for accidents was Tuesday Jan 11th, which followed the Martin Luther King Jr. holiday and was likely the time when most returned to work after the storm.   </p>
+                <img src="img/calendar-story1.jpg" style="width:300px;height:auto;">
+                <br>
+                <a href="http://archive.boston.com/news/weather/articles/2011/01/13/outages_closed_schools_left_in_storms_wake/" target="_blank">Source: Boston.com</a>
+                <br>
+                <button class="modal_close" type="button">Close</button>
+            </div>
+
+            <div id="cal-story2">
+                Story 2
+            </div>
+            <div id="cal-story3">
+                Story 3
+            </div>
+            <div id="cal-story4">
+                Story 4
             </div>
         </div>
 
@@ -408,6 +486,7 @@
 <script src="js/lib/crossfilter.js" type="text/javascript"></script>
 <script src="js/lib/dc.js" type="text/javascript"></script>
 <script src="js/lib/colorbrewer.js" type="text/javascript"></script>
+<script src="js/lib/jquery.leanModal.min.js" type="text/javascript"></script>
 
 
 <!-- Custom JavaScript -->
