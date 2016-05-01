@@ -366,7 +366,10 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
                 //.style("font-weight", "100")
                 .text("Total Accidents by Hour");
 
-            svg.selectAll(".x.axis text")
+
+
+
+        svg.selectAll(".x.axis text")
                 .text(function(d,i) { return hours[i]; });
 
 

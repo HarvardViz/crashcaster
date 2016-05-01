@@ -25,15 +25,15 @@ crashcaster.model = (function () {
 
     // Clear variations
     weatherImages["clear"] = [
-        {daytime: true, url: "img/weather-clear-day-0.jpg", cite: ""},
-        {daytime: true, url: "img/weather-clear-day-1.jpg", cite: ""},
-        {daytime: true, url: "img/weather-clear-day-2.jpg", cite: ""},
-        {daytime: true, url: "img/weather-clear-day-3.jpg", cite: ""},
+        {daytime: true, url: "img/weather-clear-day-0.jpg", cite: "artsfon.com -- #67354"},
+        {daytime: true, url: "img/weather-clear-day-1.jpg", cite: "artsfon.com -- #79723"},
+        {daytime: true, url: "img/weather-clear-day-2.jpg", cite: "artsfon.com -- #23458"},
+        {daytime: true, url: "img/weather-clear-day-3.jpg", cite: "artsfon.com -- #56476"},
         {daytime: true, url: "img/weather-clear-day-4.jpg", cite: "7-themes -- 7039003-summer-road"},
-        {daytime: false, url: "img/weather-clear-night-0.jpg", cite: ""},
-        {daytime: false, url: "img/weather-clear-night-1.jpg", cite: ""},
-        {daytime: false, url: "img/weather-clear-night-2.jpg", cite: ""},
-        {daytime: false, url: "img/weather-clear-night-3.jpg", cite: ""},
+        {daytime: false, url: "img/weather-clear-night-0.jpg", cite: "artsfon.com -- #34097"},
+        {daytime: false, url: "img/weather-clear-night-1.jpg", cite: "artsfon.com -- #29974"},
+        {daytime: false, url: "img/weather-clear-night-2.jpg", cite: "artsfon.com -- #73263"},
+        {daytime: false, url: "img/weather-clear-night-3.jpg", cite: "artsfon.com -- #97853"},
         {daytime: false, url: "img/weather-clear-night-4.jpg", cite: "all4desktop.com - #336754"}];
 
     weatherImages["sunny"] = weatherImages["clear"];
