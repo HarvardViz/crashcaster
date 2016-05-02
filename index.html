@@ -230,61 +230,53 @@
 </div>
 
 <div class="section" id="section3">
-    <div class="container">
-        <div class="row">
-            <div class="bg-content">
 
-                <div class="row">
-                    <div class="col-md-12 bg-content-white" style="background-color: rgba(255, 255, 255, 0.8);">
-                        <h1>What happens when the weather turns bad?</h1>
-                        <p id="title"><i>Number of accidents per day normalized by weather</i></p>
+    <div style="background-color: rgba(255, 255, 255, 0.8);">
+
+                    <div id="sankey-diagram" class="col-md-12 bg-content-white">
+
+
+
+
+
+                        <div id="sankeyTitle">Impact of Weather</div>
+
 
                     </div>
-                </div>
+        <div id="sankeyStory">
 
-                <div class="row">&nbsp;</div>
-                <div class="row">&nbsp;</div>
+            </br>
 
-                <div class="row">
-                    <!-- Commented out Sankey filters ...
-                    <div class="col-md-12 bg-content-white" style="background-color: rgba(255, 255, 255, 0.8);">
-
-                        <button onclick="filte_me()" id="Clear" type="button" class="btn btn-danger">Clear <i
-                                class="fa fa-filter fa-1x" aria-hidden="true"></i></button>
-                        <button onclick="filte_me()" id="Auto" type="button" class="btn btn-default"><i
-                                class="fa fa-car fa-1x" aria-hidden="true"></i>&nbsp;Auto
-                        </button>
-                        <button onclick="filte_me()" id="Bicycle" type="button" class="btn btn-default"><i
-                                class="fa fa-bicycle fa-1x" aria-hidden="true"></i>&nbsp;Bicycle
-                        </button>
-                        <button onclick="filte_me()" id="Fixed" type="button" class="btn btn-default"><i
-                                class="fa fa-tree fa-1x" aria-hidden="true"></i>&nbsp;Fixed Object
-                        </button>
-                        <button onclick="filte_me()" id="Motorcycle" type="button" class="btn btn-default"><i
-                                class="fa fa-motorcycle fa-1x" aria-hidden="true"></i>&nbsp;Motorcycle
-                        </button>
-                        <button onclick="filte_me()" id="Parked" type="button" class="btn btn-default"><i
-                                class="fa fa-map-signs fa-1x" aria-hidden="true"></i>&nbsp;Parked Vehicle
-                        </button>
-                        <button onclick="filte_me()" id="Pedestrian" type="button" class="btn btn-default"><i
-                                class="fa fa-male fa-1x" aria-hidden="true"></i>&nbsp;Pedestrian
-                        </button>
-
-                    </div> -->
-                </div>
-
-                <div class="row">&nbsp;</div>
-
-                <div class="row">
-                    <div id="sankey-diagram" class="col-md-12 bg-content-white"
-                         style="background-color: rgba(255, 255, 255, 0.8);"></div>
-                </div>
-
+            <div class="btn-group" role="group" aria-label="Weather selection">
+                <button id="sankeyFog" type="button"
+                        class="btn btn-secondary"><p
+                        class="wi wi-fog btn-type-weather"></p>
+                </button>
+                <button id="sankeySnow" type="button"
+                        class="btn btn-secondary"><p
+                        class="wi wi-wu-snow btn-type-weather"></p>
+                </button>
+                <button id="sankeyRain" type="button"
+                        class="btn btn-secondary"><p
+                        class="wi wi-wu-rain btn-type-weather"></p>
+                </button>
             </div>
-        </div>
+
+            <div id="sankeyStoryTitle"><i class="fa fa-question-circle" aria-hidden="true"></i></div>
+            <div id="sankeyStoryTxt">
+                To understand the impact of weather, we have taken correlated data from
+                daily weather underground with the day the accident took place. The data was normalized by taking
+                ratio of accidents and the duration of the weather to get the probability of accidents
+                for that weather condition. </br></br>
+                Although, this algorithm may be primitive and does not account for the
+                fact that the accidents could have been due to negligence or any other aspect other than weather;
+                this still gives us something to think about.
+                </br></br>
+                Explore by clicking on the buttons above and draw your own conclusions.
+     </div>
+             </div>
     </div>
 </div>
-
 
 <div class="section" id="section4">
 
