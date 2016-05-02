@@ -78,6 +78,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
 
         // Setup the current conditions
         var actualCondition = icon = heatmap = cc$.weather.current.current_observation.icon;
+        if (icon === 'hazy') { icon = 'fog'; }
         var label = cc$.weather.current.current_observation.weather;
         var buttonHtml = '<button onclick="cc$.ui_forecast.setWeatherConditionsTo(\''+ heatmap + '\', true)" id="btn_current_weather" type="button" class="btn btn-lg btn-info"><p class="wi wi-wu-' + icon + ' btn-type-weather-current"></p><p class="weather-current">' + label + '</p></button>'
 
