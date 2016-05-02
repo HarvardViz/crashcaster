@@ -10,6 +10,58 @@ body{
     line-height: 1.3;
 }
 
+
+#sankeyStoryTitle
+{
+    font-size: 25px;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+
+
+#sankeyStoryTxt
+{
+    font-size: 14px;
+    padding-left: 25px;
+    padding-top: 10px;
+    padding-right: 10px;
+    text-align: left;
+    font-weight: normal;
+}
+
+#sankeyTitle
+{
+    font-size: 25px;
+    padding-left: 25px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    font-weight: bold;
+}
+
+#sankey-diagram
+{
+    background-color: rgba(255, 255, 255, 0.8);
+    float: left;
+    width: 800px;
+    height:500px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+#sankeyStory
+{
+    background-color: rgba(255, 255, 255, 0.8);
+    float: left;
+    width: 400px;
+    height:500px;
+    margin-left: 0px;
+    margin-right: 40px;
+}
+
+
+
 p {
     font-size: .7em;
 }
