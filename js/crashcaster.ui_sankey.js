@@ -21,10 +21,44 @@ crashcaster.ui_sankey = (function (cc$, $, d3) {
     };
 
 
-    /* SANKEY CODE */
+
+    //Story telling tabs. Reference: http://jsfiddle.net/sghoush1/LF4rp/17/
+    $(document).ready(function(){
+        $("button#sankeyRain").click(function(){
+            $("div#sankeyStoryTitle").text("Cyclist Killed In Collision With 18 Wheeler In Cambridge");
+            $("div#sankeyStoryTxt").html("(Source: http://bostonbiker.org, Dec 28, 20111) </br> </br> The bicyclist who was struck and " +
+                "killed in a collision with a truck Tuesday evening was a " +
+                "23-year-old man from Myanmar who graduated from the MIT last year, school and " +
+                "law enforcement authorities said today." +
+                "</br> </br> Comment from Mark (Dec 28, 2011): It sure looks like the truck swung wide into Vassar St’s left " +
+                "turn lane to make a right turn. Reflectors on the spokes of the bike should have been visible, " +
+                "but otherwise with the rain and darkness, " +
+                "visibility was poor. I don’t know if the rider had visible clothing.");
+        });
+        $("button#sankeyFog").click(function(){
+            $("div#sankeyStoryTitle").text("Mass Ave./Vassar St. intersection a deadly hazard");
+            $("div#sankeyStoryTxt").html("(Source: http://tech.mit.edu, January 11, 2012) </br></br> With good reason. Thousands of bicyclists, pedestrians, and motorists " +
+                "converge each day at the " +
+                "intersection near the Massachusetts Institute of Technology campus, where crowds of students on Vassar Street " +
+                "meet traffic on Massachusetts Avenue. Police say it is a hazard. </br></br> Since 2007, Cambridge police responded to 55 accidents at the intersection, " +
+                "24 of them involving cars and bikes, according to police reports. Many resulted in minor injuries, the records show, but last month" +
+                " one was fatal. MIT graduate Phyo N. Kyaw of Cambridge was riding a bicycle when he collided with a truck.");
+        });
+        $("button#sankeySnow").click(function(){
+            $("div#sankeyStoryTitle").text("Boston’s Winter From Hell");
+            $("div#sankeyStoryTxt").html("(Source: NY Times, Feb 20, 2015) </br></br> By now you’ve seen the starkly beautiful shots of Boston buried " +
+                "under snow: the panoramic city under a white blanket; snowbanks so high they crest over parked cars; piercing icicles glinting for " +
+                "two full stories from gutters dammed with ice; coat-muffled people dwarfed by snow-walled corridors that once were sidewalks." +
+                "Car insurance companies are swamped with accident calls. </br></br>The Massachusetts Avenue Bridge over the Charles River, a " +
+                "major pedestrian artery that links Boston and Cambridge, " +
+                "is still inches deep with snow, but you can’t reach the railings because they are lined " +
+                "with snowbanks plowed in from earlier blizzards.");
+        });
+
+    });
 
 
-    /* Add a new D3 sankey method for our use */
+    /* SANKEY CODE Reference: https://github.com/d3/d3-plugins/tree/master/sankey*/
 
     d3.sankey = function () {
         var sankey = {},
