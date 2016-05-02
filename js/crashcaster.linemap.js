@@ -10,7 +10,7 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
     function init() {
         echo("initialize crashcaster.linemap");
         loadData();
-        READY_STATE._current = READY_STATE.LOADED;
+
     }
 
     // Once the module is ready via init(), add anything that needs to be run here
@@ -63,7 +63,8 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
 
     // add chart title
     var titleLinemap = svgLinemap.append("text")
-        .text(streetFilter + "'s most dangerous intersections")
+        .attr("class", "linemap-title")
+        .text(streetFilter.toUpperCase() + "'s most dangerous intersections")
         .attr("x", widthLinemap/2)
         .attr("y", -20)
         .style("text-anchor", "middle");
@@ -72,6 +73,7 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
     // add directionals
     svgLinemap.append("text")
         .text("Westbound")
+        .attr("class", "linemap-directional")
         .attr("x", 0 - marginLinemap.left/2)
         .attr("y", 4)
         .style("text-anchor", "middle")
@@ -80,6 +82,7 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
     // add directionals
     svgLinemap.append("text")
         .text("Eastbound")
+        .attr("class", "linemap-directional")
         .attr("x", widthLinemap + marginLinemap.right/2)
         .attr("y", 4)
         .style("text-anchor", "middle")
@@ -95,6 +98,10 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
     linemapTip.direction("s");
 
 
+    var svgLinemapLegend = d3.select("#linemap-legend").append("svg")
+        .attr("width", 220)
+        .attr("height", 40);
+
 
 
 
@@ -106,7 +113,7 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
     var marginBarchart = {top: 20, right: 100, bottom: 150, left: 100};
 
     var widthBarChart = 900 - marginBarchart.left - marginBarchart.right,
-        heightBarChart = 400 - marginBarchart.top - marginBarchart.bottom;
+        heightBarChart = 350 - marginBarchart.top - marginBarchart.bottom;
 
     var svgBarChart = d3.select("#barchart").append("svg")
         .attr("width", widthBarChart + marginBarchart.left + marginBarchart.right)
@@ -141,7 +148,7 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
     // add chart title
     svgBarChart.append("text")
         .attr("class", "barchart-yAxis-title")
-        .text("Total Accidents over 5 Years")
+        .text("Total Accidents 2010-2014")
         .attr("transform", "rotate(-90)")
         //.attr("y", 10)
         .attr("y", -marginBarchart.left *.5)
@@ -153,6 +160,26 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
         .attr("class", "d3-tip")
         .offset([-10, 0])
         .html(function(d) { return d.key.toUpperCase() + "<br>" + d.totalAccidents + " Accidents"; });
+
+
+
+    // define modal actions for storytelling buttons
+
+    // STORY 1
+    // when story buttons clicked, popup story modal box
+    $("#linemap-btn_story1").leanModal({ top: 20, overlay: 0.4, closeButton: ".modal_close" });
+
+    // STORY 2
+    // when story buttons clicked, popup story modal box
+    $("#linemap-btn_story2").leanModal({ top: 20, overlay: 0.4, closeButton: ".modal_close" });
+
+    // STORY 3
+    // when story buttons clicked, popup story modal box
+    $("#linemap-btn_story3").leanModal({ top: 20, overlay: 0.4, closeButton: ".modal_close" });
+
+    // STORY 3
+    // when story buttons clicked, popup story modal box
+    $("#linemap-btn_info").leanModal({ top: 100, overlay: 0.4, closeButton: ".modal_close" });
 
 
 
@@ -274,32 +301,6 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
                 return (d.values.length >= 5);
             });
 
-
-        //console.log("filterData() - filteredObject  -  pre filter");
-        //console.log(filteredObject.values);
-
-
-        /*
-
-         // we only want <=20 worst intersections on the linemap..  find the worst 20, then sort by position on road
-         filteredObject.values.sort(function(a, b) {
-         return b.values.length - a.values.length;
-         });
-
-         console.log("filterData() - filteredObject  -  post filter");
-         console.log(filteredObject);
-
-         filteredObject.values = filteredObject.values.filter(function(d, i){
-         return (i <=20);
-         });
-
-         filteredObject.values.sort(function(a, b) {
-         return a.distanceFromReference - b.distanceFromReference;
-         });
-
-         */
-
-
     }
 
 
@@ -310,6 +311,15 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
 
 
     function updateLineMap() {
+
+        var legendList = [];
+
+        var max = d3.max(filteredObject.values, function(d) { return d.values.length; });
+
+        for (var i=0; i<5; i++) {
+            legendList[i] = max/(i+1);
+        }
+
 
         // Data-join
         var linemap = svgLinemap.selectAll("circle")
@@ -322,17 +332,10 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
             .range([0, widthLinemap])
             .domain([0, filteredObject.values.length]);
 
-        // Scale - circle radius   --- discontinued ---
-        var r = d3.scale.linear()
-            .range([2, 9])
-            //	.domain([0, d3.max(filteredObject.values, function(d) { return d.values.length; }) ]);
-            .domain([0, 25]);
-
         // Scale - circle color
         var c = d3.scale.linear()
             .range(["#fee0d2", "#a50f15"])
-            .domain([0, d3.max(filteredObject.values, function(d) { return d.values.length; }) ]);
-        //.domain([0, 47]);	// highest accident total = 47.  Mass Ave-Vassar
+            .domain([0, max]);
 
 
         // invoke tooltips
@@ -366,13 +369,51 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
         // Position circles along ling
         linemap
             .transition().duration(300)
-            .attr("cx", function(d, i) { return 10 + x(i); });
+            .attr("cx", function(d, i) { return 15 + x(i); });
 
         // update chart title
-        titleLinemap.text(streetFilter + "'s most dangerous intersections");
+        titleLinemap.text(streetFilter.toUpperCase() + "'s most dangerous intersections");
 
         // Exit
         linemap.exit().remove();
+
+
+
+
+        //  add legend
+
+        // round calculated legend values
+        var legendFormat = d3.format(".0f");
+
+        // add legend colored circles
+        var legendItem = svgLinemapLegend.selectAll("circle").data(legendList);
+        legendItem.exit().remove();
+
+        var legendItemEnter = legendItem
+            .enter().append("circle")
+            .attr("cx", function(d, i) { return 10+ i*40; })
+            .attr("cy", 20)
+            .attr("r", 7);
+
+        // update color of circle based on scale
+        legendItem
+            .style("fill", function(d) { return c(d); });
+
+
+        // add legend text
+        var legendText = svgLinemapLegend.selectAll("text").data(legendList);
+        legendText.exit().remove();
+
+        var legendTextEnter = legendText.enter().append("text")
+            .attr("x", function(d, i) { return 4 + i*40; })
+            .attr("y", 10)
+            .style("text-align", "right");
+
+        // update legend label value
+        legendText
+            .text(function(d){ return legendFormat(d); });
+
+
 
         getUserInput();
     }
@@ -460,8 +501,12 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
     }
 
 
+    // calculates distance of coordinates from a fixed reference point northwest of cambridge
+    // this allows approximation of order of intersections along most roads
+    // not quite accurate on non-straight roads
     function calculateDistance(point1, point2) {
 
+        // some spot far away
         var referenceCoordinates = [42.444757, -71.177811];
 
         if (typeof point2 === 'undefined') { point2 = referenceCoordinates; }
