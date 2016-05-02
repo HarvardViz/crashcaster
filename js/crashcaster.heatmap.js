@@ -444,12 +444,12 @@ crashcaster.heatmap = (function (cc$, d3) {
         calcCycle=0;
         accidentsHourly =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         for(var i=0;i<accidentData.length;i++) {
+            allAccidents = allAccidents + 1;
             if(weatherCat[i]==selectWeather) {
                 if(travelType[i]=="Auto") {calcAuto = calcAuto+1;};
                 if(travelType[i]=="Bike") {calcBike = calcBike+1;};
                 if(travelType[i]=="Bicycle") {calcCycle = calcCycle+1;};
                 if(travelType[i]=="Pedestrian") {calcWalk = calcWalk+1;};
-                allAccidents = allAccidents + 1;
                 if(travelType[i]==selectTravelType) {
                     filterTotal = filterTotal + 1;
                     accidentsHourly[dataHours[i]]++;
@@ -460,6 +460,8 @@ crashcaster.heatmap = (function (cc$, d3) {
                 }
             }
         };
+
+
 
 
         if(selectTravelType=="Auto") {calcAuto = calcAuto+1;accidentsDailyAvg = 3.52};
@@ -475,14 +477,19 @@ crashcaster.heatmap = (function (cc$, d3) {
 
         forecastAccidents = Math.ceil(accidentsDailyAvg*(1+factorWeather)*(1+factorDay)*peak_to_Avg);
         document.getElementById("forecast-count").innerHTML = forecastAccidents;
+        // Calculate hourly prediction
+        var accTotal = 0;
+        for(var i=0;i<accidentsHourly.length;i++) {accTotal = accTotal + accidentsHourly[i]};
+        for(var i=0;i<accidentsHourly.length;i++) {accidentsHourly[i] = forecastAccidents*accidentsHourly[i]/accTotal};
+
 
         //console.log(filterTotal + " " + calcAuto + " " +calcBike + " " +calcCycle + " " +calcWalk + " " + allAccidents);
 
         console.log(selectTravelType);
-        if (selectWeather=='Good') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + " weather is " + Math.round(filterTotal/5);}
-        if (selectWeather=='Fog') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "gy weather is " + Math.round(filterTotal/5);}
-        if (selectWeather=='Rain') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.round(filterTotal/5);};
-        if (selectWeather=='Snow') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.round(filterTotal/5);};
+        if (selectWeather=='Good') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + " weather is " + Math.round(filterTotal/5) +" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) " ;}
+        if (selectWeather=='Fog') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "gy weather is " + Math.round(filterTotal/5)+" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) ";}
+        if (selectWeather=='Rain') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.round(filterTotal/5)+" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) ";};
+        if (selectWeather=='Snow') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.round(filterTotal/5)+" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) ";};
 
         render(selectTravelType);
 
@@ -543,7 +550,7 @@ crashcaster.heatmap = (function (cc$, d3) {
 
 
 // read data
-    var data = [filterTotal, calcAuto+calcBike+calcCycle+calcWalk-filterTotal];
+    var data = [filterTotal, allAccidents-filterTotal];
 
 // enter data and draw pie chart
     var path = g.datum(data).selectAll("path")
@@ -561,7 +568,7 @@ crashcaster.heatmap = (function (cc$, d3) {
 
     function render() {
         // generate new random data
-        data = [filterTotal, calcAuto+calcBike+calcCycle+calcWalk-filterTotal];
+        data = [filterTotal, allAccidents-filterTotal];
         // add transition to new path
         g.datum(data).selectAll("path").data(pie).transition().duration(1000).attrTween("d", arcTween);
 
