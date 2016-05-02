@@ -229,8 +229,6 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
             d.totalDistance = 0;
             d.totalAccidents = 0;
 
-            var lastCoordinates = [];
-
             // for each cross street, calculate intersection values
             d.values.forEach(function(v, i) {
                 if ((d.key == "null") || (v.key == "null"))	 // if no cross street (accidents on single road)
@@ -334,7 +332,7 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
 
         // Scale - circle color
         var c = d3.scale.linear()
-            .range(["#fee0d2", "#a50f15"])
+            .range(["#ffffff", "#a50f15"])
             .domain([0, max]);
 
 
@@ -364,7 +362,9 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
             .style("fill", function(d) { return c(d.values.length); })
             .attr("cy", 0)
             .attr("cx", 0)
-            .attr("r", 7);
+            .attr("r", 7)
+            .style("stroke", "black")
+            .style("stroke-width", 2);
 
         // Position circles along ling
         linemap
@@ -391,9 +391,11 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
 
         var legendItemEnter = legendItem
             .enter().append("circle")
-            .attr("cx", function(d, i) { return 10+ i*40; })
-            .attr("cy", 20)
-            .attr("r", 7);
+            .attr("cx", function(d, i) { return 70+ i*30; })
+            .attr("cy", 27)
+            .attr("r", 5)
+            .style("stroke", "black")
+            .style("stroke-width", 2);
 
         // update color of circle based on scale
         legendItem
@@ -405,12 +407,12 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
         legendText.exit().remove();
 
         var legendTextEnter = legendText.enter().append("text")
-            .attr("x", function(d, i) { return 4 + i*40; })
-            .attr("y", 10)
+            .attr("y", 16)
             .style("text-align", "right");
 
         // update legend label value
         legendText
+            .attr("x", function(d, i) { if(d<10) { return  66 + i*30; } else { return 63 + i*30; }  })
             .text(function(d){ return legendFormat(d); });
 
 
