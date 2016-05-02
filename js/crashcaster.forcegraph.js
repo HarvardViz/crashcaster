@@ -154,6 +154,10 @@ crashcaster.forcegraph = (function (cc$, $, d3) {
         });
         //console.log(filteredAccidentData);
 
+        // filter out White St due to encoding error in the raw dataset
+        var filteredAccidentData = filteredAccidentData.filter(function(d) {
+            return (d.key != "White St");
+        });
 
         // keep only the top 30 roads with the most accidents
         var sectionSize = 30;
@@ -211,16 +215,6 @@ crashcaster.forcegraph = (function (cc$, $, d3) {
         // ---  function to add/update/remove nodes from graph whenever a new node is selected
         start();
         function start() {
-
-
-            /*	---  PHASED OUT ---
-             // Scale - line width - based on # accidents
-             var w = d3.scale.linear()
-             .range([2, 6])
-             .domain([0, d3.max(streetNodes, function (d) {
-             return d.totalAccidents;
-             })]);
-             */
 
 
             // set array of links to streets that intersect to the selected street
@@ -302,7 +296,7 @@ crashcaster.forcegraph = (function (cc$, $, d3) {
                 .attr("class", "force-node");
 
             node_update
-                .classed("force-selectedNode", function(d) { return d.key == streetFilter; })
+                .classed("force-selectedNode", function(d) {return d.key == streetFilter; })
                 .attr("r", function (d) {
                     return r(d.totalAccidents);
                 })
@@ -402,6 +396,7 @@ crashcaster.forcegraph = (function (cc$, $, d3) {
         // on click, update force graph data and elements, restart simulation.
         function click(d) {
 
+            console.log(d);
             if (d.key.toUpperCase() != streetFilter.toUpperCase()) {
                 var coords = [];
                 var total=0;
