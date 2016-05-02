@@ -59,11 +59,20 @@ _* The Crashcast uses a preliminary predictive model our team developed specific
 
 **Crashboard**
 
-
 **Weather Impact**
 
 
 **Crashcalendar**
+
+Our Crash Calendar is a calendar heatmap of accident totals using small multiples of months with contrast encoding.  The design for this visualization was intended to represent the entire date range of our dataset in a way that is intuitive and revealing.  The features of this visualization allow the user to:
+
+1. Visually compare accident patterns across months, years, days of the week, and weeks within months, by vertically and horizontally aligning the month represnentations.    
+2. Quickly identify high accident days to research for specific causes.
+3. View differences between when various types of accidents occurred, by using buttons to enable highlighting.  
+4. Hover on dates to reveal total accident details. 
+
+Some story features are included as a starting point for exploration, showcasing the background on some dates with high accident totals which this visualization lead us to research.  
+
 
 
 **Intersections**
