@@ -293,8 +293,8 @@
 
             <div class="col-md-6">
                 <div class="row" align="center">
-                    <h6>Featured Background Stories</h6>
-                    <div class="btn-group" role="group" aria-label="Noteworthy High Accident Dates">
+                    <h6 style="display: inline">Featured Background Stories</h6>
+                    <span class="btn-group" role="group" aria-label="Noteworthy High Accident Dates">
                         <button id="cal-btn_story1" type="button" value="story1" href="#cal-story1"
                                 class="btn btn-secondary"><p
                                 class="fa fa-newspaper-o btn-type-travel"></p>
@@ -313,14 +313,14 @@
                                 class="fa fa-newspaper-o btn-type-travel"></p>
                             <p>4</p></button>
                             -->
-                    </div>
+                    </span>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="row" align="center">
-                    <h6>Highlight Dates by Accident Type</h6>
-                    <div class="btn-group" role="group" aria-label="Travel Type">
+                    <h6 style="display: inline">Highlight Dates by Accident Type</h6>
+                    <span class="btn-group" role="group" aria-label="Travel Type">
                         <button id="cal-btn_auto" type="button" value="Auto" href="#test"
                                 class="btn btn-secondary"><p
                                 class="fa fa-car btn-type-travel"></p>
@@ -341,7 +341,7 @@
                                 class="btn btn-secondary"><p
                                 class="fa fa-refresh btn-type-travel"></p>
                             <p>Refresh</p></button>
-                    </div>
+                    </span>
                 </div>
             </div>
         </div>
@@ -363,7 +363,8 @@
                 <p class="fa fa-arrow-circle-down cal-story-icon"></p>
                 <h3>Major Nor' Easter Hits Region</h3>
                 <br>
-                <p class="cal-story-content">In mid January, 2011, the northeast was hit by a severe snowstorm that dropped up to 18 inches of snow in the Cambridge area.
+                <p class="cal-story-content">Winter storms are a frequent cause of Cambridge accidents.
+                    In mid January, 2011, the northeast was hit by a severe snowstorm that dropped up to 18 inches of snow in the Cambridge area.
                     Many parked cars were damaged by fallen trees and limbs.  Schools and businesses were closed and most stayed off the roads during the storm, but
                     in the aftermath many took to icy streets and suffered accidents due to the slippery conditions.  The worst day for accidents was Tuesday Jan 18th,
                     which followed the Martin Luther King Jr. holiday and was likely the day when most returned to work and school after the storm.</p>
@@ -384,7 +385,7 @@
                 <br>
                 <p class="cal-story-content">A utility power failure on November 30th, 2012 resulted in most of Cambridge being swathed in darkness during the busy evening commute.
                     Street lights and traffic signals were inoperative, and MBTA train service was limited.  This resulted in dangerous conditions for drivers and pedestrians trying
-                    to find their way home during this very busy time of day. </p>
+                    to find their way home during this very busy time of day.  Unpredictable situations like this one are occasionally the cause for accidents in the city. </p>
                 <br>
                 <img src="img/calendar-story2.jpg" style="width:300px;height:auto;">
                 <br>
@@ -403,7 +404,7 @@
                 <br>
                 <p class="cal-story-content">
                     The Head of the Charles Regatta is a signature event each October with the rowing event bringing more than 400,000 spectators to the banks of the Charles River in Boston and Cambridge.
-                    While many roads are closed for public safety, the high volume of tourist vehicle and foot traffic make accidents more likely to occur.
+                    The numerous road closures and high volume of vehicle and foot traffic make accidents more likely to occur during this yearly weekend event.
                 </p>
                 <br>
                 <img src="img/calendar-story3.jpg" style="width:300px;height:auto;">
@@ -428,12 +429,142 @@
 
 <div class="section" id="section5">
     <div class="container">
+
         <div class="row">
-            <div class="col-md-12 bg-content-white">
-                <h2 class="linemap-heading">Accident Totals by Street and Intersection</h2>
-                <h4 class="linemap-heading">Click on the bars in the chart below to see where along each road most accidents occur.</h4>
+            <div class="col-md-8">
+                <div class="row" align="left">
+                    <h6 style="display: inline">Highlights</h6>
+                    <span class="btn-group" role="group">
+                        <button id="linemap-btn_story1" type="button" value="story1" href="#linemap-story1"
+                                class="btn btn-secondary"><p
+                                class="fa fa-newspaper-o btn-type-travel"></p>
+                            <p>1</p></button>
+                        <button id="linemap-btn_story2" type="button" value="story2" href="#linemap-story2"
+                                class="btn btn-secondary"><p
+                                class="fa fa-newspaper-o btn-type-travel"></p>
+                            <p>2</p></button>
+                        <button id="linemap-btn_story3" type="button" value="story3" href="#linemap-story3"
+                                class="btn btn-secondary"><p
+                                class="fa fa-newspaper-o btn-type-travel"></p>
+                            <p>3</p></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="row" align="right">
+                    <span class="btn-group" role="group" aria-label="information">
+                        <button id="linemap-btn_info" type="button" value="info" href="#linemap-info"
+                                class="btn btn-secondary"><p
+                                class="fa fa-question-circle btn-type-travel"></p>
+                            <p></p></button>
+                    </span>
+                </div>
+            </div>
+
+
+            <div id="linemap-story1">
+                <div class="row">
+                    <div class="col-md-11" align="center">
+                        <p class="fa fa-truck linemap-story-icon"></p>
+                        <p class="fa fa-car linemap-story-icon"></p>
+                        <p class="fa fa-male linemap-story-icon"></p>
+                        <p class="fa fa-bicycle linemap-story-icon"></p>
+                        <h5 style="display: inline">Massachusetts Ave & Vassar St</h5>
+                    </div>
+                    <div class="col-md-1">
+                        <p class="fa fa-times-circle linemap-story-icon linemap-modal-close_btn modal_close"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <p class="cal-story-content">
+                        High traffic volume and poor visibility contribute to this intersection being the most dangerous in Cambridge
+                        and ranked as one of the worst in Massachusetts.  Located near the Massachusetts Institute of Technology campus,
+                        this intersection services a heavy volume of commuter traffic along Mass Ave, as well as the local student population
+                        on foot and bicycle.  Use extra caution and follow traffic rules if you are travelling through this intersection by bike,
+                        as a high number of bicycle accidents tend to occur here due to poor visibility and cyclists ignoring traffic rules.
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="http://tech.mit.edu/V131/N60/intersection.html" target="_blank">Source: mit.edu</a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="http://www.golocalprov.com/news/10-most-dangerous-intersections-in-massachusetts-2014" target="_blank">golocalprov.com</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="linemap-story2">
+                <div class="row">
+                    <div class="col-md-11" align="center">
+                        <p class="fa fa-bicycle linemap-story-icon"></p>
+                        <h5 style="display: inline">Inman Square ranked state's worst for bike crashes</h5>
+                    </div>
+                    <div class="col-md-1">
+                        <p class="fa fa-times-circle linemap-story-icon linemap-modal-close_btn modal_close"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <p class="cal-story-content">Inman Square at the intersections of Cambridge St, Hampshire St, and Prospect St, is a location where most of
+                        Cambridge's bicycle accidents occur, leading a 2009 study report to rank it as the top location in Massachusetts for bike crashes.  Cambridge
+                        is home to many bicycle commuters and recreational riders, but areas like Inman Square and others pose specific dangers that locals and
+                        visitors should be aware of.</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="http://patch.com/massachusetts/somerville/inman-square-worst-bike-crash-location-in-massachusetts" target="_blank">Source: patch.edu</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="linemap-story3">
+                <div class="row">
+                    <div class="col-md-11" align="center">
+                        <p class="fa fa-car linemap-story-icon"></p>
+                        <p class="fa fa-bus linemap-story-icon"></p>
+                        <h5 style="display: inline">Mount Auburn & Aberdeen St</h5>
+                    </div>
+                    <div class="col-md-1">
+                        <p class="fa fa-times-circle linemap-story-icon linemap-modal-close_btn modal_close"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <p class="cal-story-content">
+                        This intersection can be one of the most dangerous for those unfamiliar with the area to do poor signal timing and a confusing configuration.
+                        Watch out for MBTA buses making a U-turn from Aberdeen Ave, as they will cross over other lanes in order to make the wide circle necessary to avoid power lines.
+                        Driver frustration due to long wait times is known to be a factor in accidents here.
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="http://www.greaterbostonsuburbs.com/poorroaddesigninmass.htm" target="_blank">Source: greaterbostonsuburbs.com</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="linemap-info">
+                <div class="row">
+                    <div class="col-md-11" align="center">
+                        <h5 style="display: inline">Cambridge's Streets and Intersections</h5>
+                    </div>
+                    <div class="col-md-1">
+                        <p class="fa fa-times-circle linemap-story-icon linemap-modal-close_btn modal_close"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <p class="cal-story-content">
+                        The bar chart shows most dangerous streets and their accident totals (2010-2014).
+                    </p><br>
+                    <p class="cal-story-content">
+                        Clicking on any bar will all of the major intersections along that road and their accident totals, beneath the bar chart.
+                    </p>
+                </div>
             </div>
         </div>
+
 
         <div class="row">
             <div class="col-md-12 bg-content-white">
@@ -443,10 +574,10 @@
 
         <div class="row">
             <div class="col-md-12 bg-content-white">
+                <div style="text-align: right" id="linemap-legend"></div>
                 <div id="linemap"></div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -457,7 +588,7 @@
             <div class="col-md-12">
                 <h2>Street View Explorer:  Navigate Cambridge's road network</h2>
                 <h4>Navigate your way through Cambridge's most dangerous roads.</h4>
-                <h4>Try to spot what makes each intersection hazardous!</h4>
+                <h4>Can you spot something about these intersections that makes them hazardous?</h4>
                 <h5>The graph below shows your current road and all the available connecting roads for you to explore.</h5>
                 <h5>As you connect to other roads you'll see views of your current intersection.</h5>
             </div>
@@ -467,9 +598,18 @@
 
         <div class="row">
             <div class="col-md-7">
-                <div id="forcegraph-title"></div>
+                <!--   info button place-holder
+                <span align=left class="btn-group" role="group" aria-label="information">
+                    <button id="force-btn_info" type="button" value="info" href="#force-info"
+                            class="btn btn-secondary"><p
+                            class="fa fa-question-circle btn-type-travel"></p>
+                    </button>
+                </span>
+                -->
+                <span id="forcegraph-title"></span>
                 <div id="forcegraph-subtitle"></div>
                 <div id="forcegraph"></div>
+
             </div>
             <div class="col-md-5">
                 <div id="streetview-title"></div>
@@ -481,6 +621,30 @@
 
     </div>
 </div>
+
+
+<div class="section" id="section7">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 bg-content-white">
+                <h1>Screencast</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="section" id="section8">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 bg-content-white">
+                <h1>Process Book</h1>
+                <p>Data, Sources, etc.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <div class="section" id="section7">
