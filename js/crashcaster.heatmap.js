@@ -486,10 +486,10 @@ crashcaster.heatmap = (function (cc$, d3) {
         //console.log(filterTotal + " " + calcAuto + " " +calcBike + " " +calcCycle + " " +calcWalk + " " + allAccidents);
 
         console.log(selectTravelType);
-        if (selectWeather=='Good') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + " weather is " + Math.round(filterTotal/5) +" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) " ;}
-        if (selectWeather=='Fog') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "gy weather is " + Math.round(filterTotal/5)+" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) ";}
-        if (selectWeather=='Rain') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.round(filterTotal/5)+" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) ";};
-        if (selectWeather=='Snow') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.round(filterTotal/5)+" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) ";};
+        if (selectWeather=='Good') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + " weather is " + Math.ceil(filterTotal/5) +" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) " ;}
+        if (selectWeather=='Fog') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "gy weather is " + Math.ceil(filterTotal/5)+" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) ";}
+        if (selectWeather=='Rain') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.ceil(filterTotal/5)+" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) ";};
+        if (selectWeather=='Snow') {crashtisticsText = "Annual rate of " + selectTravelType.toLowerCase() + " accidents in "+selectWeather.toLowerCase() + "y weather is " + Math.ceil(filterTotal/5)+" (" + Math.ceil(filterTotal/allAccidents*100)+ "% of total) ";};
 
         render(selectTravelType);
 
