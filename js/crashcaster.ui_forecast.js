@@ -364,7 +364,7 @@ crashcaster.ui_forecast = (function (cc$, $, d3) {
                 .style("stroke", "#fff")
                 //.style("font-size", "13px")
                 //.style("font-weight", "100")
-                .text("Accident probability forecast by Hour");
+                .text("Hourly Probability forecast);
 
 
 
