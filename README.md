@@ -74,11 +74,20 @@ Our Crash Calendar is a calendar heatmap of accident totals using small multiple
 Some story features are included as a starting point for exploration, showcasing the background on some dates with high accident totals which this visualization lead us to research.  
 
 
-
 **Intersections**
+
+The Intersections screen reveals another dimension of *where* accidents occur, along with the CrashBoard.  The major roads in Cambridge for accidents are represented here, starting with Massachusetts Ave which has the most accidents by far.  Taking this one step deeper, we wanted to show where along each street the accidents occur.  We used a novel prepresentation for this, representing each street's intersections as circles along a line, with darker red circles representing higher accidents.  This is similar to a subway style map representing stations without geographic accuracy. This visualization:
+
+1.  Clearly shows at a high level which streets in Cambridge experience the most accidents
+2.  Indicates where along each street the most accidents occur
+3.  Allows the user to select streets in the bar chart to update the intersection visualization.
+4.  Allows hovering on any element to reveal specific details.
 
 
 **Street Explorer**
+
+The Street View Explorer is an interactive way to navigate through Cambridge's most dangerous roads.  We designed this as a novel way to encourage high user engagement in representing a network; in this case, the network of Cambridge's roads.  The graph represents the user's location *within* Cambridge on a specific road, with several intersections to other roads, and uses circle size to represent the total accidents that have occured on each road.  By selecting any available connecting road, the user is shown a street view image of that intersection and is then located in the network on this new road they selected.  In this way the user has the freedom to navigate where they choose throughout Cambridge, and examine the street views and accompaning data that represent each intersection.  We feel this gives a personal and engaging element to the representing this data, by allowing the user to connect with the locations on a direct and exploratory level.  
+
 
 
 
