@@ -59,6 +59,21 @@ _* The Crashcast uses a preliminary predictive model our team developed specific
 
 **Crashboard**
 
+The Crashboard is a flexible and expansive view of our primary datasets.  Originally prototyped as an internal tool for data exploration, the interface and functionality were streamlined for users once we saw the potential for exciting exploration and insight.  The primary view into the data is the geographic map with data points for each accident.  The rest of the visualization acts as a crossfilter, allowing a user to filter by accident type, weather, and time (year range, month range, day of week range, and hour of day range).  The time-based crossfilters also provide a secondary view into the data, mapping out their individual distributions as charts. The full feature list of the visualization is as follows:
+
+1. View distribution of historical accident data on a map of Cambridge.
+2. View this accident data as individual data points or as a choropleth map, with a simple toggle.
+3. Crossfilter on many different fields to explore the data and answer a variety of questions:
+    - Accident Type
+    - Weather
+    - Time
+        - Year Range
+        - Month Range
+        - Day of Week Range
+        - Hour of Day Range
+4. A highlights feature with presets to guide the user in their own explorations of the visualization.
+
+
 **Weather Impact**
 
 To understand the impact of weather, we have taken correlated data from daily weather underground with the day the accident took place. The data was normalized by taking ratio of accidents and the duration of the weather to get the normalized value of accidents for that weather condition. Although, this algorithm may be primitive and does not account for the fact that the accidents could have been due to negligence or any other aspect other than weather; this still gives us something to think about.
