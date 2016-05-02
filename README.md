@@ -54,13 +54,17 @@ The Crashcaster Crashcast is our "Accident Forecast" and serves as the home page
 8. The heat map overlay shows the most dangerous places to be under the current conditions or, if selected, "What if..." conditions.  Feel free to zoom in to really examine the street names, traffic conditions and let the heat map guide you away from particularly troubling spots as you travel Cambridge.
 9. Clicking on the question mark in the top navigation will open a "drawer" pulldown that details the Crashcaster project for our users.
 
-_* The Crashcast uses a preliminary predictive model our team developed specifically to underpin the visualization innovations  we wanted to drive toward that enables the combination of weather conditions and modes of travel among many factors to forecast accidents and present the data in various ways.  As such, we believe our predictive model is broadly representative of the historic data and various current conditions -- however, it is an immature model that requires further refinement beyond the scope of our final project._
+_* The Crashcast uses a preliminary predictive model our team developed specifically to underpin the visualization innovations  we wanted to drive toward that enables the combination of weather conditions and modes of travel among many factors to forecast accidents and present the data in various ways.  As such, we believe our predictive model is broadly representative of the historic data and various current conditions -- however, it is a primitive model that requires further refinement beyond the scope of our final project._
 
 
 **Crashboard**
 
 **Weather Impact**
 
+To understand the impact of weather, we have taken correlated data from daily weather underground with the day the accident took place. The data was normalized by taking ratio of accidents and the duration of the weather to get the normalized value of accidents for that weather condition. Although, this algorithm may be primitive and does not account for the fact that the accidents could have been due to negligence or any other aspect other than weather; this still gives us something to think about.
+
+1. Sankey chart shows the correlation between weather and accidents (normalized) 
+2. User can explore by clicking on the stories and draw their own conclusions 
 
 **Crashcalendar**
 
