@@ -43,7 +43,7 @@ crashcaster.weather = (function (cc$, $, d3) {
         state = state ? state : "MA";
         city = city ? city : "Cambridge";
 
-        var url = "http://api.wunderground.com/api/053fc50550431c69/" + forecastType + "/q/" + state + "/" + city + ".json";
+        var url = "http://api.wunderground.com/api/0b110eae5a56d6a6/" + forecastType + "/q/" + state + "/" + city + ".json";
         // console.log("url=" + url);
 
         d3.json(url, function (json) {
