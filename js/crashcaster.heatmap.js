@@ -100,7 +100,7 @@ crashcaster.heatmap = (function (cc$, d3) {
 
     function updatePrediction() {
 
-        d3.json("http://api.wunderground.com/api/053fc50550431c69/forecast10day/q/MA/Cambridge.json", function (json) {
+        d3.json("http://api.wunderground.com/api/0b110eae5a56d6a6/forecast10day/q/MA/Cambridge.json", function (json) {
             Weather = json.forecast.txt_forecast.forecastday[1].fcttext;
 
 
