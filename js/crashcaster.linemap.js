@@ -243,7 +243,7 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
 
             // sort by distance to reference to represent order of intersections along road
             d.values.sort(function(a, b) {
-                return a.distanceFromReference - b.distanceFromReference;
+                return b.distanceFromReference - a.distanceFromReference;
             })
         });
 
