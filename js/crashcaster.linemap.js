@@ -509,7 +509,7 @@ crashcaster.linemap = (function (cc$, $, d3, LatLon) {
     function calculateDistance(point1, point2) {
 
         // some spot far away
-        var referenceCoordinates = [42.444757, -71.177811];
+        var referenceCoordinates = [0, 0];
 
         if (typeof point2 === 'undefined') { point2 = referenceCoordinates; }
 
