@@ -48,7 +48,7 @@ crashcaster.module_template_copy_me = (function (cc$, $, d3) {
     // Private method: fetch the weather data
     function getWeather(f) {
 
-        var url = "http://api.wunderground.com/api/053fc50550431c69/conditions/q/MA/Cambridge.json";
+        var url = "https://api.wunderground.com/api/053fc50550431c69/conditions/q/MA/Cambridge.json";
 
         d3.json(url, function (json) {
 
